@@ -2,9 +2,9 @@
 # requires-python = ">=3.12"
 # dependencies = [
 #     "marimo",
-#     "plotly>=5.18.0",
-#     "pandas>=2.0.0",
-#     "numpy>=1.24.0",
+#     "plotly==6.5.2",
+#     "pandas==3.0.0",
+#     "numpy==2.4.2",
 # ]
 # ///
 """
@@ -228,34 +228,29 @@ def parameter_controls(mo):
 
 
 @app.cell
-def tabbed_content(go, mo, results):
+def chart_controls(mo):
+    stock_selector = mo.ui.multiselect(
+        options={"Warehouse Inventory (Moz)": "warehouse_inventory", "Retail Holdings (Moz)": "retail_holdings", "Silver Price ($/oz)": "silver_price", "Chinese Export Capacity (Moz/yr)": "chinese_export_capacity", "Retail Sentiment (dimensionless)": "retail_sentiment"},
+        value=["Warehouse Inventory (Moz)", "Retail Holdings (Moz)", "Silver Price ($/oz)", "Chinese Export Capacity (Moz/yr)", "Retail Sentiment (dimensionless)"],
+        label="Stock variables",
+    )
+    flow_selector = mo.ui.multiselect(
+        options={"Western Supply (Moz/yr)": "western_supply", "Industrial Demand (Moz/yr)": "industrial_demand", "Net Retail Flow (Moz/yr)": "net_retail_flow", "Chinese Export Flow (Moz/yr)": "chinese_export_flow", "Export Restriction (Moz/yr/yr)": "export_restriction", "Price Change ($/oz/yr)": "price_change", "Sentiment Change (1/yr)": "sentiment_change"},
+        value=["Western Supply (Moz/yr)", "Industrial Demand (Moz/yr)", "Net Retail Flow (Moz/yr)", "Chinese Export Flow (Moz/yr)", "Export Restriction (Moz/yr/yr)", "Price Change ($/oz/yr)", "Sentiment Change (1/yr)"],
+        label="Flow variables",
+    )
+    aux_selector = mo.ui.multiselect(
+        options={"Inventory Ratio (dimensionless)": "inventory_ratio", "Demand Supply Pressure (dimensionless)": "demand_supply_pressure", "Price Momentum (1/yr)": "price_momentum", "Effective Amplification (dimensionless)": "effective_amplification", "Sentiment Decay (1/yr)": "sentiment_decay", "Institutional Edge (dimensionless)": "institutional_edge"},
+        value=["Inventory Ratio (dimensionless)", "Demand Supply Pressure (dimensionless)", "Price Momentum (1/yr)", "Effective Amplification (dimensionless)", "Sentiment Decay (1/yr)", "Institutional Edge (dimensionless)"],
+        label="Auxiliary variables",
+    )
+    return stock_selector, flow_selector, aux_selector
+
+
+@app.cell
+def tabbed_content(aux_selector, flow_selector, go, mo, results, stock_selector):
     # --- Analysis tab ---
     analysis_content = mo.vstack([
-            mo.md("""
-## Silver Supply Dynamics -- Analysis
-
-### Original Question
-*How do information asymmetries between commodity trading desks and retail investors shape silver price dynamics during supply squeezes? What structural factors (Chinese export controls, solar demand growth) interact with social media-driven speculation, and who actually captures value?*
-
-### Key Feedback Loops
-
-| Loop | Type | Mechanism |
-|------|------|-----------|
-| **R1 -- Retail FOMO** | Reinforcing | Price rises -> momentum -> social media amplification -> sentiment -> more buying -> inventory drain -> price rises |
-| **R2 -- Chinese Supply Squeeze** | Reinforcing | Geopolitical pressure -> export restrictions -> less Chinese silver -> inventory falls -> price rises |
-| **B1 -- Institutional Dampening** | Balancing | Institutions counter-trade -> reduces effective amplification -> slows sentiment growth -> limits R1 |
-| **B2 -- Physical Exhaustion** | Balancing | Inventory drops -> retail buying = sentiment x intensity x inventory -> self-limits as inventory depletes |
-| **B3 -- Sentiment Decay** | Balancing | Without sustained momentum, attention fades -> buying slows |
-
-### Information Asymmetry
-The **institutional edge** metric = demand_supply_pressure - price_momentum quantifies the gap between what commodity desks see (inventory movements, daily) and what retail sees (price charts, lagged). When positive, desks are positioning ahead of retail. When negative, price has overshot fundamentals and desks are distributing to retail.
-
-Institutional dampening operates on the **sentiment channel**, not price directly: effective_amplification = social_media_amplifier - institutional_dampening. At defaults (3.0 - 1.0 = 2.0), retail receives 2/3 of the momentum signal because desk counter-trading compresses observable price moves.
-
-### Critical Insight
-Retail can temporarily drive prices through FOMO (R1), but institutional dampening (B1) and physical constraints (B2) usually limit the squeeze. The **exception**: when genuine structural deficit (Chinese export ban + solar demand growth) depletes inventory -- then even dampened signals eventually break through because the fundamental tightness is real.
-
-"""),
             mo.md("""
 ### Overview
 Models silver market supply squeezes and the information asymmetry between commodity desks and retail traders.
@@ -374,64 +369,58 @@ Parameters: `institutional_dampening=0.0`, `geopolitical_pressure=2.0`
         western_supply_base -.-> western_supply
         solar_demand_growth -.-> industrial_demand
         base_industrial_demand -.-> industrial_demand
-        retail_buy_intensity -.-> net_retail_flow
         retail_sentiment -.-> net_retail_flow
-        chinese_export_capacity -.-> chinese_export_flow
+        retail_buy_intensity -.-> net_retail_flow
         china_export_fraction -.-> chinese_export_flow
-        restriction_rate -.-> export_restriction
+        chinese_export_capacity -.-> chinese_export_flow
         geopolitical_pressure -.-> export_restriction
-        demand_supply_pressure -.-> price_change
+        restriction_rate -.-> export_restriction
         price_adjustment_speed -.-> price_change
+        demand_supply_pressure -.-> price_change
         price_momentum -.-> sentiment_change
-        sentiment_decay -.-> sentiment_change
         effective_amplification -.-> sentiment_change
-        warehouse_inventory -.-> inventory_ratio
+        sentiment_decay -.-> sentiment_change
         reference_inventory -.-> inventory_ratio
+        warehouse_inventory -.-> inventory_ratio
         inventory_ratio -.-> demand_supply_pressure
         price_change -.-> price_momentum
         silver_price -.-> price_momentum
-        social_media_amplifier -.-> effective_amplification
         institutional_dampening -.-> effective_amplification
+        social_media_amplifier -.-> effective_amplification
         sentiment_decay_rate -.-> sentiment_decay
         retail_sentiment -.-> sentiment_decay
-        demand_supply_pressure -.-> institutional_edge
         price_momentum -.-> institutional_edge
+        demand_supply_pressure -.-> institutional_edge
         """
         ),
         mo.md("*Boxes: stocks | Rounded: flows | Hexagons: parameters | Slanted: computed*"),
     ])
 
     # --- Simulation tab ---
+    _stock_labels = {'warehouse_inventory': 'Warehouse Inventory (Moz)', 'retail_holdings': 'Retail Holdings (Moz)', 'silver_price': 'Silver Price ($/oz)', 'chinese_export_capacity': 'Chinese Export Capacity (Moz/yr)', 'retail_sentiment': 'Retail Sentiment (dimensionless)'}
     fig_stocks = go.Figure()
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["warehouse_inventory"], mode="lines", name="Warehouse Inventory (Moz)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["retail_holdings"], mode="lines", name="Retail Holdings (Moz)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["silver_price"], mode="lines", name="Silver Price ($/oz)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["chinese_export_capacity"], mode="lines", name="Chinese Export Capacity (Moz/yr)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["retail_sentiment"], mode="lines", name="Retail Sentiment (dimensionless)"))
+    for _key in stock_selector.value:
+        fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_stock_labels.get(_key, _key)))
     fig_stocks.update_layout(title="Stock Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
 
+    _flow_labels = {'western_supply': 'Western Supply (Moz/yr)', 'industrial_demand': 'Industrial Demand (Moz/yr)', 'net_retail_flow': 'Net Retail Flow (Moz/yr)', 'chinese_export_flow': 'Chinese Export Flow (Moz/yr)', 'export_restriction': 'Export Restriction (Moz/yr/yr)', 'price_change': 'Price Change ($/oz/yr)', 'sentiment_change': 'Sentiment Change (1/yr)'}
     fig_flows = go.Figure()
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["western_supply"], mode="lines", name="Western Supply (Moz/yr)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["industrial_demand"], mode="lines", name="Industrial Demand (Moz/yr)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["net_retail_flow"], mode="lines", name="Net Retail Flow (Moz/yr)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["chinese_export_flow"], mode="lines", name="Chinese Export Flow (Moz/yr)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["export_restriction"], mode="lines", name="Export Restriction (Moz/yr/yr)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["price_change"], mode="lines", name="Price Change ($/oz/yr)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["sentiment_change"], mode="lines", name="Sentiment Change (1/yr)"))
+    for _key in flow_selector.value:
+        fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key)))
     fig_flows.update_layout(title="Flow Variables Over Time", xaxis_title="Time", yaxis_title="Rate", template="plotly_white")
 
+    _aux_labels = {'inventory_ratio': 'Inventory Ratio (dimensionless)', 'demand_supply_pressure': 'Demand Supply Pressure (dimensionless)', 'price_momentum': 'Price Momentum (1/yr)', 'effective_amplification': 'Effective Amplification (dimensionless)', 'sentiment_decay': 'Sentiment Decay (1/yr)', 'institutional_edge': 'Institutional Edge (dimensionless)'}
     fig_aux = go.Figure()
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["inventory_ratio"], mode="lines", name="Inventory Ratio (dimensionless)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["demand_supply_pressure"], mode="lines", name="Demand Supply Pressure (dimensionless)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["price_momentum"], mode="lines", name="Price Momentum (1/yr)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["effective_amplification"], mode="lines", name="Effective Amplification (dimensionless)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["sentiment_decay"], mode="lines", name="Sentiment Decay (1/yr)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["institutional_edge"], mode="lines", name="Institutional Edge (dimensionless)"))
+    for _key in aux_selector.value:
+        fig_aux.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_aux_labels.get(_key, _key)))
     fig_aux.update_layout(title="Computed Auxiliary Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
 
     simulation_content = mo.vstack([
+        stock_selector,
         mo.ui.plotly(fig_stocks),
+        flow_selector,
         mo.ui.plotly(fig_flows),
+        aux_selector,
         mo.ui.plotly(fig_aux),
         mo.ui.table(results.reset_index().rename(columns={"time": "Time"})),
     ])

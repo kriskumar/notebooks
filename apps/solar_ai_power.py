@@ -219,7 +219,27 @@ def parameter_controls(mo):
 
 
 @app.cell
-def tabbed_content(go, mo, results):
+def chart_controls(mo):
+    stock_selector = mo.ui.multiselect(
+        options={"Solar Capacity (GW)": "solar_capacity", "Data Center Demand (GW)": "data_center_demand", "Solar Cost ($/W)": "solar_cost", "Battery Storage (GWh)": "battery_storage", "Grid Queue (GW)": "grid_queue"},
+        value=["Solar Capacity (GW)", "Data Center Demand (GW)", "Solar Cost ($/W)", "Battery Storage (GWh)", "Grid Queue (GW)"],
+        label="Stock variables",
+    )
+    flow_selector = mo.ui.multiselect(
+        options={"Project Submissions (GW/year)": "project_submissions", "Grid Connections (GW/year)": "grid_connections", "Panel Retirements (GW/year)": "panel_retirements", "Demand Increase (GW/year)": "demand_increase", "Cost Reduction ($/W/year)": "cost_reduction", "Storage Deployed (GWh/year)": "storage_deployed", "Storage Retired (GWh/year)": "storage_retired"},
+        value=["Project Submissions (GW/year)", "Grid Connections (GW/year)", "Panel Retirements (GW/year)", "Demand Increase (GW/year)", "Cost Reduction ($/W/year)", "Storage Deployed (GWh/year)", "Storage Retired (GWh/year)"],
+        label="Flow variables",
+    )
+    aux_selector = mo.ui.multiselect(
+        options={"Solar Power Output (GW)": "solar_power_output", "Dispatchable Storage (GW)": "dispatchable_storage", "Total Clean Power (GW)": "total_clean_power", "Clean To Demand Ratio (dimensionless)": "clean_to_demand_ratio", "Queue Pressure (dimensionless)": "queue_pressure"},
+        value=["Solar Power Output (GW)", "Dispatchable Storage (GW)", "Total Clean Power (GW)", "Clean To Demand Ratio (dimensionless)", "Queue Pressure (dimensionless)"],
+        label="Auxiliary variables",
+    )
+    return stock_selector, flow_selector, aux_selector
+
+
+@app.cell
+def tabbed_content(aux_selector, flow_selector, go, mo, results, stock_selector):
     # --- Analysis tab ---
     analysis_content = mo.vstack([
             mo.md("""
@@ -312,61 +332,56 @@ Parameters: `demand_growth_rate=0.1`
         project_submissions ==>|"+"| grid_queue
         grid_queue ==>|"-"| grid_connections
     
-        solar_cost -.-> project_submissions
         solar_investment -.-> project_submissions
+        solar_cost -.-> project_submissions
         connection_rate -.-> grid_connections
         panel_lifetime -.-> panel_retirements
         demand_growth_rate -.-> demand_increase
         cost_learning_rate -.-> cost_reduction
-        storage_unit_cost -.-> storage_deployed
         storage_investment -.-> storage_deployed
+        storage_unit_cost -.-> storage_deployed
         battery_lifetime -.-> storage_retired
         solar_capacity -.-> solar_power_output
         capacity_factor -.-> solar_power_output
+        discharge_hours -.-> dispatchable_storage
         battery_storage -.-> dispatchable_storage
         battery_efficiency -.-> dispatchable_storage
-        discharge_hours -.-> dispatchable_storage
         dispatchable_storage -.-> total_clean_power
         solar_power_output -.-> total_clean_power
-        total_clean_power -.-> clean_to_demand_ratio
         data_center_demand -.-> clean_to_demand_ratio
-        grid_queue -.-> queue_pressure
+        total_clean_power -.-> clean_to_demand_ratio
         solar_capacity -.-> queue_pressure
+        grid_queue -.-> queue_pressure
         """
         ),
         mo.md("*Boxes: stocks | Rounded: flows | Hexagons: parameters | Slanted: computed*"),
     ])
 
     # --- Simulation tab ---
+    _stock_labels = {'solar_capacity': 'Solar Capacity (GW)', 'data_center_demand': 'Data Center Demand (GW)', 'solar_cost': 'Solar Cost ($/W)', 'battery_storage': 'Battery Storage (GWh)', 'grid_queue': 'Grid Queue (GW)'}
     fig_stocks = go.Figure()
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["solar_capacity"], mode="lines", name="Solar Capacity (GW)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["data_center_demand"], mode="lines", name="Data Center Demand (GW)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["solar_cost"], mode="lines", name="Solar Cost ($/W)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["battery_storage"], mode="lines", name="Battery Storage (GWh)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["grid_queue"], mode="lines", name="Grid Queue (GW)"))
+    for _key in stock_selector.value:
+        fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_stock_labels.get(_key, _key)))
     fig_stocks.update_layout(title="Stock Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
 
+    _flow_labels = {'project_submissions': 'Project Submissions (GW/year)', 'grid_connections': 'Grid Connections (GW/year)', 'panel_retirements': 'Panel Retirements (GW/year)', 'demand_increase': 'Demand Increase (GW/year)', 'cost_reduction': 'Cost Reduction ($/W/year)', 'storage_deployed': 'Storage Deployed (GWh/year)', 'storage_retired': 'Storage Retired (GWh/year)'}
     fig_flows = go.Figure()
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["project_submissions"], mode="lines", name="Project Submissions (GW/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["grid_connections"], mode="lines", name="Grid Connections (GW/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["panel_retirements"], mode="lines", name="Panel Retirements (GW/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["demand_increase"], mode="lines", name="Demand Increase (GW/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["cost_reduction"], mode="lines", name="Cost Reduction ($/W/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["storage_deployed"], mode="lines", name="Storage Deployed (GWh/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["storage_retired"], mode="lines", name="Storage Retired (GWh/year)"))
+    for _key in flow_selector.value:
+        fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key)))
     fig_flows.update_layout(title="Flow Variables Over Time", xaxis_title="Time", yaxis_title="Rate", template="plotly_white")
 
+    _aux_labels = {'solar_power_output': 'Solar Power Output (GW)', 'dispatchable_storage': 'Dispatchable Storage (GW)', 'total_clean_power': 'Total Clean Power (GW)', 'clean_to_demand_ratio': 'Clean To Demand Ratio (dimensionless)', 'queue_pressure': 'Queue Pressure (dimensionless)'}
     fig_aux = go.Figure()
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["solar_power_output"], mode="lines", name="Solar Power Output (GW)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["dispatchable_storage"], mode="lines", name="Dispatchable Storage (GW)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["total_clean_power"], mode="lines", name="Total Clean Power (GW)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["clean_to_demand_ratio"], mode="lines", name="Clean To Demand Ratio (dimensionless)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["queue_pressure"], mode="lines", name="Queue Pressure (dimensionless)"))
+    for _key in aux_selector.value:
+        fig_aux.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_aux_labels.get(_key, _key)))
     fig_aux.update_layout(title="Computed Auxiliary Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
 
     simulation_content = mo.vstack([
+        stock_selector,
         mo.ui.plotly(fig_stocks),
+        flow_selector,
         mo.ui.plotly(fig_flows),
+        aux_selector,
         mo.ui.plotly(fig_aux),
         mo.ui.table(results.reset_index().rename(columns={"time": "Time"})),
     ])

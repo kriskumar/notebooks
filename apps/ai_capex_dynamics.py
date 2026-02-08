@@ -206,7 +206,27 @@ def parameter_controls(mo):
 
 
 @app.cell
-def tabbed_content(go, mo, results):
+def chart_controls(mo):
+    stock_selector = mo.ui.multiselect(
+        options={"Deployment Pipeline (billion$)": "deployment_pipeline", "Ai Infrastructure (billion$)": "ai_infrastructure", "Market Cap (trillion$)": "market_cap", "Tech Employment (million)": "tech_employment"},
+        value=["Deployment Pipeline (billion$)", "Ai Infrastructure (billion$)", "Market Cap (trillion$)", "Tech Employment (million)"],
+        label="Stock variables",
+    )
+    flow_selector = mo.ui.multiselect(
+        options={"New Capex (billion$/year)": "new_capex", "Capacity Deployed (billion$/year)": "capacity_deployed", "Capacity Retired (billion$/year)": "capacity_retired", "Valuation Adjustment (trillion$/year)": "valuation_adjustment", "Tech Hiring (million/year)": "tech_hiring", "Job Displacement (million/year)": "job_displacement"},
+        value=["New Capex (billion$/year)", "Capacity Deployed (billion$/year)", "Capacity Retired (billion$/year)", "Valuation Adjustment (trillion$/year)", "Tech Hiring (million/year)", "Job Displacement (million/year)"],
+        label="Flow variables",
+    )
+    aux_selector = mo.ui.multiselect(
+        options={"Ai Revenue (billion$/year)": "ai_revenue", "Actual Roi (1/year)": "actual_roi", "Returns Gap (1/year)": "returns_gap", "Pe Ratio (dimensionless)": "pe_ratio", "Employment Ratio (dimensionless)": "employment_ratio"},
+        value=["Ai Revenue (billion$/year)", "Actual Roi (1/year)", "Returns Gap (1/year)", "Pe Ratio (dimensionless)", "Employment Ratio (dimensionless)"],
+        label="Auxiliary variables",
+    )
+    return stock_selector, flow_selector, aux_selector
+
+
+@app.cell
+def tabbed_content(aux_selector, flow_selector, go, mo, results, stock_selector):
     # --- Analysis tab ---
     analysis_content = mo.vstack([
             mo.md("""
@@ -307,20 +327,20 @@ Parameters: `revenue_per_capacity=0.25`, `deployment_lag=3`, `displacement_inten
         tech_hiring ==>|"+"| tech_employment
         tech_employment ==>|"-"| job_displacement
     
-        reference_valuation -.-> new_capex
         base_capex_rate -.-> new_capex
+        reference_valuation -.-> new_capex
         market_cap -.-> new_capex
         deployment_lag -.-> capacity_deployed
         infrastructure_life -.-> capacity_retired
-        valuation_sensitivity -.-> valuation_adjustment
         returns_gap -.-> valuation_adjustment
+        valuation_sensitivity -.-> valuation_adjustment
         base_hiring_rate -.-> tech_hiring
         ai_infrastructure -.-> job_displacement
         displacement_intensity -.-> job_displacement
-        base_tech_workforce -.-> ai_revenue
-        tech_employment -.-> ai_revenue
-        ai_infrastructure -.-> ai_revenue
         revenue_per_capacity -.-> ai_revenue
+        base_tech_workforce -.-> ai_revenue
+        ai_infrastructure -.-> ai_revenue
+        tech_employment -.-> ai_revenue
         ai_revenue -.-> actual_roi
         ai_infrastructure -.-> actual_roi
         expected_roi -.-> returns_gap
@@ -335,33 +355,30 @@ Parameters: `revenue_per_capacity=0.25`, `deployment_lag=3`, `displacement_inten
     ])
 
     # --- Simulation tab ---
+    _stock_labels = {'deployment_pipeline': 'Deployment Pipeline (billion$)', 'ai_infrastructure': 'Ai Infrastructure (billion$)', 'market_cap': 'Market Cap (trillion$)', 'tech_employment': 'Tech Employment (million)'}
     fig_stocks = go.Figure()
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["deployment_pipeline"], mode="lines", name="Deployment Pipeline (billion$)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["ai_infrastructure"], mode="lines", name="Ai Infrastructure (billion$)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["market_cap"], mode="lines", name="Market Cap (trillion$)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["tech_employment"], mode="lines", name="Tech Employment (million)"))
+    for _key in stock_selector.value:
+        fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_stock_labels.get(_key, _key)))
     fig_stocks.update_layout(title="Stock Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
 
+    _flow_labels = {'new_capex': 'New Capex (billion$/year)', 'capacity_deployed': 'Capacity Deployed (billion$/year)', 'capacity_retired': 'Capacity Retired (billion$/year)', 'valuation_adjustment': 'Valuation Adjustment (trillion$/year)', 'tech_hiring': 'Tech Hiring (million/year)', 'job_displacement': 'Job Displacement (million/year)'}
     fig_flows = go.Figure()
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["new_capex"], mode="lines", name="New Capex (billion$/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["capacity_deployed"], mode="lines", name="Capacity Deployed (billion$/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["capacity_retired"], mode="lines", name="Capacity Retired (billion$/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["valuation_adjustment"], mode="lines", name="Valuation Adjustment (trillion$/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["tech_hiring"], mode="lines", name="Tech Hiring (million/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["job_displacement"], mode="lines", name="Job Displacement (million/year)"))
+    for _key in flow_selector.value:
+        fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key)))
     fig_flows.update_layout(title="Flow Variables Over Time", xaxis_title="Time", yaxis_title="Rate", template="plotly_white")
 
+    _aux_labels = {'ai_revenue': 'Ai Revenue (billion$/year)', 'actual_roi': 'Actual Roi (1/year)', 'returns_gap': 'Returns Gap (1/year)', 'pe_ratio': 'Pe Ratio (dimensionless)', 'employment_ratio': 'Employment Ratio (dimensionless)'}
     fig_aux = go.Figure()
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["ai_revenue"], mode="lines", name="Ai Revenue (billion$/year)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["actual_roi"], mode="lines", name="Actual Roi (1/year)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["returns_gap"], mode="lines", name="Returns Gap (1/year)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["pe_ratio"], mode="lines", name="Pe Ratio (dimensionless)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["employment_ratio"], mode="lines", name="Employment Ratio (dimensionless)"))
+    for _key in aux_selector.value:
+        fig_aux.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_aux_labels.get(_key, _key)))
     fig_aux.update_layout(title="Computed Auxiliary Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
 
     simulation_content = mo.vstack([
+        stock_selector,
         mo.ui.plotly(fig_stocks),
+        flow_selector,
         mo.ui.plotly(fig_flows),
+        aux_selector,
         mo.ui.plotly(fig_aux),
         mo.ui.table(results.reset_index().rename(columns={"time": "Time"})),
     ])

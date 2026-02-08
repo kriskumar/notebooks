@@ -219,7 +219,27 @@ def parameter_controls(mo):
 
 
 @app.cell
-def tabbed_content(go, mo, results):
+def chart_controls(mo):
+    stock_selector = mo.ui.multiselect(
+        options={"Installed Capacity (GWh)": "installed_capacity", "Unit Cost (billion$/GWh)": "unit_cost", "Total Demand (GW)": "total_demand", "Gas Generation (GW)": "gas_generation", "Coal Generation (GW)": "coal_generation"},
+        value=["Installed Capacity (GWh)", "Unit Cost (billion$/GWh)", "Total Demand (GW)", "Gas Generation (GW)", "Coal Generation (GW)"],
+        label="Stock variables",
+    )
+    flow_selector = mo.ui.multiselect(
+        options={"New Installations (GWh/year)": "new_installations", "Retirements (GWh/year)": "retirements", "Cost Reduction (billion$/GWh/year)": "cost_reduction", "Demand Growth (GW/year)": "demand_growth", "Gas Displaced (GW/year)": "gas_displaced", "Coal Displaced (GW/year)": "coal_displaced"},
+        value=["New Installations (GWh/year)", "Retirements (GWh/year)", "Cost Reduction (billion$/GWh/year)", "Demand Growth (GW/year)", "Gas Displaced (GW/year)", "Coal Displaced (GW/year)"],
+        label="Flow variables",
+    )
+    aux_selector = mo.ui.multiselect(
+        options={"Dispatchable Power (GW)": "dispatchable_power", "Net Peak Demand (GW)": "net_peak_demand", "Storage Penetration (dimensionless)": "storage_penetration", "Cost Per Kwh ($/kWh)": "cost_per_kwh", "Gas Price ($/MMBtu)": "gas_price", "Coal Price ($/ton)": "coal_price"},
+        value=["Dispatchable Power (GW)", "Net Peak Demand (GW)", "Storage Penetration (dimensionless)", "Cost Per Kwh ($/kWh)", "Gas Price ($/MMBtu)", "Coal Price ($/ton)"],
+        label="Auxiliary variables",
+    )
+    return stock_selector, flow_selector, aux_selector
+
+
+@app.cell
+def tabbed_content(aux_selector, flow_selector, go, mo, results, stock_selector):
     # --- Analysis tab ---
     analysis_content = mo.vstack([
             mo.md("""
@@ -319,58 +339,53 @@ Parameters: `coal_retirement_rate=0.08`, `gas_retirement_rate=0.03`, `investment
         battery_lifetime -.-> retirements
         cost_decline_rate -.-> cost_reduction
         baseline_growth_rate -.-> demand_growth
-        storage_penetration -.-> gas_displaced
         gas_retirement_rate -.-> gas_displaced
-        storage_penetration -.-> coal_displaced
+        storage_penetration -.-> gas_displaced
         coal_retirement_rate -.-> coal_displaced
+        storage_penetration -.-> coal_displaced
         round_trip_efficiency -.-> dispatchable_power
-        installed_capacity -.-> dispatchable_power
-        discharge_hours -.-> dispatchable_power
         capacity_utilization -.-> dispatchable_power
-        dispatchable_power -.-> net_peak_demand
+        discharge_hours -.-> dispatchable_power
+        installed_capacity -.-> dispatchable_power
         total_demand -.-> net_peak_demand
-        dispatchable_power -.-> storage_penetration
+        dispatchable_power -.-> net_peak_demand
         total_demand -.-> storage_penetration
+        dispatchable_power -.-> storage_penetration
         unit_cost -.-> cost_per_kwh
         gas_generation -.-> gas_price
         gas_base_price -.-> gas_price
-        coal_generation -.-> coal_price
         coal_base_price -.-> coal_price
+        coal_generation -.-> coal_price
         """
         ),
         mo.md("*Boxes: stocks | Rounded: flows | Hexagons: parameters | Slanted: computed*"),
     ])
 
     # --- Simulation tab ---
+    _stock_labels = {'installed_capacity': 'Installed Capacity (GWh)', 'unit_cost': 'Unit Cost (billion$/GWh)', 'total_demand': 'Total Demand (GW)', 'gas_generation': 'Gas Generation (GW)', 'coal_generation': 'Coal Generation (GW)'}
     fig_stocks = go.Figure()
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["installed_capacity"], mode="lines", name="Installed Capacity (GWh)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["unit_cost"], mode="lines", name="Unit Cost (billion$/GWh)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["total_demand"], mode="lines", name="Total Demand (GW)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["gas_generation"], mode="lines", name="Gas Generation (GW)"))
-    fig_stocks.add_trace(go.Scatter(x=results.index, y=results["coal_generation"], mode="lines", name="Coal Generation (GW)"))
+    for _key in stock_selector.value:
+        fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_stock_labels.get(_key, _key)))
     fig_stocks.update_layout(title="Stock Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
 
+    _flow_labels = {'new_installations': 'New Installations (GWh/year)', 'retirements': 'Retirements (GWh/year)', 'cost_reduction': 'Cost Reduction (billion$/GWh/year)', 'demand_growth': 'Demand Growth (GW/year)', 'gas_displaced': 'Gas Displaced (GW/year)', 'coal_displaced': 'Coal Displaced (GW/year)'}
     fig_flows = go.Figure()
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["new_installations"], mode="lines", name="New Installations (GWh/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["retirements"], mode="lines", name="Retirements (GWh/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["cost_reduction"], mode="lines", name="Cost Reduction (billion$/GWh/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["demand_growth"], mode="lines", name="Demand Growth (GW/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["gas_displaced"], mode="lines", name="Gas Displaced (GW/year)"))
-    fig_flows.add_trace(go.Scatter(x=results.index, y=results["coal_displaced"], mode="lines", name="Coal Displaced (GW/year)"))
+    for _key in flow_selector.value:
+        fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key)))
     fig_flows.update_layout(title="Flow Variables Over Time", xaxis_title="Time", yaxis_title="Rate", template="plotly_white")
 
+    _aux_labels = {'dispatchable_power': 'Dispatchable Power (GW)', 'net_peak_demand': 'Net Peak Demand (GW)', 'storage_penetration': 'Storage Penetration (dimensionless)', 'cost_per_kwh': 'Cost Per Kwh ($/kWh)', 'gas_price': 'Gas Price ($/MMBtu)', 'coal_price': 'Coal Price ($/ton)'}
     fig_aux = go.Figure()
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["dispatchable_power"], mode="lines", name="Dispatchable Power (GW)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["net_peak_demand"], mode="lines", name="Net Peak Demand (GW)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["storage_penetration"], mode="lines", name="Storage Penetration (dimensionless)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["cost_per_kwh"], mode="lines", name="Cost Per Kwh ($/kWh)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["gas_price"], mode="lines", name="Gas Price ($/MMBtu)"))
-    fig_aux.add_trace(go.Scatter(x=results.index, y=results["coal_price"], mode="lines", name="Coal Price ($/ton)"))
+    for _key in aux_selector.value:
+        fig_aux.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_aux_labels.get(_key, _key)))
     fig_aux.update_layout(title="Computed Auxiliary Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
 
     simulation_content = mo.vstack([
+        stock_selector,
         mo.ui.plotly(fig_stocks),
+        flow_selector,
         mo.ui.plotly(fig_flows),
+        aux_selector,
         mo.ui.plotly(fig_aux),
         mo.ui.table(results.reset_index().rename(columns={"time": "Time"})),
     ])
