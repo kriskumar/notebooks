@@ -1,68 +1,48 @@
-# marimo WebAssembly + GitHub Pages Template
+# Macro Models — Interactive System Dynamics
 
-This template repository demonstrates how to export [marimo](https://marimo.io) notebooks to WebAssembly and deploy them to GitHub Pages.
+Interactive models that explore macro questions using [PySD](https://pysd.readthedocs.io/) for system dynamics and [Marimo](https://marimo.io) for browser-based notebooks. Each model runs entirely in your browser — no server, no installs.
 
-## 📚 Included Examples
+## Models
 
-- `apps/charts.py`: Interactive data visualization with Altair
-- `notebooks/fibonacci.py`: Interactive Fibonacci sequence calculator
-- `notebooks/penguins.py`: Interactive data analysis with Polars and marimo
+### Silver Supply Dynamics
+*How do information asymmetries between commodity desks and retail investors shape silver price dynamics during supply squeezes?*
 
-## 🚀 Usage
+Explores Chinese export controls, warehouse inventory drawdowns, social media-amplified retail speculation, and institutional counter-trading. Watch how structural deficits interact with FOMO feedback loops.
 
-1. Fork this repository
-2. Add your marimo files to the `notebooks/` or `apps/` directory
-   1. `notebooks/` notebooks are exported with `--mode edit`
-   2. `apps/` notebooks are exported with `--mode run`
-3. Push to main branch
-4. Go to repository **Settings > Pages** and change the "Source" dropdown to "GitHub Actions"
-5. GitHub Actions will automatically build and deploy to Pages
+### AI Capex Dynamics
+*What happens when $400B in AI infrastructure spending meets declining returns — and who gets hurt?*
 
-## Including data or assets
+Models the reinforcing loop between AI valuations and capital expenditure, balanced by reality checks on actual ROI, labor displacement, and pipeline inertia. Revenue peaks then declines despite growing infrastructure.
 
-To include data or assets in your notebooks, add them to the `public/` directory.
+### Sodium Battery Energy
+*How fast can sodium-ion batteries displace fossil fuel generation, and what happens to gas and coal prices along the way?*
 
-For example, the `apps/charts.py` notebook loads an image asset from the `public/` directory.
+Tracks battery adoption and cost decline curves alongside gas and coal displacement driven by storage penetration. Simple supply-demand pricing shows how energy transition reshapes the generation mix.
 
-```markdown
-<img src="public/logo.png" width="200" />
-```
+### Solar AI Power
+*Can solar deployment keep pace with AI datacenter electricity demand?*
 
-And the `notebooks/penguins.py` notebook loads a CSV dataset from the `public/` directory.
+Models the feedback between solar capacity growth, AI compute buildout, grid constraints, and electricity pricing as two exponential curves compete for the same infrastructure.
 
-```python
-import polars as pl
-df = pl.read_csv(mo.notebook_location() / "public" / "penguins.csv")
-```
+## How it works
 
-## 🎨 Templates
+Each model is defined as an [abstractModel](https://pysd.readthedocs.io/) JSON spec. The notebooks use inline Euler integration (numpy/pandas only) so they run in WASM/Pyodide without any Python server. Parameter sliders let you adjust assumptions and see results in real time.
 
-This repository includes several templates for the generated site:
+Models are exported via `marimo export html-wasm --sandbox` and deployed to GitHub Pages automatically on push.
 
-1. `index.html.j2` (default): A template with styling and a footer
-2. `bare.html.j2`: A minimal template with basic styling
-3. `tailwind.html.j2`: A minimal and lean template using Tailwind CSS
-
-To use a specific template, pass the `--template` parameter to the build script:
+## Running locally
 
 ```bash
-uv run .github/scripts/build.py --template templates/tailwind.html.j2
-```
+# Run any model
+marimo run apps/silver_supply_dynamics.py
 
-You can also create your own custom templates. See the [templates/README.md](templates/README.md) for more information.
-
-## 🧪 Testing
-
-To test the export process, run `.github/scripts/build.py` from the root directory.
-
-```bash
+# Build the static site
 uv run .github/scripts/build.py
-```
 
-This will export all notebooks in a folder called `_site/` in the root directory. Then to serve the site, run:
-
-```bash
+# Serve locally
 python -m http.server -d _site
 ```
 
-This will serve the site at `http://localhost:8000`.
+## License
+
+MIT
