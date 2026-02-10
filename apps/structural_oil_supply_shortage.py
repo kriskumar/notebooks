@@ -74,6 +74,7 @@ def run_simulation(
         gap_ratio = supply_demand_gap / oil_supply_capacity
         oil_price = reference_oil_price.value + gap_ratio * price_elasticity.value * reference_oil_price.value
         oil_price_effect_on_evs = (oil_price - reference_oil_price.value) / reference_oil_price.value * price_sensitivity.value
+        ev_adoption_multiplier = 1 + oil_price_effect_on_evs
         price_above_breakeven = oil_price - breakeven_price.value
         normalized_investment_signal = price_above_breakeven / breakeven_price.value
         investment_incentive = (normalized_investment_signal + positive_incentive_filter.value) / 2
