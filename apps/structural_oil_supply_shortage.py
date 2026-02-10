@@ -61,22 +61,26 @@ def run_simulation(
     dt = time_step.value
     t_end = final_time.value
 
+    # Initialize computed variables for first iteration
+    oil_price = reference_oil_price.value
+    oil_price_effect_on_evs = 0.0
+
     while t <= t_end + dt / 2:
         # Flows and computed variables (dependency order)
-        new_capacity_investment = investment_incentive_*_investment_response_factor
-        field_decline_rate = oil_supply_capacity_*_natural_decline_fraction
-        ev_adoption_rate = base_ev_growth_rate_*_ev_adoption_multiplier
-        demand_increase_rate = base_oil_demand_growth_*_annual_demand_growth_fraction
-        ev_adoption_multiplier = var_1_+_oil_price_effect_on_evs
-        oil_price_effect_on_evs = var_(oil_price___reference_oil_price)_/_reference_oil_price_*_price_sensitivity
-        oil_demand_displaced_by_evs = cumulative_ev_fleet_*_barrels_per_ev_per_day_*_displacement_efficiency
-        actual_oil_demand = base_oil_demand_growth___oil_demand_displaced_by_evs
-        supply_demand_gap = actual_oil_demand___oil_supply_capacity
-        gap_ratio = supply_demand_gap_/_oil_supply_capacity
-        oil_price = reference_oil_price_+_gap_ratio_*_price_elasticity_*_reference_oil_price
-        price_above_breakeven = oil_price___breakeven_price
-        normalized_investment_signal = price_above_breakeven_/_breakeven_price
-        investment_incentive = var_(normalized_investment_signal_+_positive_incentive_filter)_/_2
+        # Note: Parameters accessed via .value, stocks/flows use current variable values
+        oil_demand_displaced_by_evs = cumulative_ev_fleet * barrels_per_ev_per_day.value * displacement_efficiency.value
+        actual_oil_demand = base_oil_demand_growth - oil_demand_displaced_by_evs
+        supply_demand_gap = actual_oil_demand - oil_supply_capacity
+        gap_ratio = supply_demand_gap / oil_supply_capacity
+        oil_price = reference_oil_price.value + gap_ratio * price_elasticity.value * reference_oil_price.value
+        oil_price_effect_on_evs = (oil_price - reference_oil_price.value) / reference_oil_price.value * price_sensitivity.value
+        price_above_breakeven = oil_price - breakeven_price.value
+        normalized_investment_signal = price_above_breakeven / breakeven_price.value
+        investment_incentive = (normalized_investment_signal + positive_incentive_filter.value) / 2
+        new_capacity_investment = investment_incentive * investment_response_factor.value
+        field_decline_rate = oil_supply_capacity * natural_decline_fraction.value
+        ev_adoption_rate = base_ev_growth_rate.value * ev_adoption_multiplier
+        demand_increase_rate = base_oil_demand_growth * annual_demand_growth_fraction.value
 
         rows.append(
             {
@@ -102,7 +106,7 @@ def run_simulation(
         )
 
         # Euler integration
-        oil_supply_capacity += dt * new_capacity_investment___field_decline_rate
+        oil_supply_capacity += dt * (new_capacity_investment - field_decline_rate)
         oil_supply_capacity = max(oil_supply_capacity, 0)
         cumulative_ev_fleet += dt * ev_adoption_rate
         cumulative_ev_fleet = max(cumulative_ev_fleet, 0)

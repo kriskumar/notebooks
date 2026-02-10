@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-B2ootaw-.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-CxL0S8W7.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-D9fedIX3.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-BTCkDNvf.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-DU3aDxX5.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-CLVRCuM9.ttf" as="font" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>structural oil supply shortage</title>
+    <script type="module" crossorigin src="./assets/index-CD6Gw4UH.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-D2MJg03u.js">
+    <link rel="modulepreload" crossorigin href="./assets/clsx-D8GwTfvk.js">
+    <link rel="modulepreload" crossorigin href="./assets/cn-BKtXLv3a.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-LvLJmgfZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-Bj1aDYRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/compiler-runtime-B3qBwwSJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-ZmTK25f3.js">
+    <link rel="modulepreload" crossorigin href="./assets/badge-DX6CQ6PA.js">
+    <link rel="modulepreload" crossorigin href="./assets/hotkeys-BHHWjLlp.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEventListener-Cb-RVVEn.js">
+    <link rel="modulepreload" crossorigin href="./assets/button-CZ3Cs4qb.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-dom-CSu739Rf.js">
+    <link rel="modulepreload" crossorigin href="./assets/Combination-BAEdC-rz.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-items-BMjcEb2j.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-DwV58Fb1.js">
+    <link rel="modulepreload" crossorigin href="./assets/createLucideIcon-BCdY6lG5.js">
+    <link rel="modulepreload" crossorigin href="./assets/check-Dr3SxUsb.js">
+    <link rel="modulepreload" crossorigin href="./assets/x-ZP5cObgf.js">
+    <link rel="modulepreload" crossorigin href="./assets/select-BVdzZKAh.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-CMQz28hC.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-toast-BDYuj3zG.js">
+    <link rel="modulepreload" crossorigin href="./assets/_Uint8Array-BGESiCQL.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseIsEqual-B9N9Mw_N.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEvent-BhXAndur.js">
+    <link rel="modulepreload" crossorigin href="./assets/invariant-CAG_dYON.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseFor-Duhs3RiJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/merge-BBX6ug-N.js">
+    <link rel="modulepreload" crossorigin href="./assets/zod-H_cgTO0M.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-YqBXNpsM.js">
+    <link rel="modulepreload" crossorigin href="./assets/Deferred-DxQeE5uh.js">
+    <link rel="modulepreload" crossorigin href="./assets/uuid-DXdzqzcr.js">
+    <link rel="modulepreload" crossorigin href="./assets/DeferredRequestRegistry-CMf25YiV.js">
+    <link rel="modulepreload" crossorigin href="./assets/constants-B6Cb__3x.js">
+    <link rel="modulepreload" crossorigin href="./assets/session-BOFn9QrD.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-Q0O7_stz.js">
+    <link rel="modulepreload" crossorigin href="./assets/requests-B4FYHTZl.js">
+    <link rel="modulepreload" crossorigin href="./assets/isSymbol-BGkTcW3U.js">
+    <link rel="modulepreload" crossorigin href="./assets/toString-DlRqgfqz.js">
+    <link rel="modulepreload" crossorigin href="./assets/_hasUnicode-CWqKLxBC.js">
+    <link rel="modulepreload" crossorigin href="./assets/assertNever-CBU83Y6o.js">
+    <link rel="modulepreload" crossorigin href="./assets/_arrayReduce-TT0iOGKY.js">
+    <link rel="modulepreload" crossorigin href="./assets/useLifecycle-ClI_npeg.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNonce-CS26E0hA.js">
+    <link rel="modulepreload" crossorigin href="./assets/useTheme-DQozhcp1.js">
+    <link rel="modulepreload" crossorigin href="./assets/once-Bul8mtFs.js">
+    <link rel="modulepreload" crossorigin href="./assets/capabilities-MM7JYRxj.js">
+    <link rel="modulepreload" crossorigin href="./assets/createReducer-B3rBsy4P.js">
+    <link rel="modulepreload" crossorigin href="./assets/paths-BzSgteR-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-DBwNzi3C.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-ChS0Dc_R.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CtsanegT.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-Dcqqg9UU.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-sMh6mJ2d.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-Btv5Rh1v.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-bBwmhqty.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CoCQUAeM.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-Gqv0jSNr.js">
+    <link rel="modulepreload" crossorigin href="./assets/stex-jWatZkll.js">
+    <link rel="modulepreload" crossorigin href="./assets/toDate-DETS9bBd.js">
+    <link rel="modulepreload" crossorigin href="./assets/cjs-CH5Rj0g8.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseProperty-NKyJO2oh.js">
+    <link rel="modulepreload" crossorigin href="./assets/now-6sUe0ZdD.js">
+    <link rel="modulepreload" crossorigin href="./assets/debounce-B3mjKxHe.js">
+    <link rel="modulepreload" crossorigin href="./assets/toInteger-CDcO32Gx.js">
+    <link rel="modulepreload" crossorigin href="./assets/database-zap-k4ePIFAU.js">
+    <link rel="modulepreload" crossorigin href="./assets/main-U5Goe76G.js">
+    <link rel="modulepreload" crossorigin href="./assets/cells-DPp5cDaO.js">
+    <link rel="modulepreload" crossorigin href="./assets/spinner-DA8-7wQv.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-right--18M_6o9.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-menu-ldcmQvIV.js">
+    <link rel="modulepreload" crossorigin href="./assets/kbd-Cm6Ba9qg.js">
+    <link rel="modulepreload" crossorigin href="./assets/renderShortcut-BckyRbYt.js">
+    <link rel="modulepreload" crossorigin href="./assets/multi-map-DxdLNTBd.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-BOoN6gJ1.js">
+    <link rel="modulepreload" crossorigin href="./assets/card-OlSjYhmd.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-dialog-BW4srmS0.js">
+    <link rel="modulepreload" crossorigin href="./assets/dialog-eb-NieZw.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CDXJRSCj.js">
+    <link rel="modulepreload" crossorigin href="./assets/label-E64zk6_7.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDebounce-7iEVSqwM.js">
+    <link rel="modulepreload" crossorigin href="./assets/textarea-CRI7xDBj.js">
+    <link rel="modulepreload" crossorigin href="./assets/numbers-D7O23mOZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/SSRProvider-BIDQNg9Q.js">
+    <link rel="modulepreload" crossorigin href="./assets/context-BfYAMNLF.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNumberFormatter-Db6Vjve5.js">
+    <link rel="modulepreload" crossorigin href="./assets/usePress-C__vuri5.js">
+    <link rel="modulepreload" crossorigin href="./assets/input-DUrq2DiR.js">
+    <link rel="modulepreload" crossorigin href="./assets/links-7AQBmdyV.js">
+    <link rel="modulepreload" crossorigin href="./assets/popover-CH1FzjxU.js">
+    <link rel="modulepreload" crossorigin href="./assets/switch-dWLWbbtg.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-DScsXgJW.js">
+    <link rel="modulepreload" crossorigin href="./assets/mode-Bn7pdJvO.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAsyncData-BMGLSTg8.js">
+    <link rel="modulepreload" crossorigin href="./assets/errors-TZBmrJmc.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-banner-B9ts0mNl.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-DHrHayPa.js">
+    <link rel="modulepreload" crossorigin href="./assets/memoize-BCOZVFBt.js">
+    <link rel="modulepreload" crossorigin href="./assets/get-6uJrSKbw.js">
+    <link rel="modulepreload" crossorigin href="./assets/capitalize-CmNnkG9y.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-D-8y6iMN.js">
+    <link rel="modulepreload" crossorigin href="./assets/plus-B7DF33lD.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-cw-Dx8TEWFP.js">
+    <link rel="modulepreload" crossorigin href="./assets/trash-2-DDsWrxuJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/triangle-alert-CebQ7XwA.js">
+    <link rel="modulepreload" crossorigin href="./assets/ai-model-dropdown-Dk2SdB3C.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-JieDVWC_.js">
+    <link rel="modulepreload" crossorigin href="./assets/precisionRound-CU2C3Vxx.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-BLne0bXb.js">
+    <link rel="modulepreload" crossorigin href="./assets/vega-loader.browser-DXARUlxo.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-DxKBXCGp.js">
+    <link rel="modulepreload" crossorigin href="./assets/ErrorBoundary-B9Ifj8Jf.js">
+    <link rel="modulepreload" crossorigin href="./assets/useInstallPackage-D4fX0Ee_.js">
+    <link rel="modulepreload" crossorigin href="./assets/ImperativeModal-BNN1HA7x.js">
+    <link rel="modulepreload" crossorigin href="./assets/cell-link-B9b7J8QK.js">
+    <link rel="modulepreload" crossorigin href="./assets/datasource-CtyqtITR.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-D4T75eZb.js">
+    <link rel="modulepreload" crossorigin href="./assets/MarimoErrorOutput-Lf9P8Fhl.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-icon-v8ME_JKB.js">
+    <link rel="modulepreload" crossorigin href="./assets/html-to-image-CIQqSu-S.js">
+    <link rel="modulepreload" crossorigin href="./assets/focus-C1YokgL7.js">
+    <link rel="modulepreload" crossorigin href="./assets/LazyAnyLanguageCodeMirror-DgZ8iknE.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-5FQGJX7Z-DPlx2kjA.js">
+    <link rel="modulepreload" crossorigin href="./assets/katex-CDLTCvjQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/markdown-renderer-DJy8ww5d.js">
+    <link rel="modulepreload" crossorigin href="./assets/command-2ElA5IkO.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-os8QlW6l.js">
+    <link rel="modulepreload" crossorigin href="./assets/useRunCells-D2HBb4DB.js">
+    <link rel="modulepreload" crossorigin href="./assets/purify.es-DZrAQFIu.js">
+    <link rel="modulepreload" crossorigin href="./assets/RenderHTML-D-of_-s7.js">
+    <link rel="modulepreload" crossorigin href="./assets/useIframeCapabilities-B_pQb20b.js">
+    <link rel="modulepreload" crossorigin href="./assets/formats-CobRswjh.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-US-CCVfmA-q.js">
+    <link rel="modulepreload" crossorigin href="./assets/isValid-DDt9wNjK.js">
+    <link rel="modulepreload" crossorigin href="./assets/dates-CrvjILe3.js">
+    <link rel="modulepreload" crossorigin href="./assets/maps-D2_Mq1pZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/extends-BiFDv3jB.js">
+    <link rel="modulepreload" crossorigin href="./assets/emotion-is-prop-valid.esm-C59xfSYt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDateFormatter-CqhdUl2n.js">
+    <link rel="modulepreload" crossorigin href="./assets/range-D2UKkEg-.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-CfDbAm78.js">
+    <link rel="modulepreload" crossorigin href="./assets/JsonOutput-PE5ko4gi.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeleteCell-DdRX94yC.js">
+    <link rel="modulepreload" crossorigin href="./assets/icons-CCHmxi8d.js">
+    <link rel="modulepreload" crossorigin href="./assets/process-output-ByfLnk6j.js">
+    <link rel="modulepreload" crossorigin href="./assets/blob-D-eV0cU3.js">
+    <link rel="modulepreload" crossorigin href="./assets/objectWithoutPropertiesLoose-DfWeGRFv.js">
+    <link rel="modulepreload" crossorigin href="./assets/esm-Bmu2DhPy.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-Ch78NKWp.js">
+    <link rel="modulepreload" crossorigin href="./assets/play-GLWQQs7F.js">
+    <link rel="modulepreload" crossorigin href="./assets/add-cell-with-ai-e_HMl7UU.js">
+    <link rel="modulepreload" crossorigin href="./assets/isEmpty-CgX_-6Mt.js">
+    <link rel="modulepreload" crossorigin href="./assets/bot-message-square-B2ThzDUZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/chat-display--jAB7huF.js">
+    <link rel="modulepreload" crossorigin href="./assets/chart-no-axes-column-qvVRjhv1.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-function-B6mgCeFJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/spec-Ch0xnJY4.js">
+    <link rel="modulepreload" crossorigin href="./assets/column-preview-CXjSXUhP.js">
+    <link rel="modulepreload" crossorigin href="./assets/toggle-zVW4FXNz.js">
+    <link rel="modulepreload" crossorigin href="./assets/globals-BgACvYmr.js">
+    <link rel="modulepreload" crossorigin href="./assets/share-ipf2hrOh.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSet-5Rdwpmr3.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-resizable-panels.browser.esm-Da3ksQXL.js">
+    <link rel="modulepreload" crossorigin href="./assets/utilities.esm-dm9SQStE.js">
+    <link rel="modulepreload" crossorigin href="./assets/floating-outline-BtdqbkUq.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAddCell-CmuX2hOk.js">
+    <link rel="modulepreload" crossorigin href="./assets/eye-off-AK_9uodG.js">
+    <link rel="modulepreload" crossorigin href="./assets/readonly-python-code-WjTf6Pdd.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-video-camera-C3wGzBnE.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-BRfQN3HL.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-ccw-DN_xCV6A.js">
+    <link rel="modulepreload" crossorigin href="./assets/form-BidPUZUn.js">
+    <link rel="modulepreload" crossorigin href="./assets/field-CySaBlkz.js">
+    <link rel="modulepreload" crossorigin href="./assets/useBoolean-Ck_unDZw.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeepCompareMemoize-5OUgerQ3.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-C1UhS3qM.js">
+    <link rel="modulepreload" crossorigin href="./assets/prop-types-DaaA-ptl.js">
+    <link rel="modulepreload" crossorigin href="./assets/es-BYgU_srD.js">
+    <link rel="modulepreload" crossorigin href="./assets/hasIn-CycJImp8.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseFlatten-CUZNxU8H.js">
+    <link rel="modulepreload" crossorigin href="./assets/flatten-D-7VEN0q.js">
+    <link rel="modulepreload" crossorigin href="./assets/pick-B_6Qi5aM.js">
+    <link rel="modulepreload" crossorigin href="./assets/code-xml-CgN_Yig7.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-Dg7clfkc.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-CuJ72M8f.js">
+    <link rel="modulepreload" crossorigin href="./assets/settings-OBbrbhij.js">
+    <link rel="modulepreload" crossorigin href="./assets/bundle.esm-i_UbZC0w.js">
+    <link rel="stylesheet" crossorigin href="./assets/cells-jmgGt1lS.css">
+    <link rel="stylesheet" crossorigin href="./assets/markdown-renderer-DdDKmWlR.css">
+    <link rel="stylesheet" crossorigin href="./assets/JsonOutput-B7vuddcd.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-CeUwN_0i.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    <marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%0A%23%20%20%20%20%20%22marimo%22%2C%0A%23%20%20%20%20%20%22plotly%3E%3D5.18.0%22%2C%0A%23%20%20%20%20%20%22pandas%3E%3D2.0.0%22%2C%0A%23%20%20%20%20%20%22numpy%3E%3D1.24.0%22%2C%0A%23%20%5D%0A%23%20%2F%2F%2F%0A%22%22%22%0AStructural%20Oil%20Supply%20Shortage%20%E2%80%94%20Interactive%20Explorer%0A%0ASystem%20dynamics%20model%20with%20inline%20Euler%20integration.%0A3%20stocks%2C%204%20flows%2C%2013%20parameters%2C%2010%20computed%20variables.%0A%0ANo%20PySD%20required%20%E2%80%94%20runs%20in%20WASM%2FPyodide.%0A%22%22%22%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.19.9%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20imports()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20plotly.graph_objects%20as%20go%0A%20%20%20%20import%20pandas%20as%20pd%0A%20%20%20%20import%20numpy%20as%20np%0A%0A%20%20%20%20return%20go%2C%20mo%2C%20pd%0A%0A%0A%40app.cell%0Adef%20run_simulation(%0A%20%20%20%20annual_demand_growth_fraction%2C%0A%20%20%20%20barrels_per_ev_per_day%2C%0A%20%20%20%20base_ev_growth_rate%2C%0A%20%20%20%20breakeven_price%2C%0A%20%20%20%20displacement_efficiency%2C%0A%20%20%20%20ev_adoption_multiplier%2C%0A%20%20%20%20final_time%2C%0A%20%20%20%20investment_response_factor%2C%0A%20%20%20%20natural_decline_fraction%2C%0A%20%20%20%20pd%2C%0A%20%20%20%20positive_incentive_filter%2C%0A%20%20%20%20price_elasticity%2C%0A%20%20%20%20price_sensitivity%2C%0A%20%20%20%20reference_oil_price%2C%0A%20%20%20%20time_step%2C%0A)%3A%0A%20%20%20%20%23%20Initial%20stock%20values%0A%20%20%20%20oil_supply_capacity%20%3D%20107.0%0A%20%20%20%20cumulative_ev_fleet%20%3D%2022.0%0A%20%20%20%20base_oil_demand_growth%20%3D%20107.0%0A%0A%20%20%20%20rows%20%3D%20%5B%5D%0A%20%20%20%20t%20%3D%200.0%0A%20%20%20%20dt%20%3D%20time_step.value%0A%20%20%20%20t_end%20%3D%20final_time.value%0A%0A%20%20%20%20%23%20Initialize%20computed%20variables%20for%20first%20iteration%0A%20%20%20%20oil_price%20%3D%20reference_oil_price.value%0A%20%20%20%20oil_price_effect_on_evs%20%3D%200.0%0A%0A%20%20%20%20while%20t%20%3C%3D%20t_end%20%2B%20dt%20%2F%202%3A%0A%20%20%20%20%20%20%20%20%23%20Flows%20and%20computed%20variables%20(dependency%20order)%0A%20%20%20%20%20%20%20%20%23%20Note%3A%20Parameters%20accessed%20via%20.value%2C%20stocks%2Fflows%20use%20current%20variable%20values%0A%20%20%20%20%20%20%20%20oil_demand_displaced_by_evs%20%3D%20cumulative_ev_fleet%20*%20barrels_per_ev_per_day.value%20*%20displacement_efficiency.value%0A%20%20%20%20%20%20%20%20actual_oil_demand%20%3D%20base_oil_demand_growth%20-%20oil_demand_displaced_by_evs%0A%20%20%20%20%20%20%20%20supply_demand_gap%20%3D%20actual_oil_demand%20-%20oil_supply_capacity%0A%20%20%20%20%20%20%20%20gap_ratio%20%3D%20supply_demand_gap%20%2F%20oil_supply_capacity%0A%20%20%20%20%20%20%20%20oil_price%20%3D%20reference_oil_price.value%20%2B%20gap_ratio%20*%20price_elasticity.value%20*%20reference_oil_price.value%0A%20%20%20%20%20%20%20%20oil_price_effect_on_evs%20%3D%20(oil_price%20-%20reference_oil_price.value)%20%2F%20reference_oil_price.value%20*%20price_sensitivity.value%0A%20%20%20%20%20%20%20%20price_above_breakeven%20%3D%20oil_price%20-%20breakeven_price.value%0A%20%20%20%20%20%20%20%20normalized_investment_signal%20%3D%20price_above_breakeven%20%2F%20breakeven_price.value%0A%20%20%20%20%20%20%20%20investment_incentive%20%3D%20(normalized_investment_signal%20%2B%20positive_incentive_filter.value)%20%2F%202%0A%20%20%20%20%20%20%20%20new_capacity_investment%20%3D%20investment_incentive%20*%20investment_response_factor.value%0A%20%20%20%20%20%20%20%20field_decline_rate%20%3D%20oil_supply_capacity%20*%20natural_decline_fraction.value%0A%20%20%20%20%20%20%20%20ev_adoption_rate%20%3D%20base_ev_growth_rate.value%20*%20ev_adoption_multiplier%0A%20%20%20%20%20%20%20%20demand_increase_rate%20%3D%20base_oil_demand_growth%20*%20annual_demand_growth_fraction.value%0A%0A%20%20%20%20%20%20%20%20rows.append(%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22time%22%3A%20t%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22oil_supply_capacity%22%3A%20oil_supply_capacity%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22cumulative_ev_fleet%22%3A%20cumulative_ev_fleet%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22base_oil_demand_growth%22%3A%20base_oil_demand_growth%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22new_capacity_investment%22%3A%20new_capacity_investment%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22field_decline_rate%22%3A%20field_decline_rate%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22ev_adoption_rate%22%3A%20ev_adoption_rate%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22demand_increase_rate%22%3A%20demand_increase_rate%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22ev_adoption_multiplier%22%3A%20ev_adoption_multiplier%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22oil_price_effect_on_evs%22%3A%20oil_price_effect_on_evs%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22oil_demand_displaced_by_evs%22%3A%20oil_demand_displaced_by_evs%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22actual_oil_demand%22%3A%20actual_oil_demand%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22supply_demand_gap%22%3A%20supply_demand_gap%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22gap_ratio%22%3A%20gap_ratio%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22oil_price%22%3A%20oil_price%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22price_above_breakeven%22%3A%20price_above_breakeven%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22normalized_investment_signal%22%3A%20normalized_investment_signal%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22investment_incentive%22%3A%20investment_incentive%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20)%0A%0A%20%20%20%20%20%20%20%20%23%20Euler%20integration%0A%20%20%20%20%20%20%20%20oil_supply_capacity%20%2B%3D%20dt%20*%20(new_capacity_investment%20-%20field_decline_rate)%0A%20%20%20%20%20%20%20%20oil_supply_capacity%20%3D%20max(oil_supply_capacity%2C%200)%0A%20%20%20%20%20%20%20%20cumulative_ev_fleet%20%2B%3D%20dt%20*%20ev_adoption_rate%0A%20%20%20%20%20%20%20%20cumulative_ev_fleet%20%3D%20max(cumulative_ev_fleet%2C%200)%0A%20%20%20%20%20%20%20%20base_oil_demand_growth%20%2B%3D%20dt%20*%20demand_increase_rate%0A%20%20%20%20%20%20%20%20base_oil_demand_growth%20%3D%20max(base_oil_demand_growth%2C%200)%0A%20%20%20%20%20%20%20%20t%20%2B%3D%20dt%0A%0A%20%20%20%20results%20%3D%20pd.DataFrame(rows).set_index(%22time%22)%0A%20%20%20%20return%20(results%2C)%0A%0A%0A%40app.cell%0Adef%20header(mo)%3A%0A%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%20Structural%20Oil%20Supply%20Shortage%20%E2%80%94%20Interactive%20Explorer%0A%0A%20%20%20%20**Stocks%3A**%203%20%7C%20**Flows%3A**%204%20%7C%20**Parameters%3A**%2013%20%7C%20**Computed%3A**%2010%0A%0A%20%20%20%20Adjust%20the%20sliders%20below%20to%20change%20parameters%20and%20see%20how%20the%20model%20responds%20in%20real%20time.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20time_controls(mo)%3A%0A%20%20%20%20final_time%20%3D%20mo.ui.number(%0A%20%20%20%20%20%20%20%20value%3D100%2C%20start%3D1%2C%20stop%3D1000%2C%20step%3D1%2C%20label%3D%22Final%20Time%22%0A%20%20%20%20)%0A%20%20%20%20time_step%20%3D%20mo.ui.number(%0A%20%20%20%20%20%20%20%20value%3D1%2C%20start%3D0.1%2C%20stop%3D5.0%2C%20step%3D0.1%2C%20label%3D%22Time%20Step%22%0A%20%20%20%20)%0A%20%20%20%20mo.hstack(%5Bfinal_time%2C%20time_step%5D%2C%20justify%3D%22start%22%2C%20gap%3D1)%0A%20%20%20%20return%20final_time%2C%20time_step%0A%0A%0A%40app.cell%0Adef%20parameter_controls(mo)%3A%0A%20%20%20%20natural_decline_fraction%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.05%2C%20start%3D0.0%2C%20stop%3D1.0%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Natural%20Decline%20Fraction%20(1%2Fyear)%22%2C%0A%20%20%20%20)%0A%20%20%20%20base_ev_growth_rate%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D12.0%2C%20start%3D0.0%2C%20stop%3D60.0%2C%20step%3D0.6%2C%0A%20%20%20%20%20%20%20%20label%3D%22Base%20Ev%20Growth%20Rate%20(million%20vehicles%20per%20year)%22%2C%0A%20%20%20%20)%0A%20%20%20%20price_sensitivity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.3%2C%20start%3D0.0%2C%20stop%3D2.0%2C%20step%3D0.02%2C%0A%20%20%20%20%20%20%20%20label%3D%22Price%20Sensitivity%20(dimensionless)%22%2C%0A%20%20%20%20)%0A%20%20%20%20barrels_per_ev_per_day%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.002%2C%20start%3D0.0%2C%20stop%3D1%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Barrels%20Per%20Ev%20Per%20Day%20(barrels%20per%20vehicle%20per%20day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20displacement_efficiency%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.7%2C%20start%3D0.0%2C%20stop%3D1.0%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Displacement%20Efficiency%20(dimensionless)%22%2C%0A%20%20%20%20)%0A%20%20%20%20annual_demand_growth_fraction%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.009%2C%20start%3D0.0%2C%20stop%3D0.05%2C%20step%3D0.0005%2C%0A%20%20%20%20%20%20%20%20label%3D%22Annual%20Demand%20Growth%20Fraction%20(1%2Fyear)%22%2C%0A%20%20%20%20)%0A%20%20%20%20reference_oil_price%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D75.0%2C%20start%3D0.0%2C%20stop%3D375.0%2C%20step%3D3.75%2C%0A%20%20%20%20%20%20%20%20label%3D%22Reference%20Oil%20Price%20(dollars%20per%20barrel)%22%2C%0A%20%20%20%20)%0A%20%20%20%20price_elasticity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D2.5%2C%20start%3D0.0%2C%20stop%3D10.0%2C%20step%3D0.1%2C%0A%20%20%20%20%20%20%20%20label%3D%22Price%20Elasticity%20(dimensionless)%22%2C%0A%20%20%20%20)%0A%20%20%20%20positive_incentive_filter%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.1%2C%20start%3D0.0%2C%20stop%3D1%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Positive%20Incentive%20Filter%20(dimensionless)%22%2C%0A%20%20%20%20)%0A%20%20%20%20breakeven_price%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D65.0%2C%20start%3D0.0%2C%20stop%3D325.0%2C%20step%3D3.25%2C%0A%20%20%20%20%20%20%20%20label%3D%22Breakeven%20Price%20(dollars%20per%20barrel)%22%2C%0A%20%20%20%20)%0A%20%20%20%20investment_response_factor%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D1.5%2C%20start%3D0.0%2C%20stop%3D7.5%2C%20step%3D0.075%2C%0A%20%20%20%20%20%20%20%20label%3D%22Investment%20Response%20Factor%20(million%20barrels%20per%20day%20per%20year)%22%2C%0A%20%20%20%20)%0A%20%20%20%20vitol_peak_demand_projection%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D112.0%2C%20start%3D0.0%2C%20stop%3D560.0%2C%20step%3D5.6%2C%0A%20%20%20%20%20%20%20%20label%3D%22Vitol%20Peak%20Demand%20Projection%20(million%20barrels%20per%20day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20realistic_peak_demand_estimate%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D120.0%2C%20start%3D0.0%2C%20stop%3D600.0%2C%20step%3D6.0%2C%0A%20%20%20%20%20%20%20%20label%3D%22Realistic%20Peak%20Demand%20Estimate%20(million%20barrels%20per%20day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20mo.vstack(%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20natural_decline_fraction%2C%0A%20%20%20%20%20%20%20%20base_ev_growth_rate%2C%0A%20%20%20%20%20%20%20%20price_sensitivity%2C%0A%20%20%20%20%20%20%20%20barrels_per_ev_per_day%2C%0A%20%20%20%20%20%20%20%20displacement_efficiency%2C%0A%20%20%20%20%20%20%20%20annual_demand_growth_fraction%2C%0A%20%20%20%20%20%20%20%20reference_oil_price%2C%0A%20%20%20%20%20%20%20%20price_elasticity%2C%0A%20%20%20%20%20%20%20%20positive_incentive_filter%2C%0A%20%20%20%20%20%20%20%20breakeven_price%2C%0A%20%20%20%20%20%20%20%20investment_response_factor%2C%0A%20%20%20%20%20%20%20%20vitol_peak_demand_projection%2C%0A%20%20%20%20%20%20%20%20realistic_peak_demand_estimate%2C%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20)%0A%20%20%20%20return%20(%0A%20%20%20%20%20%20%20%20annual_demand_growth_fraction%2C%0A%20%20%20%20%20%20%20%20barrels_per_ev_per_day%2C%0A%20%20%20%20%20%20%20%20base_ev_growth_rate%2C%0A%20%20%20%20%20%20%20%20breakeven_price%2C%0A%20%20%20%20%20%20%20%20displacement_efficiency%2C%0A%20%20%20%20%20%20%20%20investment_response_factor%2C%0A%20%20%20%20%20%20%20%20natural_decline_fraction%2C%0A%20%20%20%20%20%20%20%20positive_incentive_filter%2C%0A%20%20%20%20%20%20%20%20price_elasticity%2C%0A%20%20%20%20%20%20%20%20price_sensitivity%2C%0A%20%20%20%20%20%20%20%20reference_oil_price%2C%0A%20%20%20%20)%0A%0A%0A%40app.cell%0Adef%20chart_controls(mo)%3A%0A%20%20%20%20stock_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22Oil%20Supply%20Capacity%20(million%20barrels%20per%20day)%22%3A%20%22oil_supply_capacity%22%2C%20%22Cumulative%20Ev%20Fleet%20(million%20vehicles)%22%3A%20%22cumulative_ev_fleet%22%2C%20%22Base%20Oil%20Demand%20Growth%20(million%20barrels%20per%20day)%22%3A%20%22base_oil_demand_growth%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Oil%20Supply%20Capacity%20(million%20barrels%20per%20day)%22%2C%20%22Cumulative%20Ev%20Fleet%20(million%20vehicles)%22%2C%20%22Base%20Oil%20Demand%20Growth%20(million%20barrels%20per%20day)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Stock%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20flow_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22New%20Capacity%20Investment%20(million%20barrels%20per%20day%20per%20year)%22%3A%20%22new_capacity_investment%22%2C%20%22Field%20Decline%20Rate%20(million%20barrels%20per%20day%20per%20year)%22%3A%20%22field_decline_rate%22%2C%20%22Ev%20Adoption%20Rate%20(million%20vehicles%20per%20year)%22%3A%20%22ev_adoption_rate%22%2C%20%22Demand%20Increase%20Rate%20(million%20barrels%20per%20day%20per%20year)%22%3A%20%22demand_increase_rate%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22New%20Capacity%20Investment%20(million%20barrels%20per%20day%20per%20year)%22%2C%20%22Field%20Decline%20Rate%20(million%20barrels%20per%20day%20per%20year)%22%2C%20%22Ev%20Adoption%20Rate%20(million%20vehicles%20per%20year)%22%2C%20%22Demand%20Increase%20Rate%20(million%20barrels%20per%20day%20per%20year)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Flow%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20aux_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22Ev%20Adoption%20Multiplier%20(dimensionless)%22%3A%20%22ev_adoption_multiplier%22%2C%20%22Oil%20Price%20Effect%20On%20Evs%20(dimensionless)%22%3A%20%22oil_price_effect_on_evs%22%2C%20%22Oil%20Demand%20Displaced%20By%20Evs%20(million%20barrels%20per%20day)%22%3A%20%22oil_demand_displaced_by_evs%22%2C%20%22Actual%20Oil%20Demand%20(million%20barrels%20per%20day)%22%3A%20%22actual_oil_demand%22%2C%20%22Supply%20Demand%20Gap%20(million%20barrels%20per%20day)%22%3A%20%22supply_demand_gap%22%2C%20%22Gap%20Ratio%20(dimensionless)%22%3A%20%22gap_ratio%22%2C%20%22Oil%20Price%20(dollars%20per%20barrel)%22%3A%20%22oil_price%22%2C%20%22Price%20Above%20Breakeven%20(dollars%20per%20barrel)%22%3A%20%22price_above_breakeven%22%2C%20%22Normalized%20Investment%20Signal%20(dimensionless)%22%3A%20%22normalized_investment_signal%22%2C%20%22Investment%20Incentive%20(dimensionless)%22%3A%20%22investment_incentive%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Ev%20Adoption%20Multiplier%20(dimensionless)%22%2C%20%22Oil%20Price%20Effect%20On%20Evs%20(dimensionless)%22%2C%20%22Oil%20Demand%20Displaced%20By%20Evs%20(million%20barrels%20per%20day)%22%2C%20%22Actual%20Oil%20Demand%20(million%20barrels%20per%20day)%22%2C%20%22Supply%20Demand%20Gap%20(million%20barrels%20per%20day)%22%2C%20%22Gap%20Ratio%20(dimensionless)%22%2C%20%22Oil%20Price%20(dollars%20per%20barrel)%22%2C%20%22Price%20Above%20Breakeven%20(dollars%20per%20barrel)%22%2C%20%22Normalized%20Investment%20Signal%20(dimensionless)%22%2C%20%22Investment%20Incentive%20(dimensionless)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Auxiliary%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20return%20aux_selector%2C%20flow_selector%2C%20stock_selector%0A%0A%0A%40app.cell%0Adef%20tabbed_content(%0A%20%20%20%20aux_selector%2C%0A%20%20%20%20flow_selector%2C%0A%20%20%20%20go%2C%0A%20%20%20%20mo%2C%0A%20%20%20%20results%2C%0A%20%20%20%20stock_selector%2C%0A)%3A%0A%20%20%20%20%23%20---%20Analysis%20tab%20---%0A%20%20%20%20analysis_content%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%20Structural%20Oil%20Supply%20Shortage%20Analysis%0A%0A%20%20%20%20%23%23%20Original%20Article%0A%20%20%20%20**Source**%3A%20%5BHFI%20Research%20-%20What%20Does%20a%20Structural%20Oil%20Supply%20Shortage%20Mean%3F%5D(https%3A%2F%2Fwww.hfir.com%2Fp%2Fwctw-what-does-a-structural-oil-supply)%0A%0A%20%20%20%20%23%23%20The%20Core%20Thesis%0A%0A%20%20%20%20This%20model%20captures%20the%20dynamics%20described%20in%20the%20HFI%20Research%20article%20analyzing%20whether%20a%20structural%20oil%20supply%20deficit%20is%20emerging.%20The%20analysis%20challenges%20conventional%20assumptions%20about%20oil%20demand%20peak%20and%20EV%20displacement.%0A%0A%20%20%20%20%23%23%23%20Key%20Insights%20from%20the%20Article%0A%0A%20%20%20%20**1.%20Optimistic%20EV%20Assumptions**%0A%20%20%20%20-%20Vitol%20(world's%20largest%20oil%20trader)%20projects%20global%20demand%20peak%20at%20~112%20million%20b%2Fd%20by%20mid-2030s%0A%20%20%20%20-%20Assumes%20new%20energy%20vehicles%20(NEV)%20will%20displace%20~11%20million%20b%2Fd%20by%202040%0A%20%20%20%20-%20**Problem**%3A%20This%20requires%20European%20EV%20sales%20to%20double%20and%20US%20sales%20to%20triple%20current%20trajectories%0A%20%20%20%20-%20BloombergNEF%20expresses%20skepticism%20about%20achieving%20these%20penetration%20rates%0A%0A%20%20%20%20**2.%20Realistic%20Demand%20Projection**%0A%20%20%20%20-%20If%20Vitol%20is%20only%20%2225%25%20right%22%20on%20NEV%20penetration%20(more%20realistic%20assumption)%0A%20%20%20%20-%20Peak%20demand%20would%20be%20closer%20to%20**120%20million%20b%2Fd**%20instead%20of%20112%20million%20b%2Fd%0A%20%20%20%20-%20This%208%20million%20b%2Fd%20difference%20is%20significant%20for%20structural%20supply%20balance%0A%0A%20%20%20%20**3.%20Supply-Side%20Constraints**%0A%20%20%20%20-%20IEA%20report%20(September%202025)%20highlights%20concerning%20oil%20field%20decline%20rates%0A%20%20%20%20-%20Natural%20depletion%20of%20existing%20fields%20creates%20persistent%20downward%20pressure%20on%20capacity%0A%20%20%20%20-%20Investment%20must%20overcome%20~5%25%20annual%20decline%20just%20to%20maintain%20current%20capacity%0A%0A%20%20%20%20%23%23%20Model%20Structure%0A%0A%20%20%20%20%23%23%23%20Reinforcing%20Feedback%20Loop%3A%20The%20Structural%20Shortage%0A%20%20%20%201.%20**Field%20decline**%20reduces%20oil%20supply%20capacity%0A%20%20%20%202.%20Lower%20supply%20vs.%20growing%20demand%20creates%20a%20**supply-demand%20gap**%0A%20%20%20%203.%20Gap%20drives%20**oil%20prices%20higher**%0A%20%20%20%204.%20Higher%20prices%20incentivize%20**new%20capacity%20investment**%0A%20%20%20%205.%20BUT%3A%20Investment%20rate%20cannot%20overcome%20the%20natural%20decline%20rate%20%2B%20demand%20growth%0A%20%20%20%206.%20**Result**%3A%20Gap%20continues%20widening%2C%20prices%20keep%20rising%0A%0A%20%20%20%20%23%23%23%20Balancing%20Feedback%20Loop%3A%20EV%20Response%0A%20%20%20%201.%20**High%20oil%20prices**%20make%20EVs%20more%20economically%20attractive%0A%20%20%20%202.%20**Accelerated%20EV%20adoption**%20occurs%0A%20%20%20%203.%20EVs%20**displace%20oil%20demand**%0A%20%20%20%204.%20Reduced%20demand%20helps%20moderate%20the%20supply-demand%20gap%0A%20%20%20%205.%20BUT%3A%20EV%20adoption%20is%20slower%20than%20many%20forecasts%20assume%0A%0A%20%20%20%20%23%23%20Key%20Findings%0A%0A%20%20%20%20%23%23%23%20Baseline%20Scenario%20(15-year%20projection)%0A%20%20%20%20-%20**Supply%20capacity%20declines**%3A%20107%20%E2%86%92%2064%20million%20b%2Fd%20(40%25%20reduction)%0A%20%20%20%20-%20**Demand%20grows**%3A%20107%20%E2%86%92%20122%20million%20b%2Fd%20(14%25%20increase)%0A%20%20%20%20-%20**Supply-demand%20gap**%3A%200%20%E2%86%92%2058%20million%20b%2Fd%20shortage%0A%20%20%20%20-%20**Oil%20price**%3A%20%2475%20%E2%86%92%20%24245%2Fbarrel%20(227%25%20increase)%0A%20%20%20%20-%20**EV%20fleet**%3A%2022%20%E2%86%92%20264%20million%20vehicles%20(12x%20growth)%0A%20%20%20%20-%20**Oil%20displaced%20by%20EVs**%3A%20Only%200.37%20million%20b%2Fd%20by%20year%2015%0A%0A%20%20%20%20%23%23%23%20Why%20the%20Shortage%20is%20%22Structural%22%0A%20%20%20%20Even%20with%3A%0A%20%20%20%20-%20Significant%20oil%20price%20increases%20(%2475%20%E2%86%92%20%24245%2Fbarrel)%0A%20%20%20%20-%20Strong%20investment%20response%20to%20high%20prices%0A%20%20%20%20-%2012x%20growth%20in%20EV%20fleet%0A%0A%20%20%20%20The%20structural%20dynamics%20create%20an%20unavoidable%20supply%20shortage%20because%3A%0A%20%20%20%201.%20**Natural%20field%20decline%20rate%20(5%25%2Fyear)%20is%20relentless**%0A%20%20%20%202.%20**New%20capacity%20investment%20has%20long%20lead%20times**%20(5-10%20years)%0A%20%20%20%203.%20**EV%20displacement%20effect%20is%20slower%20than%20optimistic%20forecasts**%0A%20%20%20%204.%20**Base%20demand%20continues%20growing**%20with%20economic%20expansion%0A%0A%20%20%20%20%23%23%20Scenario%20Analysis%0A%0A%20%20%20%20Try%20adjusting%20these%20parameters%20to%20explore%20different%20futures%3A%0A%0A%20%20%20%20**Aggressive%20EV%20Adoption**%0A%20%20%20%20-%20Increase%20%60base_ev_growth_rate%60%20to%2018-20%20million%2Fyear%0A%20%20%20%20-%20Increase%20%60price_sensitivity%60%20to%200.5-0.8%0A%20%20%20%20-%20See%20if%20EV%20displacement%20can%20prevent%20the%20shortage%0A%0A%20%20%20%20**Higher%20Investment%20Response**%0A%20%20%20%20-%20Increase%20%60investment_response_factor%60%20to%202.5-3.0%0A%20%20%20%20-%20Reduce%20%60breakeven_price%60%20to%20%2455-60%2Fbarrel%0A%20%20%20%20-%20Test%20if%20supply%20can%20keep%20pace%20with%20demand%0A%0A%20%20%20%20**Slower%20Demand%20Growth**%0A%20%20%20%20-%20Reduce%20%60annual_demand_growth_fraction%60%20to%200.005%20(0.5%25)%0A%20%20%20%20-%20Models%20scenario%20with%20economic%20slowdown%20or%20efficiency%20gains%0A%0A%20%20%20%20**Lower%20Field%20Decline**%0A%20%20%20%20-%20Reduce%20%60natural_decline_fraction%60%20to%200.03-0.04%0A%20%20%20%20-%20Tests%20impact%20of%20improved%20recovery%20techniques%20or%20new%20discoveries%0A%0A%20%20%20%20%23%23%20Implications%0A%0A%20%20%20%201.%20**Oil%20may%20not%20peak%20due%20to%20demand%20destruction%2C%20but%20supply%20constraints**%0A%20%20%20%202.%20**Energy%20transition%20timeline%20matters**%20-%20too%20slow%20%3D%20high%20oil%20prices%0A%20%20%20%203.%20**Investment%20in%20oil%20production%20remains%20critical**%20even%20during%20energy%20transition%0A%20%20%20%204.%20**Price%20volatility%20likely**%20as%20market%20oscillates%20between%20shortage%20fears%20and%20recession%20risks%0A%20%20%20%205.%20**Geopolitical%20implications**%20of%20structural%20supply%20tightness%0A%20%20%20%20%22%22%22)%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20%23%20---%20Model%20Structure%20tab%20---%0A%20%20%20%20mermaid_diagram%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20mo.md(%22%23%23%20Model%20Structure%22)%2C%0A%20%20%20%20%20%20%20%20mo.mermaid(%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20graph%20TD%0A%20%20%20%20%20%20%20%20classDef%20stock%20fill%3A%234a90d9%2Cstroke%3A%232c5f8a%2Ccolor%3Awhite%2Cstroke-width%3A3px%0A%20%20%20%20%20%20%20%20classDef%20flow%20fill%3A%23e8a838%2Cstroke%3A%23b8842c%2Ccolor%3Awhite%2Cstroke-width%3A2px%0A%20%20%20%20%20%20%20%20classDef%20constant%20fill%3A%237bc67e%2Cstroke%3A%235a9d5c%2Ccolor%3Awhite%0A%20%20%20%20%20%20%20%20classDef%20computed%20fill%3A%23c084fc%2Cstroke%3A%239333ea%2Ccolor%3Awhite%0A%0A%20%20%20%20%20%20%20%20oil_supply_capacity%5B%22Oil%20Supply%20Capacity%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20cumulative_ev_fleet%5B%22Cumulative%20Ev%20Fleet%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20base_oil_demand_growth%5B%22Base%20Oil%20Demand%20Growth%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20new_capacity_investment(%5B%22New%20Capacity%20Investment%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20field_decline_rate(%5B%22Field%20Decline%20Rate%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20ev_adoption_rate(%5B%22Ev%20Adoption%20Rate%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20demand_increase_rate(%5B%22Demand%20Increase%20Rate%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20natural_decline_fraction%7B%7B%22Natural%20Decline%20Fraction%20%3D%200.05%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20base_ev_growth_rate%7B%7B%22Base%20Ev%20Growth%20Rate%20%3D%2012.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20price_sensitivity%7B%7B%22Price%20Sensitivity%20%3D%200.3%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20barrels_per_ev_per_day%7B%7B%22Barrels%20Per%20Ev%20Per%20Day%20%3D%200.002%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20displacement_efficiency%7B%7B%22Displacement%20Efficiency%20%3D%200.7%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20annual_demand_growth_fraction%7B%7B%22Annual%20Demand%20Growth%20Fraction%20%3D%200.009%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20reference_oil_price%7B%7B%22Reference%20Oil%20Price%20%3D%2075.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20price_elasticity%7B%7B%22Price%20Elasticity%20%3D%202.5%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20positive_incentive_filter%7B%7B%22Positive%20Incentive%20Filter%20%3D%200.1%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20breakeven_price%7B%7B%22Breakeven%20Price%20%3D%2065.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20investment_response_factor%7B%7B%22Investment%20Response%20Factor%20%3D%201.5%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20vitol_peak_demand_projection%7B%7B%22Vitol%20Peak%20Demand%20Projection%20%3D%20112.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20realistic_peak_demand_estimate%7B%7B%22Realistic%20Peak%20Demand%20Estimate%20%3D%20120.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20ev_adoption_multiplier%5B%2F%22Ev%20Adoption%20Multiplier%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20oil_price_effect_on_evs%5B%2F%22Oil%20Price%20Effect%20On%20Evs%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20oil_demand_displaced_by_evs%5B%2F%22Oil%20Demand%20Displaced%20By%20Evs%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20actual_oil_demand%5B%2F%22Actual%20Oil%20Demand%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20supply_demand_gap%5B%2F%22Supply%20Demand%20Gap%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20gap_ratio%5B%2F%22Gap%20Ratio%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20oil_price%5B%2F%22Oil%20Price%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20price_above_breakeven%5B%2F%22Price%20Above%20Breakeven%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20normalized_investment_signal%5B%2F%22Normalized%20Investment%20Signal%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20investment_incentive%5B%2F%22Investment%20Incentive%22%2F%5D%3A%3A%3Acomputed%0A%0A%20%20%20%20%20%20%20%20ev_adoption_rate%20%3D%3D%3E%7C%22%2B%22%7C%20cumulative_ev_fleet%0A%20%20%20%20%20%20%20%20demand_increase_rate%20%3D%3D%3E%7C%22%2B%22%7C%20base_oil_demand_growth%0A%0A%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20%20%20%20%20)%2C%0A%20%20%20%20%20%20%20%20mo.md(%22*Boxes%3A%20stocks%20%7C%20Rounded%3A%20flows%20%7C%20Hexagons%3A%20parameters%20%7C%20Slanted%3A%20computed*%22)%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20%23%20---%20Simulation%20tab%20---%0A%20%20%20%20_stock_labels%20%3D%20%7B'oil_supply_capacity'%3A%20'Oil%20Supply%20Capacity%20(million%20barrels%20per%20day)'%2C%20'cumulative_ev_fleet'%3A%20'Cumulative%20Ev%20Fleet%20(million%20vehicles)'%2C%20'base_oil_demand_growth'%3A%20'Base%20Oil%20Demand%20Growth%20(million%20barrels%20per%20day)'%7D%0A%20%20%20%20fig_stocks%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20stock_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_stocks.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_stock_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_stocks.update_layout(title%3D%22Stock%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Value%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20_flow_labels%20%3D%20%7B'new_capacity_investment'%3A%20'New%20Capacity%20Investment%20(million%20barrels%20per%20day%20per%20year)'%2C%20'field_decline_rate'%3A%20'Field%20Decline%20Rate%20(million%20barrels%20per%20day%20per%20year)'%2C%20'ev_adoption_rate'%3A%20'Ev%20Adoption%20Rate%20(million%20vehicles%20per%20year)'%2C%20'demand_increase_rate'%3A%20'Demand%20Increase%20Rate%20(million%20barrels%20per%20day%20per%20year)'%7D%0A%20%20%20%20fig_flows%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20flow_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_flows.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_flow_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_flows.update_layout(title%3D%22Flow%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Rate%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20_aux_labels%20%3D%20%7B'ev_adoption_multiplier'%3A%20'Ev%20Adoption%20Multiplier%20(dimensionless)'%2C%20'oil_price_effect_on_evs'%3A%20'Oil%20Price%20Effect%20On%20Evs%20(dimensionless)'%2C%20'oil_demand_displaced_by_evs'%3A%20'Oil%20Demand%20Displaced%20By%20Evs%20(million%20barrels%20per%20day)'%2C%20'actual_oil_demand'%3A%20'Actual%20Oil%20Demand%20(million%20barrels%20per%20day)'%2C%20'supply_demand_gap'%3A%20'Supply%20Demand%20Gap%20(million%20barrels%20per%20day)'%2C%20'gap_ratio'%3A%20'Gap%20Ratio%20(dimensionless)'%2C%20'oil_price'%3A%20'Oil%20Price%20(dollars%20per%20barrel)'%2C%20'price_above_breakeven'%3A%20'Price%20Above%20Breakeven%20(dollars%20per%20barrel)'%2C%20'normalized_investment_signal'%3A%20'Normalized%20Investment%20Signal%20(dimensionless)'%2C%20'investment_incentive'%3A%20'Investment%20Incentive%20(dimensionless)'%7D%0A%20%20%20%20fig_aux%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20aux_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_aux.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_aux_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_aux.update_layout(title%3D%22Computed%20Auxiliary%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Value%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20simulation_content%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20stock_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_stocks)%2C%0A%20%20%20%20%20%20%20%20flow_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_flows)%2C%0A%20%20%20%20%20%20%20%20aux_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_aux)%2C%0A%20%20%20%20%20%20%20%20mo.ui.table(results.reset_index().rename(columns%3D%7B%22time%22%3A%20%22Time%22%7D))%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20mo.ui.tabs(%7B%0A%20%20%20%20%20%20%20%20%22Simulation%22%3A%20simulation_content%2C%0A%20%20%20%20%20%20%20%20%22Analysis%22%3A%20analysis_content%2C%0A%20%20%20%20%20%20%20%20%22Model%20Structure%22%3A%20mermaid_diagram%2C%0A%20%20%20%20%7D)%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a portal for the data editor to render in -->
+    <div id="portal" data-testid="glide-portal" style="position: fixed; left: 0; top: 0; z-index: 9999"></div>
+    <script data-marimo="true">
+      window.__MARIMO_MOUNT_CONFIG__ = {
+            "filename": "notebook.py",
+            "mode": "read",
+            "version": "0.19.9",
+            "serverToken": "unused",
+            "config": {"ai": {"custom_providers": {}, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+        };
+    </script>
+  </body>
+</html>
