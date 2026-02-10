@@ -359,9 +359,23 @@ Try adjusting these parameters to explore different futures:
     # --- Model Structure tab ---
     mermaid_diagram = mo.vstack([
         mo.md("## Model Structure"),
+        mo.Html("""
+            <style>
+                .mermaid-container {
+                    width: 100%;
+                    height: 1200px;
+                    overflow: auto;
+                }
+                .mermaid-container svg {
+                    min-width: 1400px !important;
+                    min-height: 1200px !important;
+                }
+            </style>
+        """),
+        mo.Html("<div class='mermaid-container'>"),
         mo.mermaid(
             """
-    graph TD
+    graph LR
         classDef stock fill:#4a90d9,stroke:#2c5f8a,color:white,stroke-width:3px
         classDef flow fill:#e8a838,stroke:#b8842c,color:white,stroke-width:2px
         classDef constant fill:#7bc67e,stroke:#5a9d5c,color:white
@@ -436,6 +450,7 @@ Try adjusting these parameters to explore different futures:
 
         """
         ),
+        mo.Html("</div>"),
         mo.md("*Boxes: stocks | Rounded: flows | Hexagons: parameters | Slanted: computed*"),
     ])
 
