@@ -398,9 +398,42 @@ Try adjusting these parameters to explore different futures:
         normalized_investment_signal[/"Normalized Investment Signal"/]:::computed
         investment_incentive[/"Investment Incentive"/]:::computed
     
+        new_capacity_investment ==>|"+"| oil_supply_capacity
+        field_decline_rate ==>|"-"| oil_supply_capacity
         ev_adoption_rate ==>|"+"| cumulative_ev_fleet
         demand_increase_rate ==>|"+"| base_oil_demand_growth
-    
+
+        oil_supply_capacity -.-> field_decline_rate
+        natural_decline_fraction -.-> field_decline_rate
+        cumulative_ev_fleet -.-> oil_demand_displaced_by_evs
+        barrels_per_ev_per_day -.-> oil_demand_displaced_by_evs
+        displacement_efficiency -.-> oil_demand_displaced_by_evs
+        base_oil_demand_growth -.-> actual_oil_demand
+        oil_demand_displaced_by_evs -.-> actual_oil_demand
+        actual_oil_demand -.-> supply_demand_gap
+        oil_supply_capacity -.-> supply_demand_gap
+        supply_demand_gap -.-> gap_ratio
+        oil_supply_capacity -.-> gap_ratio
+        reference_oil_price -.-> oil_price
+        gap_ratio -.-> oil_price
+        price_elasticity -.-> oil_price
+        oil_price -.-> oil_price_effect_on_evs
+        reference_oil_price -.-> oil_price_effect_on_evs
+        price_sensitivity -.-> oil_price_effect_on_evs
+        oil_price_effect_on_evs -.-> ev_adoption_multiplier
+        base_ev_growth_rate -.-> ev_adoption_rate
+        ev_adoption_multiplier -.-> ev_adoption_rate
+        oil_price -.-> price_above_breakeven
+        breakeven_price -.-> price_above_breakeven
+        price_above_breakeven -.-> normalized_investment_signal
+        breakeven_price -.-> normalized_investment_signal
+        normalized_investment_signal -.-> investment_incentive
+        positive_incentive_filter -.-> investment_incentive
+        investment_incentive -.-> new_capacity_investment
+        investment_response_factor -.-> new_capacity_investment
+        base_oil_demand_growth -.-> demand_increase_rate
+        annual_demand_growth_fraction -.-> demand_increase_rate
+
         """
         ),
         mo.md("*Boxes: stocks | Rounded: flows | Hexagons: parameters | Slanted: computed*"),
