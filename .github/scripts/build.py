@@ -31,18 +31,14 @@ import fire
 from loguru import logger
 
 _GOOSE_INJECTION = """
-<style>
-  /* Hide marimo's built-in watermark (rendered by React, data-testid="watermark") */
-  [data-testid="watermark"] { display: none !important; }
-</style>
 <a
   href="https://www.goosehollowcapital.com"
   target="_blank"
   rel="noopener noreferrer"
   style="
     position: fixed;
-    bottom: 0;
-    left: 0;
+    bottom: 28px;
+    right: 0;
     z-index: 99999;
     font-size: 0.75rem;
     font-weight: 600;
@@ -50,8 +46,8 @@ _GOOSE_INJECTION = """
     padding: 4px 12px;
     background: rgba(255,255,255,0.92);
     border-top: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    border-radius: 0 6px 0 0;
+    border-left: 1px solid #ccc;
+    border-radius: 6px 0 0 0;
     color: #333;
     text-decoration: none;
   "
