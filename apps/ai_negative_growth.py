@@ -408,16 +408,41 @@ Replicates and extends the two mechanisms from 'Will Advanced AI Lead to Negativ
 
     # --- Simulation tab ---
     _stock_labels = {'ai_adoption': 'Ai Adoption (fraction)', 'labor_share': 'Labor Share (fraction)', 'capital_stock': 'Capital Stock (index)'}
+    _CAPITAL_RIGHT = {'capital_stock'}
     fig_stocks = go.Figure()
+    _has_left_s = _has_right_s = False
     for _key in stock_selector.value:
-        fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_stock_labels.get(_key, _key)))
-    fig_stocks.update_layout(title="Stock Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
+        if _key in _CAPITAL_RIGHT:
+            fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_stock_labels.get(_key, _key), yaxis="y2"))
+            _has_right_s = True
+        else:
+            fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_stock_labels.get(_key, _key)))
+            _has_left_s = True
+    _stocks_layout = dict(title="Stock Variables Over Time", xaxis_title="Time", template="plotly_white", legend=dict(x=0.01, y=0.99))
+    if _has_left_s:
+        _stocks_layout["yaxis"] = dict(title="Fraction (0–1)")
+    if _has_right_s:
+        _stocks_layout["yaxis2"] = dict(title="Capital Stock (index)", overlaying="y", side="right", showgrid=False)
+    fig_stocks.update_layout(**_stocks_layout)
 
     _flow_labels = {'ai_adoption_growth': 'Ai Adoption Growth (fraction/year)', 'labor_displacement_flow': 'Labor Displacement Flow (fraction/year)', 'gross_investment': 'Gross Investment (index/year)', 'capital_depreciation': 'Capital Depreciation (index/year)'}
+    _LEFT_FLOWS = {'ai_adoption_growth', 'labor_displacement_flow'}
+    _RIGHT_FLOWS = {'gross_investment', 'capital_depreciation'}
     fig_flows = go.Figure()
+    _has_left_f = _has_right_f = False
     for _key in flow_selector.value:
-        fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key)))
-    fig_flows.update_layout(title="Flow Variables Over Time", xaxis_title="Time", yaxis_title="Rate", template="plotly_white")
+        if _key in _RIGHT_FLOWS:
+            fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key), yaxis="y2"))
+            _has_right_f = True
+        else:
+            fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key)))
+            _has_left_f = True
+    _flows_layout = dict(title="Flow Variables Over Time", xaxis_title="Time", template="plotly_white", legend=dict(x=0.01, y=0.99))
+    if _has_left_f:
+        _flows_layout["yaxis"] = dict(title="Rate — adoption/displacement (fraction/year)")
+    if _has_right_f:
+        _flows_layout["yaxis2"] = dict(title="Rate — investment/depreciation (index/year)", overlaying="y", side="right", showgrid=False)
+    fig_flows.update_layout(**_flows_layout)
 
     _aux_labels = {'effective_mpc': 'Effective Mpc (fraction)', 'ubi_boost': 'Ubi Boost (fraction)', 'effective_mpc_with_ubi': 'Effective Mpc With Ubi (fraction)', 'multiplier_denom': 'Multiplier Denom (fraction)', 'keynesian_multiplier': 'Keynesian Multiplier (dimensionless)', 'autonomous_consumption': 'Autonomous Consumption (index)', 'gdp': 'Gdp (index)', 'effective_savings_rate': 'Effective Savings Rate (fraction)', 'worker_income': 'Worker Income (index)', 'owner_income': 'Owner Income (index)', 'ubi_transfer': 'Ubi Transfer (index)', 'real_gdp': 'Real Gdp (index)', 'supply_side_capacity': 'Supply Side Capacity (index)'}
     fig_aux = go.Figure()

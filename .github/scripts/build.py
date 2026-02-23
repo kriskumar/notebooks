@@ -20,6 +20,7 @@ The exported files will be placed in the specified output directory (default: _s
 # ]
 # ///
 
+import re
 import subprocess
 from typing import List, Union
 from pathlib import Path
@@ -28,6 +29,25 @@ import jinja2
 import fire
 
 from loguru import logger
+
+_GOOSE_LINK = '<a href="https://www.goosehollowcapital.com" target="_blank" rel="noopener noreferrer" style="color:inherit">Made by goose</a>'
+
+def _rebrand_html(output_file: Path) -> None:
+    """Replace 'Made with marimo' footer text with Goose Hollow Capital branding."""
+    try:
+        html = output_file.read_text(encoding="utf-8")
+        # marimo typically renders: Made with <a href="https://marimo.io...">marimo</a>
+        # or just the plain text variant — handle both
+        html = re.sub(
+            r'Made with <a\b[^>]*marimo\.io[^>]*>marimo</a>',
+            _GOOSE_LINK,
+            html,
+            flags=re.IGNORECASE,
+        )
+        html = re.sub(r'Made with marimo', _GOOSE_LINK, html, flags=re.IGNORECASE)
+        output_file.write_text(html, encoding="utf-8")
+    except Exception as e:
+        logger.warning(f"Could not apply branding to {output_file}: {e}")
 
 def _export_html_wasm(notebook_path: Path, output_dir: Path, as_app: bool = False) -> bool:
     """Export a single marimo notebook to HTML/WebAssembly format.
@@ -71,6 +91,7 @@ def _export_html_wasm(notebook_path: Path, output_dir: Path, as_app: bool = Fals
         logger.debug(f"Running command: {cmd}")
         subprocess.run(cmd, capture_output=True, text=True, check=True)
         logger.info(f"Successfully exported {notebook_path}")
+        _rebrand_html(output_file)
         return True
     except subprocess.CalledProcessError as e:
         # Handle marimo export errors
