@@ -30,21 +30,40 @@ import fire
 
 from loguru import logger
 
-_GOOSE_LINK = '<a href="https://www.goosehollowcapital.com" target="_blank" rel="noopener noreferrer" style="color:inherit">Made by goose</a>'
+_GOOSE_INJECTION = """
+<style>
+  /* Hide marimo's built-in watermark (rendered by React, data-testid="watermark") */
+  [data-testid="watermark"] { display: none !important; }
+</style>
+<a
+  href="https://www.goosehollowcapital.com"
+  target="_blank"
+  rel="noopener noreferrer"
+  style="
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 99999;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 4px 12px;
+    background: rgba(255,255,255,0.92);
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-radius: 0 6px 0 0;
+    color: #333;
+    text-decoration: none;
+  "
+>Made by goose</a>
+"""
 
 def _rebrand_html(output_file: Path) -> None:
-    """Replace 'Made with marimo' footer text with Goose Hollow Capital branding."""
+    """Hide marimo watermark and inject Goose Hollow Capital branding."""
     try:
         html = output_file.read_text(encoding="utf-8")
-        # marimo typically renders: Made with <a href="https://marimo.io...">marimo</a>
-        # or just the plain text variant — handle both
-        html = re.sub(
-            r'Made with <a\b[^>]*marimo\.io[^>]*>marimo</a>',
-            _GOOSE_LINK,
-            html,
-            flags=re.IGNORECASE,
-        )
-        html = re.sub(r'Made with marimo', _GOOSE_LINK, html, flags=re.IGNORECASE)
+        # Inject before closing </body> — works regardless of how marimo bundles the JS
+        html = html.replace("</body>", _GOOSE_INJECTION + "</body>", 1)
         output_file.write_text(html, encoding="utf-8")
     except Exception as e:
         logger.warning(f"Could not apply branding to {output_file}: {e}")
