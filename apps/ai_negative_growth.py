@@ -66,9 +66,9 @@ def run_simulation(
     effective_savings_rate = 0  # Will be computed in loop
     worker_income = 0  # Will be computed in loop
     owner_income = 0  # Will be computed in loop
+    ubi_transfer = 0  # Will be computed in loop
     real_gdp = 0  # Will be computed in loop
     supply_side_capacity = 0  # Will be computed in loop
-    ubi_transfer = 0  # Will be computed in loop
 
     rows = []
     t = 0.0
@@ -86,7 +86,7 @@ def run_simulation(
         effective_savings_rate = ((worker_savings_rate.value * labor_share) + (owner_reinvestment_rate.value * (1 - labor_share)))
         supply_side_capacity = (capital_stock * (1 + (ai_productivity_max.value * ai_adoption)))
         effective_mpc_with_ubi = (effective_mpc + ubi_boost)
-        multiplier_denom = {'syntaxType': 'ReferenceStructure', 'reference': 'MAX'}(0.05, (1 - effective_mpc_with_ubi))
+        multiplier_denom = max(0.05, (1 - effective_mpc_with_ubi))
         keynesian_multiplier = (1 / max(multiplier_denom, 1e-6))
         gdp = (autonomous_consumption * keynesian_multiplier)
         gross_investment = (effective_savings_rate * gdp)
@@ -115,9 +115,9 @@ def run_simulation(
                 "effective_savings_rate": effective_savings_rate,
                 "worker_income": worker_income,
                 "owner_income": owner_income,
+                "ubi_transfer": ubi_transfer,
                 "real_gdp": real_gdp,
                 "supply_side_capacity": supply_side_capacity,
-                "ubi_transfer": ubi_transfer,
             }
         )
 
@@ -163,11 +163,11 @@ def time_controls(mo):
 @app.cell
 def parameter_controls(mo):
     mpc_workers = mo.ui.slider(
-        value=0.9, start=0.5, stop=1.0, step=0.005,
+        value=0.9, start=0.0, stop=1.0, step=0.01,
         label="Mpc Workers (fraction)",
     )
     mpc_owners = mo.ui.slider(
-        value=0.2, start=0.0, stop=0.5, step=0.005,
+        value=0.2, start=0.0, stop=1.0, step=0.01,
         label="Mpc Owners (fraction)",
     )
     mpc_spread = mo.ui.slider(
@@ -175,7 +175,7 @@ def parameter_controls(mo):
         label="Mpc Spread (fraction)",
     )
     base_consumption = mo.ui.slider(
-        value=38.0, start=30.0, stop=50.0, step=0.2,
+        value=38.0, start=0.0, stop=190.0, step=1.9,
         label="Base Consumption (index)",
     )
     consumption_gain = mo.ui.slider(
@@ -187,7 +187,7 @@ def parameter_controls(mo):
         label="Ai Growth Rate (1/year)",
     )
     min_labor_share = mo.ui.slider(
-        value=0.05, start=0.01, stop=0.5, step=0.0049,
+        value=0.05, start=0.0, stop=0.3, step=0.003,
         label="Min Labor Share (fraction)",
     )
     displacement_speed = mo.ui.slider(
@@ -195,11 +195,11 @@ def parameter_controls(mo):
         label="Displacement Speed (1/year)",
     )
     worker_savings_rate = mo.ui.slider(
-        value=0.07, start=0.01, stop=0.3, step=0.0029,
+        value=0.07, start=0.0, stop=0.5, step=0.005,
         label="Worker Savings Rate (fraction)",
     )
     owner_reinvestment_rate = mo.ui.slider(
-        value=0.03, start=0.01, stop=0.3, step=0.0029,
+        value=0.03, start=0.0, stop=0.5, step=0.005,
         label="Owner Reinvestment Rate (fraction)",
     )
     depreciation_fraction = mo.ui.slider(
@@ -207,7 +207,7 @@ def parameter_controls(mo):
         label="Depreciation Fraction (1/year)",
     )
     ai_productivity_gain = mo.ui.slider(
-        value=0.8, start=0.0, stop=3.0, step=0.03,
+        value=0.8, start=0.0, stop=5.0, step=0.05,
         label="Ai Productivity Gain (dimensionless)",
     )
     ai_productivity_max = mo.ui.slider(
@@ -267,8 +267,8 @@ def chart_controls(mo):
         label="Flow variables",
     )
     aux_selector = mo.ui.multiselect(
-        options={"Effective Mpc (fraction)": "effective_mpc", "Ubi Boost (fraction)": "ubi_boost", "Effective Mpc With Ubi (fraction)": "effective_mpc_with_ubi", "Multiplier Denom (fraction)": "multiplier_denom", "Keynesian Multiplier (dimensionless)": "keynesian_multiplier", "Autonomous Consumption (index)": "autonomous_consumption", "Gdp (index)": "gdp", "Effective Savings Rate (fraction)": "effective_savings_rate", "Worker Income (index)": "worker_income", "Owner Income (index)": "owner_income", "Real Gdp (index)": "real_gdp", "Supply Side Capacity (index)": "supply_side_capacity", "Ubi Transfer (index)": "ubi_transfer"},
-        value=["Effective Mpc (fraction)", "Ubi Boost (fraction)", "Effective Mpc With Ubi (fraction)", "Multiplier Denom (fraction)", "Keynesian Multiplier (dimensionless)", "Autonomous Consumption (index)", "Gdp (index)", "Effective Savings Rate (fraction)", "Worker Income (index)", "Owner Income (index)", "Real Gdp (index)", "Supply Side Capacity (index)", "Ubi Transfer (index)"],
+        options={"Effective Mpc (fraction)": "effective_mpc", "Ubi Boost (fraction)": "ubi_boost", "Effective Mpc With Ubi (fraction)": "effective_mpc_with_ubi", "Multiplier Denom (fraction)": "multiplier_denom", "Keynesian Multiplier (dimensionless)": "keynesian_multiplier", "Autonomous Consumption (index)": "autonomous_consumption", "Gdp (index)": "gdp", "Effective Savings Rate (fraction)": "effective_savings_rate", "Worker Income (index)": "worker_income", "Owner Income (index)": "owner_income", "Ubi Transfer (index)": "ubi_transfer", "Real Gdp (index)": "real_gdp", "Supply Side Capacity (index)": "supply_side_capacity"},
+        value=["Effective Mpc (fraction)", "Ubi Boost (fraction)", "Effective Mpc With Ubi (fraction)", "Multiplier Denom (fraction)", "Keynesian Multiplier (dimensionless)", "Autonomous Consumption (index)", "Gdp (index)", "Effective Savings Rate (fraction)", "Worker Income (index)", "Owner Income (index)", "Ubi Transfer (index)", "Real Gdp (index)", "Supply Side Capacity (index)"],
         label="Auxiliary variables",
     )
     return stock_selector, flow_selector, aux_selector
@@ -279,60 +279,22 @@ def tabbed_content(aux_selector, flow_selector, go, mo, results, stock_selector)
     # --- Analysis tab ---
     analysis_content = mo.vstack([
             mo.md("""
-# AI-Driven Economic Stagnation: Two Mechanisms
+### Overview
+Replicates and extends the two mechanisms from 'Will Advanced AI Lead to Negative Economic Growth?' (Aleximas, 2025). Mechanism 1 (Demand Collapse): calibrated to match GDP falling from 100 to 52.3 as labor_share drops from 0.60 to 0.05. Mechanism 2 (Capital Decumulation): calibrated for ~65% capital stock decline. Policy lever ubi_rate tests the sovereign wealth fund recommendation. Real GDP shows the initial inverted-U (rises ~5% before falling ~6%) matching the OLG model's +7.8%/-4.2% trajectory.
 
-Based on: *Will Advanced AI Lead to Negative Economic Growth?* (Aleximas, 2025)
+### Learning Objectives
+- Understand how income redistribution between high-MPC and low-MPC agents collapses aggregate demand
+- See how the Keynesian multiplier changes from 2.63 to 1.31 as labor share falls 0.60→0.05
+- Trace the OLG capital decumulation: lower wages → less savings → capital falls 65%
+- Explore why supply capacity (AI × capital) stays far above actual output (demand-constrained idle capacity)
+- Test policy: how much redistribution via UBI is needed to prevent negative growth
 
-## The Core Question
-
-Can advanced AI/AGI cause **negative economic growth** despite massive productivity gains? The answer is theoretically yes — through two compounding mechanisms.
-
-## Mechanism 1: Keynesian Demand Collapse
-
-As AI automates work, income redistributes from **high-MPC workers** (spend 90¢ per dollar) to **low-MPC owners** (spend 20¢ per dollar). This collapses the Keynesian multiplier:
-
-| | Pre-AGI | Post-AGI |
-|---|---|---|
-| Labor share | 60% | 5% |
-| Effective MPC | 0.62 | 0.235 |
-| Multiplier | 2.63 | 1.31 |
-| Autonomous consumption | 38 | 40 |
-| **GDP** | **100** | **52.3** |
-
-GDP falls **48%** despite productivity gains, because satiated owners won't spend 40,000× more even if prices fall (the lighting example: prices fell 40,000× since 1800; consumption rose only 13×).
-
-## Mechanism 2: OLG Capital Decumulation
-
-Workers (young generation) save for retirement — the primary source of new capital. As wages collapse:
-- Worker savings: 60 × 7% = **4.2/yr → 2.6 × 7% = 0.18/yr** (96% drop)
-- Owner reinvestment: 40 × 3% = **1.2/yr → 49.7 × 3% = 1.5/yr** (slight rise, but not enough)
-- Total investment: **5.4 → 1.7/yr**, well below 5.0 depreciation
-- Capital steady-state: **~33 (66% decline)**
-
-## The Island Parable
-
-Imagine 100 workers and 10 capital owners. Full automation eliminates worker wages. Machines can produce 10,000 units. But owners, already satiated at 200 units of consumption, only demand 200 — leaving 9,800 units of idle capacity. **Supply vastly exceeds demand. GDP collapses not from lack of technology, but from lack of buyers.**
-
-## The Policy Fix: Sovereign Wealth Fund
-
-A sovereign wealth fund that captures capital gains and pays dividends to all citizens converts low-MPC owner income into high-MPC worker consumption:
-
-- **ubi_rate = 0.5** → GDP recovers to ~92 (near baseline)
-- **ubi_rate = 0.75** → GDP exceeds baseline
-
-Examples: Alaska Permanent Fund, UAE sovereign wealth funds.
-
-## Scenarios to Explore
-
-1. **Baseline** (ai_growth_rate → 0): economy stays stable
-2. **Rapid AGI** (ai_growth_rate = 0.8): collapse in 10-15 years vs 25 years
-3. **Partial automation** (min_labor_share = 0.30): AI augments rather than replaces
-4. **UBI policy** (ubi_rate = 0.50): sovereign wealth fund intervention
-5. **High-savings owners** (owner_reinvestment_rate = 0.15): capital stays higher
-
-## Author's Caveat
-
-These conditions are *"likely too unrealistic to hold in practice"* — requiring near-total automation, satiated preferences, no new consumption categories, and no policy response. But the model shows the **theoretical mechanisms** and how policy can prevent them.
+### Customization Tips
+- ubi_rate=0.5: near-full demand recovery (GDP~92.5); ubi_rate=0.75: GDP exceeds baseline
+- min_labor_share=0.30 for partial automation (augmentation not full replacement)
+- ai_growth_rate=0.8 for rapid AGI scenario; =0.2 for slow/gradual transition
+- displacement_speed=0.3 for fast structural unemployment; =0.05 for slow adjustment
+- mpc_owners=0.40 to test moderate owner consumption (less severe demand collapse)
 """),
     ])
 
@@ -392,9 +354,9 @@ These conditions are *"likely too unrealistic to hold in practice"* — requirin
         effective_savings_rate[/"Effective Savings Rate"/]:::computed
         worker_income[/"Worker Income"/]:::computed
         owner_income[/"Owner Income"/]:::computed
+        ubi_transfer[/"Ubi Transfer"/]:::computed
         real_gdp[/"Real Gdp"/]:::computed
         supply_side_capacity[/"Supply Side Capacity"/]:::computed
-        ubi_transfer[/"Ubi Transfer"/]:::computed
     
         ai_adoption_growth ==>|"+"| ai_adoption
         labor_share ==>|"-"| labor_displacement_flow
@@ -408,36 +370,36 @@ These conditions are *"likely too unrealistic to hold in practice"* — requirin
         effective_savings_rate -.-> gross_investment
         gdp -.-> gross_investment
         depreciation_fraction -.-> capital_depreciation
-        mpc_owners -.-> effective_mpc
-        mpc_workers -.-> effective_mpc
         labor_share -.-> effective_mpc
-        ubi_rate -.-> ubi_boost
+        mpc_workers -.-> effective_mpc
+        mpc_owners -.-> effective_mpc
         mpc_spread -.-> ubi_boost
+        ubi_rate -.-> ubi_boost
         labor_share -.-> ubi_boost
-        ubi_boost -.-> effective_mpc_with_ubi
         effective_mpc -.-> effective_mpc_with_ubi
+        ubi_boost -.-> effective_mpc_with_ubi
         effective_mpc_with_ubi -.-> multiplier_denom
         multiplier_denom -.-> keynesian_multiplier
         ai_adoption -.-> autonomous_consumption
-        base_consumption -.-> autonomous_consumption
         consumption_gain -.-> autonomous_consumption
-        keynesian_multiplier -.-> gdp
+        base_consumption -.-> autonomous_consumption
         autonomous_consumption -.-> gdp
-        owner_reinvestment_rate -.-> effective_savings_rate
+        keynesian_multiplier -.-> gdp
         worker_savings_rate -.-> effective_savings_rate
         labor_share -.-> effective_savings_rate
+        owner_reinvestment_rate -.-> effective_savings_rate
         labor_share -.-> worker_income
         gdp -.-> worker_income
         labor_share -.-> owner_income
         gdp -.-> owner_income
+        owner_income -.-> ubi_transfer
+        ubi_rate -.-> ubi_transfer
         ai_adoption -.-> real_gdp
-        gdp -.-> real_gdp
         ai_productivity_gain -.-> real_gdp
+        gdp -.-> real_gdp
+        ai_productivity_max -.-> supply_side_capacity
         ai_adoption -.-> supply_side_capacity
         capital_stock -.-> supply_side_capacity
-        ai_productivity_max -.-> supply_side_capacity
-        ubi_rate -.-> ubi_transfer
-        owner_income -.-> ubi_transfer
         """
         ),
         mo.Html("</div>"),
@@ -457,7 +419,7 @@ These conditions are *"likely too unrealistic to hold in practice"* — requirin
         fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key)))
     fig_flows.update_layout(title="Flow Variables Over Time", xaxis_title="Time", yaxis_title="Rate", template="plotly_white")
 
-    _aux_labels = {'effective_mpc': 'Effective Mpc (fraction)', 'ubi_boost': 'Ubi Boost (fraction)', 'effective_mpc_with_ubi': 'Effective Mpc With Ubi (fraction)', 'multiplier_denom': 'Multiplier Denom (fraction)', 'keynesian_multiplier': 'Keynesian Multiplier (dimensionless)', 'autonomous_consumption': 'Autonomous Consumption (index)', 'gdp': 'Gdp (index)', 'effective_savings_rate': 'Effective Savings Rate (fraction)', 'worker_income': 'Worker Income (index)', 'owner_income': 'Owner Income (index)', 'real_gdp': 'Real Gdp (index)', 'supply_side_capacity': 'Supply Side Capacity (index)', 'ubi_transfer': 'Ubi Transfer (index)'}
+    _aux_labels = {'effective_mpc': 'Effective Mpc (fraction)', 'ubi_boost': 'Ubi Boost (fraction)', 'effective_mpc_with_ubi': 'Effective Mpc With Ubi (fraction)', 'multiplier_denom': 'Multiplier Denom (fraction)', 'keynesian_multiplier': 'Keynesian Multiplier (dimensionless)', 'autonomous_consumption': 'Autonomous Consumption (index)', 'gdp': 'Gdp (index)', 'effective_savings_rate': 'Effective Savings Rate (fraction)', 'worker_income': 'Worker Income (index)', 'owner_income': 'Owner Income (index)', 'ubi_transfer': 'Ubi Transfer (index)', 'real_gdp': 'Real Gdp (index)', 'supply_side_capacity': 'Supply Side Capacity (index)'}
     fig_aux = go.Figure()
     for _key in aux_selector.value:
         fig_aux.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_aux_labels.get(_key, _key)))
