@@ -81,7 +81,7 @@ def run_simulation(
         labor_displacement_flow = (displacement_speed.value * ai_adoption * (labor_share - min_labor_share.value))
         capital_depreciation = (depreciation_fraction.value * capital_stock)
         effective_mpc = ((mpc_workers.value * labor_share) + (mpc_owners.value * (1 - labor_share)))
-        ubi_boost = (mpc_spread.value * ubi_rate.value * (1 - labor_share))
+        ubi_boost = (mpc_spread.value * ubi_rate.value * (1 - labor_share) * ai_adoption)
         autonomous_consumption = (base_consumption.value + (consumption_gain.value * ai_adoption))
         effective_savings_rate = ((worker_savings_rate.value * labor_share) + (owner_reinvestment_rate.value * (1 - labor_share)))
         supply_side_capacity = (capital_stock * (1 + (ai_productivity_max.value * ai_adoption)))
