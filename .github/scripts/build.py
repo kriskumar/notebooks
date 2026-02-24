@@ -54,12 +54,28 @@ _GOOSE_INJECTION = """
 >Made by goose</a>
 """
 
+_GA_SNIPPETS = {
+    "ai_negative_growth.html": """
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1S3B45Z56M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1S3B45Z56M');
+</script>
+""",
+}
+
 def _rebrand_html(output_file: Path) -> None:
-    """Hide marimo watermark and inject Goose Hollow Capital branding."""
+    """Inject Goose Hollow Capital branding and per-notebook GA tags."""
     try:
         html = output_file.read_text(encoding="utf-8")
-        # Inject before closing </body> — works regardless of how marimo bundles the JS
-        html = html.replace("</body>", _GOOSE_INJECTION + "</body>", 1)
+        injection = _GOOSE_INJECTION
+        ga_snippet = _GA_SNIPPETS.get(output_file.name, "")
+        if ga_snippet:
+            injection = ga_snippet + injection
+        html = html.replace("</body>", injection + "</body>", 1)
         output_file.write_text(html, encoding="utf-8")
     except Exception as e:
         logger.warning(f"Could not apply branding to {output_file}: {e}")
