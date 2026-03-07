@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-B2ootaw-.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-CxL0S8W7.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-D9fedIX3.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-BTCkDNvf.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-DU3aDxX5.ttf" as="font" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-CLVRCuM9.ttf" as="font" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>hormuz oil shock</title>
+    <script type="module" crossorigin src="./assets/index-DyRdaW9o.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-TXkS1QI3.js">
+    <link rel="modulepreload" crossorigin href="./assets/clsx-A78R3nYl.js">
+    <link rel="modulepreload" crossorigin href="./assets/cn-d_A4rA-x.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-LvLJmgfZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-Bj1aDYRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/compiler-runtime-B3qBwwSJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-CP2fAiZX.js">
+    <link rel="modulepreload" crossorigin href="./assets/badge-CNBv2dAU.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEventListener-CjXriKgk.js">
+    <link rel="modulepreload" crossorigin href="./assets/button-BmOH9agK.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-dom-CSu739Rf.js">
+    <link rel="modulepreload" crossorigin href="./assets/Combination-tjZP3FH6.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-items-Bs2e3wuf.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CIU0Lack.js">
+    <link rel="modulepreload" crossorigin href="./assets/createLucideIcon-BvP5LBIs.js">
+    <link rel="modulepreload" crossorigin href="./assets/check-BnZGcuDh.js">
+    <link rel="modulepreload" crossorigin href="./assets/x-yqLqiq5Q.js">
+    <link rel="modulepreload" crossorigin href="./assets/select-DygbgNTD.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-DOQlecCr.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-toast-BhMe50aT.js">
+    <link rel="modulepreload" crossorigin href="./assets/_Uint8Array-BGESiCQL.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseIsEqual-BU8KB_Ip.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEvent-WUlsM6MC.js">
+    <link rel="modulepreload" crossorigin href="./assets/invariant-awXiPaF0.js">
+    <link rel="modulepreload" crossorigin href="./assets/isArrayLikeObject-BkJc8lDE.js">
+    <link rel="modulepreload" crossorigin href="./assets/merge-DnJbrtRQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/zod-H_cgTO0M.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-CORJ8yYa.js">
+    <link rel="modulepreload" crossorigin href="./assets/Deferred-D2igisxY.js">
+    <link rel="modulepreload" crossorigin href="./assets/uuid-ImXS-885.js">
+    <link rel="modulepreload" crossorigin href="./assets/DeferredRequestRegistry-CMZsNx4R.js">
+    <link rel="modulepreload" crossorigin href="./assets/constants-CdR60lKM.js">
+    <link rel="modulepreload" crossorigin href="./assets/session-DnMOyddG.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-D9X9QKiL.js">
+    <link rel="modulepreload" crossorigin href="./assets/requests-DZy_SQ_v.js">
+    <link rel="modulepreload" crossorigin href="./assets/isSymbol-BGkTcW3U.js">
+    <link rel="modulepreload" crossorigin href="./assets/toString-DlRqgfqz.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSlice-39dTX4Wi.js">
+    <link rel="modulepreload" crossorigin href="./assets/_hasUnicode-QS_pSfjY.js">
+    <link rel="modulepreload" crossorigin href="./assets/assertNever-Dw9aFN4h.js">
+    <link rel="modulepreload" crossorigin href="./assets/_arrayReduce-BKEr35uH.js">
+    <link rel="modulepreload" crossorigin href="./assets/useLifecycle-BDXC6oVR.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNonce-BY4jV7Yb.js">
+    <link rel="modulepreload" crossorigin href="./assets/useTheme-CwdqVOYu.js">
+    <link rel="modulepreload" crossorigin href="./assets/once-DRC4SgqY.js">
+    <link rel="modulepreload" crossorigin href="./assets/capabilities-CeYo4YI0.js">
+    <link rel="modulepreload" crossorigin href="./assets/createReducer-BcTiTw8T.js">
+    <link rel="modulepreload" crossorigin href="./assets/paths-bMgYkaP2.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-DUY6xZX8.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-D89dID68.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CU-Ty5ht.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BjtLy-VA.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-odxAaH5Z.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-Dq_iQ08e.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-DfBASypd.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-51xFOPFs.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CEQIJ2pn.js">
+    <link rel="modulepreload" crossorigin href="./assets/stex-FMMSUPAS.js">
+    <link rel="modulepreload" crossorigin href="./assets/toDate-DDAiY7kz.js">
+    <link rel="modulepreload" crossorigin href="./assets/purify.es-CPplrWRQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/cjs-CVt8hZ5L.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseProperty-DuoFhI7N.js">
+    <link rel="modulepreload" crossorigin href="./assets/toNumber-GB_lFVaq.js">
+    <link rel="modulepreload" crossorigin href="./assets/now-DIo_1hTm.js">
+    <link rel="modulepreload" crossorigin href="./assets/debounce-D8CkpJG7.js">
+    <link rel="modulepreload" crossorigin href="./assets/toInteger-Cl1doThW.js">
+    <link rel="modulepreload" crossorigin href="./assets/database-zap-B3efE3T2.js">
+    <link rel="modulepreload" crossorigin href="./assets/main-Cmx6WhDY.js">
+    <link rel="modulepreload" crossorigin href="./assets/cells-CCtxWKxf.js">
+    <link rel="modulepreload" crossorigin href="./assets/spinner-DCSoZZhh.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-right-_z3dkNFy.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-menu-CKhrfxsx.js">
+    <link rel="modulepreload" crossorigin href="./assets/kbd-CVbqSkT8.js">
+    <link rel="modulepreload" crossorigin href="./assets/renderShortcut-BJEd-iA7.js">
+    <link rel="modulepreload" crossorigin href="./assets/multi-map-kCmlVJ-5.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-0YTlkh9P.js">
+    <link rel="modulepreload" crossorigin href="./assets/card-WPBELA1S.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-dialog-DsNfSYaw.js">
+    <link rel="modulepreload" crossorigin href="./assets/dialog-BXzvlof-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BTEPE6IB.js">
+    <link rel="modulepreload" crossorigin href="./assets/label-DmqkEXI4.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDebounce-BUC67G8E.js">
+    <link rel="modulepreload" crossorigin href="./assets/azure-Ddr1pZpW.js">
+    <link rel="modulepreload" crossorigin href="./assets/numbers-44Cj1Me-.js">
+    <link rel="modulepreload" crossorigin href="./assets/SSRProvider-DC7ElCZZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/context-B1_BdDTF.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNumberFormatter-DMA_kIIZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/usePress-DsLftN-x.js">
+    <link rel="modulepreload" crossorigin href="./assets/input-BPldEXfy.js">
+    <link rel="modulepreload" crossorigin href="./assets/links-BKV6zi_7.js">
+    <link rel="modulepreload" crossorigin href="./assets/popover-Cvl9xY6R.js">
+    <link rel="modulepreload" crossorigin href="./assets/switch-tdkZNn4k.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-FXVKPW36.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAsyncData-DVm0BCFt.js">
+    <link rel="modulepreload" crossorigin href="./assets/errors-Bfogio62.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-banner-R2OkQKR0.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-DMCkK2TI.js">
+    <link rel="modulepreload" crossorigin href="./assets/memoize-BCOZVFBt.js">
+    <link rel="modulepreload" crossorigin href="./assets/get-6uJrSKbw.js">
+    <link rel="modulepreload" crossorigin href="./assets/capitalize-irHJCpFh.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-CAR4dOiD.js">
+    <link rel="modulepreload" crossorigin href="./assets/plus-B-s-VRHt.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-cw-DeCFDX1B.js">
+    <link rel="modulepreload" crossorigin href="./assets/trash-2-DtQaB9NM.js">
+    <link rel="modulepreload" crossorigin href="./assets/triangle-alert-n1-FF7zs.js">
+    <link rel="modulepreload" crossorigin href="./assets/ai-model-dropdown-C3Y44M85.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-OkOxlkkM.js">
+    <link rel="modulepreload" crossorigin href="./assets/precisionRound-BOmLQIKI.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-DK1MWd7f.js">
+    <link rel="modulepreload" crossorigin href="./assets/vega-loader.browser-CZV6_g2i.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-D_HRHf_c.js">
+    <link rel="modulepreload" crossorigin href="./assets/ErrorBoundary-dVj6GVNE.js">
+    <link rel="modulepreload" crossorigin href="./assets/useInstallPackage-jGxNsOWc.js">
+    <link rel="modulepreload" crossorigin href="./assets/ImperativeModal-CRNJOvqT.js">
+    <link rel="modulepreload" crossorigin href="./assets/cell-link-B59Kn5nL.js">
+    <link rel="modulepreload" crossorigin href="./assets/datasource-B2Fl6iYU.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-D2jTOQOG.js">
+    <link rel="modulepreload" crossorigin href="./assets/MarimoErrorOutput-B0ZtYqUC.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-icon-6RnnFDPt.js">
+    <link rel="modulepreload" crossorigin href="./assets/html-to-image-b9BimK8l.js">
+    <link rel="modulepreload" crossorigin href="./assets/focus-ShrwcKIv.js">
+    <link rel="modulepreload" crossorigin href="./assets/LazyAnyLanguageCodeMirror-BdX_Y5NA.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-5FQGJX7Z-BJDu6jwt.js">
+    <link rel="modulepreload" crossorigin href="./assets/katex-rvFxOCU-.js">
+    <link rel="modulepreload" crossorigin href="./assets/markdown-renderer-B6a5ZAwT.js">
+    <link rel="modulepreload" crossorigin href="./assets/command-DQqqP-WF.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-BTm4CTKr.js">
+    <link rel="modulepreload" crossorigin href="./assets/RenderHTML-qh-NzTWO.js">
+    <link rel="modulepreload" crossorigin href="./assets/useIframeCapabilities-T3alJPda.js">
+    <link rel="modulepreload" crossorigin href="./assets/formats-C3K3rlAZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-US-DBqDb4Nb.js">
+    <link rel="modulepreload" crossorigin href="./assets/isValid-D3F4nmET.js">
+    <link rel="modulepreload" crossorigin href="./assets/dates-CzBDvj6R.js">
+    <link rel="modulepreload" crossorigin href="./assets/maps-8VTEe-0T.js">
+    <link rel="modulepreload" crossorigin href="./assets/extends-aq1t6BkR.js">
+    <link rel="modulepreload" crossorigin href="./assets/emotion-is-prop-valid.esm-D7FeWASw.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDateFormatter-CmtFqjqu.js">
+    <link rel="modulepreload" crossorigin href="./assets/range-BGa3qZre.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-CeILsq6V.js">
+    <link rel="modulepreload" crossorigin href="./assets/JsonOutput-BSyDxU0G.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeleteCell-BAfiIxKf.js">
+    <link rel="modulepreload" crossorigin href="./assets/icons-B9sHgc9n.js">
+    <link rel="modulepreload" crossorigin href="./assets/process-output-4yip1nZE.js">
+    <link rel="modulepreload" crossorigin href="./assets/blob-CObhN-9g.js">
+    <link rel="modulepreload" crossorigin href="./assets/objectWithoutPropertiesLoose-Dxmp_Bd_.js">
+    <link rel="modulepreload" crossorigin href="./assets/esm-BQUzYly2.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-DVwc11C3.js">
+    <link rel="modulepreload" crossorigin href="./assets/play-D4Tdvkms.js">
+    <link rel="modulepreload" crossorigin href="./assets/add-cell-with-ai--4VOMvH8.js">
+    <link rel="modulepreload" crossorigin href="./assets/isEmpty-9KlyX4nB.js">
+    <link rel="modulepreload" crossorigin href="./assets/bot-message-square-BzawfL5p.js">
+    <link rel="modulepreload" crossorigin href="./assets/chat-display-Co6iGNSx.js">
+    <link rel="modulepreload" crossorigin href="./assets/chart-no-axes-column-F2DZENgf.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-function-4zY5Dv0P.js">
+    <link rel="modulepreload" crossorigin href="./assets/spec-Be-iRLAY.js">
+    <link rel="modulepreload" crossorigin href="./assets/components-CF9x5raB.js">
+    <link rel="modulepreload" crossorigin href="./assets/column-preview-BQP0K_pZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/toggle-BhEcsHTu.js">
+    <link rel="modulepreload" crossorigin href="./assets/globals-BlB0Ba6E.js">
+    <link rel="modulepreload" crossorigin href="./assets/share-sD4fbzpH.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSet-BEHvSeoM.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-resizable-panels.browser.esm-RgA6v8U3.js">
+    <link rel="modulepreload" crossorigin href="./assets/context-aware-panel-D7ygyp92.js">
+    <link rel="modulepreload" crossorigin href="./assets/floating-outline-BWK_nLJy.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAddCell-BRlAqdmq.js">
+    <link rel="modulepreload" crossorigin href="./assets/eye-off-DgTL09j7.js">
+    <link rel="modulepreload" crossorigin href="./assets/readonly-python-code-DmjbJYSq.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-video-camera-Fa5c_iPb.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-code-D9wtWSiR.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-DFiYrN2w.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-ccw-BOzRCrXK.js">
+    <link rel="modulepreload" crossorigin href="./assets/form-B7_NRa34.js">
+    <link rel="modulepreload" crossorigin href="./assets/field-DGtw6Lae.js">
+    <link rel="modulepreload" crossorigin href="./assets/useBoolean-eWwLICkT.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeepCompareMemoize-D1hTncYV.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-BhvWC48z.js">
+    <link rel="modulepreload" crossorigin href="./assets/prop-types-DRf51_gT.js">
+    <link rel="modulepreload" crossorigin href="./assets/es-1hBRXVlM.js">
+    <link rel="modulepreload" crossorigin href="./assets/hasIn-Dzwrcr75.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseFlatten-C_qcB35v.js">
+    <link rel="modulepreload" crossorigin href="./assets/_basePickBy-36rMhJTw.js">
+    <link rel="modulepreload" crossorigin href="./assets/pick-BeVScbIo.js">
+    <link rel="modulepreload" crossorigin href="./assets/code-xml-BMv1Dtd2.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-BG-iMGgV.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-oV8Csj8Y.js">
+    <link rel="modulepreload" crossorigin href="./assets/settings-DD8FJvQ_.js">
+    <link rel="modulepreload" crossorigin href="./assets/bundle.esm-_LzfhNmX.js">
+    <link rel="stylesheet" crossorigin href="./assets/cells-jmgGt1lS.css">
+    <link rel="stylesheet" crossorigin href="./assets/markdown-renderer-DdDKmWlR.css">
+    <link rel="stylesheet" crossorigin href="./assets/JsonOutput-B7vuddcd.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-DrPzoH7F.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    <marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%0A%23%20%20%20%20%20%22marimo%22%2C%0A%23%20%20%20%20%20%22plotly%3E%3D5.18.0%22%2C%0A%23%20%20%20%20%20%22pandas%3E%3D2.0.0%22%2C%0A%23%20%20%20%20%20%22numpy%3E%3D1.24.0%22%2C%0A%23%20%5D%0A%23%20%2F%2F%2F%0A%22%22%22%0AHormuz%20Oil%20Shock%20%E2%80%94%20Interactive%20Explorer%0A%0ASystem%20dynamics%20model%20with%20inline%20Euler%20integration.%0A3%20stocks%2C%205%20flows%2C%2014%20parameters%2C%207%20computed%20variables.%0A%0ANo%20PySD%20required%20%E2%80%94%20runs%20in%20WASM%2FPyodide.%0A%22%22%22%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.20.4%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20imports()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20plotly.graph_objects%20as%20go%0A%20%20%20%20import%20pandas%20as%20pd%0A%20%20%20%20import%20numpy%20as%20np%0A%0A%20%20%20%20return%20go%2C%20mo%2C%20pd%0A%0A%0A%40app.cell%0Adef%20run_simulation(%0A%20%20%20%20baseline_price%2C%0A%20%20%20%20capacity_buildup_time%2C%0A%20%20%20%20demand_elasticity%2C%0A%20%20%20%20demand_threshold%2C%0A%20%20%20%20disruption_ramp_time%2C%0A%20%20%20%20final_time%2C%0A%20%20%20%20global_demand_mbpd%2C%0A%20%20%20%20max_alternative_capacity%2C%0A%20%20%20%20max_disruption%2C%0A%20%20%20%20max_spr_release%2C%0A%20%20%20%20normal_hormuz_flow_mbpd%2C%0A%20%20%20%20pd%2C%0A%20%20%20%20price_adjustment_delay%2C%0A%20%20%20%20price_sensitivity%2C%0A%20%20%20%20recovery_time%2C%0A%20%20%20%20spr_response_fraction%2C%0A%20%20%20%20time_step%2C%0A)%3A%0A%20%20%20%20%23%20Initial%20stock%20values%0A%20%20%20%20oil_price%20%3D%2072.0%0A%20%20%20%20disruption_level%20%3D%200.0%0A%20%20%20%20alternative_capacity_mbpd%20%3D%200.0%0A%20%20%20%20disrupted_mbpd%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20demand_destruction_mbpd%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20gross_supply_gap_mbpd%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20spr_release_mbpd%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20net_supply_gap_mbpd%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20supply_gap_fraction%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20target_price%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%0A%20%20%20%20rows%20%3D%20%5B%5D%0A%20%20%20%20t%20%3D%200.0%0A%20%20%20%20dt%20%3D%20time_step.value%0A%20%20%20%20t_end%20%3D%20final_time.value%0A%0A%20%20%20%20while%20t%20%3C%3D%20t_end%20%2B%20dt%20%2F%202%3A%0A%20%20%20%20%20%20%20%20%23%20Flows%20and%20computed%20variables%20(dependency%20order)%0A%20%20%20%20%20%20%20%20disruption_ramp%20%3D%20max(0%2C%20((max_disruption.value%20-%20disruption_level)%20%2F%20disruption_ramp_time.value))%0A%20%20%20%20%20%20%20%20disruption_recovery%20%3D%20max(0%2C%20((disruption_level%20-%20max_disruption.value)%20%2F%20recovery_time.value))%0A%20%20%20%20%20%20%20%20capacity_growth%20%3D%20((max_alternative_capacity.value%20-%20alternative_capacity_mbpd)%20%2F%20capacity_buildup_time.value)%0A%20%20%20%20%20%20%20%20disrupted_mbpd%20%3D%20(normal_hormuz_flow_mbpd.value%20*%20disruption_level)%0A%20%20%20%20%20%20%20%20demand_destruction_mbpd%20%3D%20max(0%2C%20((oil_price%20-%20demand_threshold.value)%20*%20demand_elasticity.value))%0A%20%20%20%20%20%20%20%20gross_supply_gap_mbpd%20%3D%20max(0%2C%20((disrupted_mbpd%20-%20alternative_capacity_mbpd)%20-%20demand_destruction_mbpd))%0A%20%20%20%20%20%20%20%20spr_release_mbpd%20%3D%20min(max_spr_release.value%2C%20max(0%2C%20(gross_supply_gap_mbpd%20*%20spr_response_fraction.value)))%0A%20%20%20%20%20%20%20%20net_supply_gap_mbpd%20%3D%20max(0%2C%20(gross_supply_gap_mbpd%20-%20spr_release_mbpd))%0A%20%20%20%20%20%20%20%20supply_gap_fraction%20%3D%20(net_supply_gap_mbpd%20%2F%20global_demand_mbpd.value)%0A%20%20%20%20%20%20%20%20target_price%20%3D%20(baseline_price.value%20*%20(1%20%2B%20(price_sensitivity.value%20*%20supply_gap_fraction)))%0A%20%20%20%20%20%20%20%20price_increase%20%3D%20max(0%2C%20((target_price%20-%20oil_price)%20%2F%20price_adjustment_delay.value))%0A%20%20%20%20%20%20%20%20price_decrease%20%3D%20max(0%2C%20((oil_price%20-%20target_price)%20%2F%20price_adjustment_delay.value))%0A%0A%20%20%20%20%20%20%20%20rows.append(%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22time%22%3A%20t%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22oil_price%22%3A%20oil_price%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22disruption_level%22%3A%20disruption_level%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22alternative_capacity_mbpd%22%3A%20alternative_capacity_mbpd%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22price_increase%22%3A%20price_increase%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22price_decrease%22%3A%20price_decrease%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22disruption_ramp%22%3A%20disruption_ramp%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22disruption_recovery%22%3A%20disruption_recovery%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22capacity_growth%22%3A%20capacity_growth%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22disrupted_mbpd%22%3A%20disrupted_mbpd%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22demand_destruction_mbpd%22%3A%20demand_destruction_mbpd%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22gross_supply_gap_mbpd%22%3A%20gross_supply_gap_mbpd%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22spr_release_mbpd%22%3A%20spr_release_mbpd%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22net_supply_gap_mbpd%22%3A%20net_supply_gap_mbpd%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22supply_gap_fraction%22%3A%20supply_gap_fraction%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22target_price%22%3A%20target_price%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20)%0A%0A%20%20%20%20%20%20%20%20%23%20Euler%20integration%0A%20%20%20%20%20%20%20%20oil_price%20%2B%3D%20dt%20*%20(price_increase%20-%20price_decrease)%0A%20%20%20%20%20%20%20%20oil_price%20%3D%20max(oil_price%2C%200)%0A%20%20%20%20%20%20%20%20disruption_level%20%2B%3D%20dt%20*%20(disruption_ramp%20-%20disruption_recovery)%0A%20%20%20%20%20%20%20%20disruption_level%20%3D%20max(disruption_level%2C%200)%0A%20%20%20%20%20%20%20%20alternative_capacity_mbpd%20%2B%3D%20dt%20*%20capacity_growth%0A%20%20%20%20%20%20%20%20alternative_capacity_mbpd%20%3D%20max(alternative_capacity_mbpd%2C%200)%0A%20%20%20%20%20%20%20%20t%20%2B%3D%20dt%0A%0A%20%20%20%20results%20%3D%20pd.DataFrame(rows).set_index(%22time%22)%0A%20%20%20%20return%20(results%2C)%0A%0A%0A%40app.cell%0Adef%20header(mo)%3A%0A%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%20Hormuz%20Oil%20Shock%20%E2%80%94%20Interactive%20Explorer%0A%0A%20%20%20%20**Stocks%3A**%203%20%7C%20**Flows%3A**%205%20%7C%20**Parameters%3A**%2014%20%7C%20**Computed%3A**%207%0A%0A%20%20%20%20Adjust%20the%20sliders%20below%20to%20change%20parameters%20and%20see%20how%20the%20model%20responds%20in%20real%20time.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20time_controls(mo)%3A%0A%20%20%20%20final_time%20%3D%20mo.ui.number(%0A%20%20%20%20%20%20%20%20value%3D100%2C%20start%3D1%2C%20stop%3D1000%2C%20step%3D1%2C%20label%3D%22Final%20Time%22%0A%20%20%20%20)%0A%20%20%20%20time_step%20%3D%20mo.ui.number(%0A%20%20%20%20%20%20%20%20value%3D1%2C%20start%3D0.1%2C%20stop%3D5.0%2C%20step%3D0.1%2C%20label%3D%22Time%20Step%22%0A%20%20%20%20)%0A%20%20%20%20mo.hstack(%5Bfinal_time%2C%20time_step%5D%2C%20justify%3D%22start%22%2C%20gap%3D1)%0A%20%20%20%20return%20final_time%2C%20time_step%0A%0A%0A%40app.cell%0Adef%20parameter_controls(mo)%3A%0A%20%20%20%20baseline_price%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D72.0%2C%20start%3D0%2C%20stop%3D360.0%2C%20step%3D0.72%2C%0A%20%20%20%20%20%20%20%20label%3D%22Baseline%20Price%20(dollars_per_barrel)%22%2C%0A%20%20%20%20)%0A%20%20%20%20normal_hormuz_flow_mbpd%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D20.0%2C%20start%3D0%2C%20stop%3D100.0%2C%20step%3D0.2%2C%0A%20%20%20%20%20%20%20%20label%3D%22Normal%20Hormuz%20Flow%20Mbpd%20(million_barrels_per_day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20global_demand_mbpd%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D104.0%2C%20start%3D0%2C%20stop%3D520.0%2C%20step%3D1.04%2C%0A%20%20%20%20%20%20%20%20label%3D%22Global%20Demand%20Mbpd%20(million_barrels_per_day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20max_disruption%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.86%2C%20start%3D0%2C%20stop%3D1%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Max%20Disruption%20(fraction)%22%2C%0A%20%20%20%20)%0A%20%20%20%20disruption_ramp_time%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D5.0%2C%20start%3D0%2C%20stop%3D25.0%2C%20step%3D0.05%2C%0A%20%20%20%20%20%20%20%20label%3D%22Disruption%20Ramp%20Time%20(Day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20recovery_time%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D30.0%2C%20start%3D0%2C%20stop%3D150.0%2C%20step%3D0.3%2C%0A%20%20%20%20%20%20%20%20label%3D%22Recovery%20Time%20(Day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20max_alternative_capacity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D5.0%2C%20start%3D0%2C%20stop%3D25.0%2C%20step%3D0.05%2C%0A%20%20%20%20%20%20%20%20label%3D%22Max%20Alternative%20Capacity%20(million_barrels_per_day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20capacity_buildup_time%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D120.0%2C%20start%3D0%2C%20stop%3D600.0%2C%20step%3D1.2%2C%0A%20%20%20%20%20%20%20%20label%3D%22Capacity%20Buildup%20Time%20(Day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20max_spr_release%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D4.0%2C%20start%3D0%2C%20stop%3D20.0%2C%20step%3D0.04%2C%0A%20%20%20%20%20%20%20%20label%3D%22Max%20Spr%20Release%20(million_barrels_per_day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20spr_response_fraction%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.25%2C%20start%3D0%2C%20stop%3D1%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Spr%20Response%20Fraction%20(fraction)%22%2C%0A%20%20%20%20)%0A%20%20%20%20demand_elasticity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.1%2C%20start%3D0%2C%20stop%3D1%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Demand%20Elasticity%20(million_barrels_per_day_per_dollar)%22%2C%0A%20%20%20%20)%0A%20%20%20%20demand_threshold%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D80.0%2C%20start%3D0%2C%20stop%3D400.0%2C%20step%3D0.8%2C%0A%20%20%20%20%20%20%20%20label%3D%22Demand%20Threshold%20(dollars_per_barrel)%22%2C%0A%20%20%20%20)%0A%20%20%20%20price_sensitivity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D8.0%2C%20start%3D0%2C%20stop%3D40.0%2C%20step%3D0.08%2C%0A%20%20%20%20%20%20%20%20label%3D%22Price%20Sensitivity%20(dimensionless)%22%2C%0A%20%20%20%20)%0A%20%20%20%20price_adjustment_delay%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D14.0%2C%20start%3D0%2C%20stop%3D70.0%2C%20step%3D0.14%2C%0A%20%20%20%20%20%20%20%20label%3D%22Price%20Adjustment%20Delay%20(Day)%22%2C%0A%20%20%20%20)%0A%20%20%20%20mo.vstack(%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20baseline_price%2C%0A%20%20%20%20%20%20%20%20normal_hormuz_flow_mbpd%2C%0A%20%20%20%20%20%20%20%20global_demand_mbpd%2C%0A%20%20%20%20%20%20%20%20max_disruption%2C%0A%20%20%20%20%20%20%20%20disruption_ramp_time%2C%0A%20%20%20%20%20%20%20%20recovery_time%2C%0A%20%20%20%20%20%20%20%20max_alternative_capacity%2C%0A%20%20%20%20%20%20%20%20capacity_buildup_time%2C%0A%20%20%20%20%20%20%20%20max_spr_release%2C%0A%20%20%20%20%20%20%20%20spr_response_fraction%2C%0A%20%20%20%20%20%20%20%20demand_elasticity%2C%0A%20%20%20%20%20%20%20%20demand_threshold%2C%0A%20%20%20%20%20%20%20%20price_sensitivity%2C%0A%20%20%20%20%20%20%20%20price_adjustment_delay%2C%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20)%0A%20%20%20%20return%20(%0A%20%20%20%20%20%20%20%20baseline_price%2C%0A%20%20%20%20%20%20%20%20capacity_buildup_time%2C%0A%20%20%20%20%20%20%20%20demand_elasticity%2C%0A%20%20%20%20%20%20%20%20demand_threshold%2C%0A%20%20%20%20%20%20%20%20disruption_ramp_time%2C%0A%20%20%20%20%20%20%20%20global_demand_mbpd%2C%0A%20%20%20%20%20%20%20%20max_alternative_capacity%2C%0A%20%20%20%20%20%20%20%20max_disruption%2C%0A%20%20%20%20%20%20%20%20max_spr_release%2C%0A%20%20%20%20%20%20%20%20normal_hormuz_flow_mbpd%2C%0A%20%20%20%20%20%20%20%20price_adjustment_delay%2C%0A%20%20%20%20%20%20%20%20price_sensitivity%2C%0A%20%20%20%20%20%20%20%20recovery_time%2C%0A%20%20%20%20%20%20%20%20spr_response_fraction%2C%0A%20%20%20%20)%0A%0A%0A%40app.cell%0Adef%20chart_controls(mo)%3A%0A%20%20%20%20stock_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22Oil%20Price%20(dollars_per_barrel)%22%3A%20%22oil_price%22%2C%20%22Disruption%20Level%20(fraction)%22%3A%20%22disruption_level%22%2C%20%22Alternative%20Capacity%20Mbpd%20(million_barrels_per_day)%22%3A%20%22alternative_capacity_mbpd%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Oil%20Price%20(dollars_per_barrel)%22%2C%20%22Disruption%20Level%20(fraction)%22%2C%20%22Alternative%20Capacity%20Mbpd%20(million_barrels_per_day)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Stock%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20flow_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22Price%20Increase%20(dollars_per_barrel_per_Day)%22%3A%20%22price_increase%22%2C%20%22Price%20Decrease%20(dollars_per_barrel_per_Day)%22%3A%20%22price_decrease%22%2C%20%22Disruption%20Ramp%20(fraction_per_Day)%22%3A%20%22disruption_ramp%22%2C%20%22Disruption%20Recovery%20(fraction_per_Day)%22%3A%20%22disruption_recovery%22%2C%20%22Capacity%20Growth%20(million_barrels_per_day_per_Day)%22%3A%20%22capacity_growth%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Price%20Increase%20(dollars_per_barrel_per_Day)%22%2C%20%22Price%20Decrease%20(dollars_per_barrel_per_Day)%22%2C%20%22Disruption%20Ramp%20(fraction_per_Day)%22%2C%20%22Disruption%20Recovery%20(fraction_per_Day)%22%2C%20%22Capacity%20Growth%20(million_barrels_per_day_per_Day)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Flow%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20aux_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22Disrupted%20Mbpd%20(million_barrels_per_day)%22%3A%20%22disrupted_mbpd%22%2C%20%22Demand%20Destruction%20Mbpd%20(million_barrels_per_day)%22%3A%20%22demand_destruction_mbpd%22%2C%20%22Gross%20Supply%20Gap%20Mbpd%20(million_barrels_per_day)%22%3A%20%22gross_supply_gap_mbpd%22%2C%20%22Spr%20Release%20Mbpd%20(million_barrels_per_day)%22%3A%20%22spr_release_mbpd%22%2C%20%22Net%20Supply%20Gap%20Mbpd%20(million_barrels_per_day)%22%3A%20%22net_supply_gap_mbpd%22%2C%20%22Supply%20Gap%20Fraction%20(fraction)%22%3A%20%22supply_gap_fraction%22%2C%20%22Target%20Price%20(dollars_per_barrel)%22%3A%20%22target_price%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Disrupted%20Mbpd%20(million_barrels_per_day)%22%2C%20%22Demand%20Destruction%20Mbpd%20(million_barrels_per_day)%22%2C%20%22Gross%20Supply%20Gap%20Mbpd%20(million_barrels_per_day)%22%2C%20%22Spr%20Release%20Mbpd%20(million_barrels_per_day)%22%2C%20%22Net%20Supply%20Gap%20Mbpd%20(million_barrels_per_day)%22%2C%20%22Supply%20Gap%20Fraction%20(fraction)%22%2C%20%22Target%20Price%20(dollars_per_barrel)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Auxiliary%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20return%20aux_selector%2C%20flow_selector%2C%20stock_selector%0A%0A%0A%40app.cell%0Adef%20tabbed_content(%0A%20%20%20%20aux_selector%2C%0A%20%20%20%20flow_selector%2C%0A%20%20%20%20go%2C%0A%20%20%20%20mo%2C%0A%20%20%20%20results%2C%0A%20%20%20%20stock_selector%2C%0A)%3A%0A%20%20%20%20%23%20---%20Analysis%20tab%20---%0A%20%20%20%20analysis_content%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%23%20Strait%20of%20Hormuz%20Oil%20Price%20Shock%20%E2%80%94%202026%20Iran%20Crisis%0A%0A%20%20%20%20**Context%20(March%207%2C%202026)%3A**%20Following%20US%2FIsrael%20strikes%20on%20Iran%20on%20Feb%2028%2C%202026%2C%20the%20Strait%20of%20Hormuz%20has%20seen%20flows%20drop%2086%25%20%E2%80%94%20from%20~20%20million%20barrels%2Fday%20to%20~3%20million%20barrels%2Fday.%20Brent%20crude%20surged%20from%20%2472%20to%20%2490%20in%20one%20week.%20This%20model%20projects%20the%20price%20trajectory%20under%20different%20closure%20durations.%0A%0A%20%20%20%20%23%23%23%20What%20This%20Model%20Captures%0A%0A%20%20%20%20Three%20interacting%20stocks%20with%20stabilizing%20feedbacks%3A%0A%0A%20%20%20%20%7C%20Stock%20%7C%20Dynamic%20%7C%0A%20%20%20%20%7C-------%7C---------%7C%0A%20%20%20%20%7C%20**oil_price**%20%7C%20Adjusts%20toward%20equilibrium%20with%20a%2014-day%20market%20lag%20%7C%0A%20%20%20%20%7C%20**disruption_level**%20%7C%20Ramps%20to%2086%25%20in%205%20days%2C%20recovers%20over%2030%20days%20after%20ceasefire%20%7C%0A%20%20%20%20%7C%20**alternative_capacity_mbpd**%20%7C%20Saudi%20Petroline%20%2B%20UAE%20pipeline%20builds%20to%205%20mbpd%20over%20~4%20months%20%7C%0A%0A%20%20%20%20Three%20stabilizing%20feedbacks%20prevent%20a%20runaway%20price%20spiral%3A%0A%20%20%20%201.%20**SPR%2FIEA%20release**%20%E2%80%94%20up%20to%204%20mbpd%2C%20activated%20proportional%20to%20supply%20gap%0A%20%20%20%202.%20**Demand%20destruction**%20%E2%80%94%200.1%20mbpd%20lost%20per%20dollar%20above%20%2480%2Fbarrel%20threshold%0A%20%20%20%203.%20**Alternative%20routing**%20%E2%80%94%20Saudi%20Petroline%20(5%E2%80%937%20mbpd%20capacity)%20%2B%20UAE%20Abu%20Dhabi-Fujairah%20pipeline%0A%0A%20%20%20%20%23%23%23%20Scenario%20Results%0A%0A%20%20%20%20**Phase%201%20%E2%80%94%20Shock%20(all%20scenarios)%3A**%0A%20%20%20%20%7C%20Day%20%7C%20Date%20%7C%20Price%20%7C%20Change%20%7C%0A%20%20%20%20%7C-----%7C------%7C-------%7C--------%7C%0A%20%20%20%20%7C%200%20%7C%20Feb%2028%20%7C%20%2472%20%7C%20Crisis%20starts%20%7C%0A%20%20%20%20%7C%207%20%7C%20Mar%206%20%7C%20%24102%20%7C%20%2B41%25%20%E2%80%94%20actual%20%2490%20(markets%20pricing%20uncertainty)%20%7C%0A%20%20%20%20%7C%2014%20%7C%20Mar%2013%20%7C%20%24117%20%7C%20%2B63%25%20%7C%0A%20%20%20%20%7C%2030%20%7C%20Mar%2029%20%7C%20%24120%20%7C%20%2B67%25%20%E2%80%94%20near%20peak%20%7C%0A%0A%20%20%20%20**Scenario%20A%20%E2%80%94%20Ceasefire%20at%20day%2030%20(set%20max_disruption%20%3D%200)%3A**%0A%20%20%20%20-%20Day%2030%20after%20ceasefire%3A%20%2493%20(-22%25%20from%20peak)%0A%20%20%20%20-%20Day%2045%20after%20ceasefire%3A%20%2483%20(-31%25%20from%20peak)%0A%20%20%20%20-%20Day%2090%20after%20ceasefire%3A%20%2472%20%E2%80%94%20back%20to%20baseline%0A%0A%20%20%20%20**Scenario%20B%20%E2%80%94%20Extended%20closure%20(no%20ceasefire)%3A**%0A%20%20%20%20-%20Day%2090%3A%20%24114%20(alt%20routes%3A%203.9%20mbpd%2C%20SPR%3A%202.5%20mbpd)%0A%20%20%20%20-%20Day%20180%3A%20%24111%20%E2%80%94%20plateau%2C%20no%20further%20natural%20relief%0A%20%20%20%20-%20Day%20365%3A%20~%24111%20%E2%80%94%20sustained%20if%20strait%20stays%20closed%0A%0A%20%20%20%20%23%23%23%20Key%20Finding%3A%20The%20%24111%20Floor%0A%0A%20%20%20%20Three%20stabilizers%20collectively%20offset%20~40%25%20of%20the%2017.2%20mbpd%20disruption%3A%0A%20%20%20%20-%20Saudi%20Petroline%20%2B%20UAE%20pipeline%3A%20**5%20mbpd**%0A%20%20%20%20-%20IEA%2FSPR%20release%3A%20**~2.5%20mbpd**%0A%20%20%20%20-%20Demand%20destruction%20at%20%24111%3A%20**~3%20mbpd**%0A%0A%20%20%20%20Without%20these%2C%20analyst%20forecasts%20of%20%24150%E2%80%93200%20would%20be%20valid.%20With%20them%2C%20the%20sustained%20equilibrium%20is%20~%24111%2Fbarrel.%0A%0A%20%20%20%20%23%23%23%20Model%20Calibration%0A%0A%20%20%20%20The%20model%20predicts%20%24102%20at%20Day%207%3B%20actual%20Brent%20is%20%2490%E2%80%9392.%20The%20~%2410%20gap%20reflects%20markets%20pricing%20~50%25%20probability%20of%20rapid%20resolution.%20If%20the%20crisis%20persists%20without%20ceasefire%20signals%2C%20expect%20Brent%20to%20approach%20%24100%2B%20by%20~March%2013.%0A%0A%20%20%20%20%23%23%23%20Use%20the%20Sliders%20To%20Explore%0A%0A%20%20%20%20-%20**max_disruption**%20%E2%86%92%20set%20to%200%20to%20model%20ceasefire%2Freopening%0A%20%20%20%20-%20**price_sensitivity**%20%E2%86%92%20higher%20%3D%20more%20panic%20pricing%20(1973-style)%0A%20%20%20%20-%20**max_spr_release**%20%E2%86%92%20test%20SPR%20capacity%20scenarios%0A%20%20%20%20-%20**max_alternative_capacity**%20%E2%86%92%20test%20if%20Saudi%20pipeline%20runs%20at%20full%207%20mbpd%0A%20%20%20%20-%20**demand_elasticity**%20%E2%86%92%20test%20recession-driven%20demand%20collapse%0A%20%20%20%20-%20**recovery_time**%20%E2%86%92%20test%20how%20fast%20the%20strait%20can%20physically%20reopen%0A%20%20%20%20%22%22%22)%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20%23%20---%20Model%20Structure%20tab%20---%0A%20%20%20%20mermaid_diagram%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20mo.md(%22%23%23%20Model%20Structure%22)%2C%0A%20%20%20%20%20%20%20%20mo.Html(%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.mermaid-container%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20width%3A%20100%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20height%3A%201200px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20overflow%3A%20auto%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.mermaid-container%20svg%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20min-width%3A%201400px%20!important%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20min-height%3A%201200px%20!important%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fstyle%3E%0A%20%20%20%20%20%20%20%20%22%22%22)%2C%0A%20%20%20%20%20%20%20%20mo.Html(%22%3Cdiv%20class%3D'mermaid-container'%3E%22)%2C%0A%20%20%20%20%20%20%20%20mo.mermaid(%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20graph%20LR%0A%20%20%20%20%20%20%20%20classDef%20stock%20fill%3A%234a90d9%2Cstroke%3A%232c5f8a%2Ccolor%3Awhite%2Cstroke-width%3A3px%0A%20%20%20%20%20%20%20%20classDef%20flow%20fill%3A%23e8a838%2Cstroke%3A%23b8842c%2Ccolor%3Awhite%2Cstroke-width%3A2px%0A%20%20%20%20%20%20%20%20classDef%20constant%20fill%3A%237bc67e%2Cstroke%3A%235a9d5c%2Ccolor%3Awhite%0A%20%20%20%20%20%20%20%20classDef%20computed%20fill%3A%23c084fc%2Cstroke%3A%239333ea%2Ccolor%3Awhite%0A%0A%20%20%20%20%20%20%20%20oil_price%5B%22Oil%20Price%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20disruption_level%5B%22Disruption%20Level%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20alternative_capacity_mbpd%5B%22Alternative%20Capacity%20Mbpd%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20price_increase(%5B%22Price%20Increase%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20price_decrease(%5B%22Price%20Decrease%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20disruption_ramp(%5B%22Disruption%20Ramp%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20disruption_recovery(%5B%22Disruption%20Recovery%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20capacity_growth(%5B%22Capacity%20Growth%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20baseline_price%7B%7B%22Baseline%20Price%20%3D%2072.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20normal_hormuz_flow_mbpd%7B%7B%22Normal%20Hormuz%20Flow%20Mbpd%20%3D%2020.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20global_demand_mbpd%7B%7B%22Global%20Demand%20Mbpd%20%3D%20104.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20max_disruption%7B%7B%22Max%20Disruption%20%3D%200.86%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20disruption_ramp_time%7B%7B%22Disruption%20Ramp%20Time%20%3D%205.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20recovery_time%7B%7B%22Recovery%20Time%20%3D%2030.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20max_alternative_capacity%7B%7B%22Max%20Alternative%20Capacity%20%3D%205.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20capacity_buildup_time%7B%7B%22Capacity%20Buildup%20Time%20%3D%20120.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20max_spr_release%7B%7B%22Max%20Spr%20Release%20%3D%204.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20spr_response_fraction%7B%7B%22Spr%20Response%20Fraction%20%3D%200.25%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20demand_elasticity%7B%7B%22Demand%20Elasticity%20%3D%200.1%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20demand_threshold%7B%7B%22Demand%20Threshold%20%3D%2080.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20price_sensitivity%7B%7B%22Price%20Sensitivity%20%3D%208.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20price_adjustment_delay%7B%7B%22Price%20Adjustment%20Delay%20%3D%2014.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20disrupted_mbpd%5B%2F%22Disrupted%20Mbpd%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20demand_destruction_mbpd%5B%2F%22Demand%20Destruction%20Mbpd%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20gross_supply_gap_mbpd%5B%2F%22Gross%20Supply%20Gap%20Mbpd%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20spr_release_mbpd%5B%2F%22Spr%20Release%20Mbpd%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20net_supply_gap_mbpd%5B%2F%22Net%20Supply%20Gap%20Mbpd%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20supply_gap_fraction%5B%2F%22Supply%20Gap%20Fraction%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20target_price%5B%2F%22Target%20Price%22%2F%5D%3A%3A%3Acomputed%0A%0A%20%20%20%20%20%20%20%20price_increase%20%3D%3D%3E%7C%22%2B%22%7C%20oil_price%0A%20%20%20%20%20%20%20%20oil_price%20%3D%3D%3E%7C%22-%22%7C%20price_decrease%0A%20%20%20%20%20%20%20%20disruption_ramp%20%3D%3D%3E%7C%22%2B%22%7C%20disruption_level%0A%20%20%20%20%20%20%20%20disruption_level%20%3D%3D%3E%7C%22-%22%7C%20disruption_recovery%0A%20%20%20%20%20%20%20%20capacity_growth%20%3D%3D%3E%7C%22%2B%22%7C%20alternative_capacity_mbpd%0A%0A%20%20%20%20%20%20%20%20price_adjustment_delay%20-.-%3E%20price_increase%0A%20%20%20%20%20%20%20%20target_price%20-.-%3E%20price_increase%0A%20%20%20%20%20%20%20%20price_adjustment_delay%20-.-%3E%20price_decrease%0A%20%20%20%20%20%20%20%20target_price%20-.-%3E%20price_decrease%0A%20%20%20%20%20%20%20%20max_disruption%20-.-%3E%20disruption_ramp%0A%20%20%20%20%20%20%20%20disruption_ramp_time%20-.-%3E%20disruption_ramp%0A%20%20%20%20%20%20%20%20max_disruption%20-.-%3E%20disruption_recovery%0A%20%20%20%20%20%20%20%20recovery_time%20-.-%3E%20disruption_recovery%0A%20%20%20%20%20%20%20%20max_alternative_capacity%20-.-%3E%20capacity_growth%0A%20%20%20%20%20%20%20%20capacity_buildup_time%20-.-%3E%20capacity_growth%0A%20%20%20%20%20%20%20%20normal_hormuz_flow_mbpd%20-.-%3E%20disrupted_mbpd%0A%20%20%20%20%20%20%20%20disruption_level%20-.-%3E%20disrupted_mbpd%0A%20%20%20%20%20%20%20%20demand_elasticity%20-.-%3E%20demand_destruction_mbpd%0A%20%20%20%20%20%20%20%20oil_price%20-.-%3E%20demand_destruction_mbpd%0A%20%20%20%20%20%20%20%20demand_threshold%20-.-%3E%20demand_destruction_mbpd%0A%20%20%20%20%20%20%20%20alternative_capacity_mbpd%20-.-%3E%20gross_supply_gap_mbpd%0A%20%20%20%20%20%20%20%20disrupted_mbpd%20-.-%3E%20gross_supply_gap_mbpd%0A%20%20%20%20%20%20%20%20demand_destruction_mbpd%20-.-%3E%20gross_supply_gap_mbpd%0A%20%20%20%20%20%20%20%20gross_supply_gap_mbpd%20-.-%3E%20spr_release_mbpd%0A%20%20%20%20%20%20%20%20max_spr_release%20-.-%3E%20spr_release_mbpd%0A%20%20%20%20%20%20%20%20spr_response_fraction%20-.-%3E%20spr_release_mbpd%0A%20%20%20%20%20%20%20%20gross_supply_gap_mbpd%20-.-%3E%20net_supply_gap_mbpd%0A%20%20%20%20%20%20%20%20spr_release_mbpd%20-.-%3E%20net_supply_gap_mbpd%0A%20%20%20%20%20%20%20%20net_supply_gap_mbpd%20-.-%3E%20supply_gap_fraction%0A%20%20%20%20%20%20%20%20global_demand_mbpd%20-.-%3E%20supply_gap_fraction%0A%20%20%20%20%20%20%20%20supply_gap_fraction%20-.-%3E%20target_price%0A%20%20%20%20%20%20%20%20baseline_price%20-.-%3E%20target_price%0A%20%20%20%20%20%20%20%20price_sensitivity%20-.-%3E%20target_price%0A%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20%20%20%20%20)%2C%0A%20%20%20%20%20%20%20%20mo.Html(%22%3C%2Fdiv%3E%22)%2C%0A%20%20%20%20%20%20%20%20mo.md(%22*Boxes%3A%20stocks%20%7C%20Rounded%3A%20flows%20%7C%20Hexagons%3A%20parameters%20%7C%20Slanted%3A%20computed*%22)%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20%23%20---%20Simulation%20tab%20---%0A%20%20%20%20_stock_labels%20%3D%20%7B'oil_price'%3A%20'Oil%20Price%20(dollars_per_barrel)'%2C%20'disruption_level'%3A%20'Disruption%20Level%20(fraction)'%2C%20'alternative_capacity_mbpd'%3A%20'Alternative%20Capacity%20Mbpd%20(million_barrels_per_day)'%7D%0A%20%20%20%20fig_stocks%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20stock_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_stocks.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_stock_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_stocks.update_layout(title%3D%22Stock%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Value%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20_flow_labels%20%3D%20%7B'price_increase'%3A%20'Price%20Increase%20(dollars_per_barrel_per_Day)'%2C%20'price_decrease'%3A%20'Price%20Decrease%20(dollars_per_barrel_per_Day)'%2C%20'disruption_ramp'%3A%20'Disruption%20Ramp%20(fraction_per_Day)'%2C%20'disruption_recovery'%3A%20'Disruption%20Recovery%20(fraction_per_Day)'%2C%20'capacity_growth'%3A%20'Capacity%20Growth%20(million_barrels_per_day_per_Day)'%7D%0A%20%20%20%20fig_flows%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20flow_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_flows.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_flow_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_flows.update_layout(title%3D%22Flow%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Rate%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20_aux_labels%20%3D%20%7B'disrupted_mbpd'%3A%20'Disrupted%20Mbpd%20(million_barrels_per_day)'%2C%20'demand_destruction_mbpd'%3A%20'Demand%20Destruction%20Mbpd%20(million_barrels_per_day)'%2C%20'gross_supply_gap_mbpd'%3A%20'Gross%20Supply%20Gap%20Mbpd%20(million_barrels_per_day)'%2C%20'spr_release_mbpd'%3A%20'Spr%20Release%20Mbpd%20(million_barrels_per_day)'%2C%20'net_supply_gap_mbpd'%3A%20'Net%20Supply%20Gap%20Mbpd%20(million_barrels_per_day)'%2C%20'supply_gap_fraction'%3A%20'Supply%20Gap%20Fraction%20(fraction)'%2C%20'target_price'%3A%20'Target%20Price%20(dollars_per_barrel)'%7D%0A%20%20%20%20fig_aux%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20aux_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_aux.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_aux_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_aux.update_layout(title%3D%22Computed%20Auxiliary%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Value%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20simulation_content%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20stock_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_stocks)%2C%0A%20%20%20%20%20%20%20%20flow_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_flows)%2C%0A%20%20%20%20%20%20%20%20aux_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_aux)%2C%0A%20%20%20%20%20%20%20%20mo.ui.table(results.reset_index().rename(columns%3D%7B%22time%22%3A%20%22Time%22%7D))%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20mo.ui.tabs(%7B%0A%20%20%20%20%20%20%20%20%22Simulation%22%3A%20simulation_content%2C%0A%20%20%20%20%20%20%20%20%22Analysis%22%3A%20analysis_content%2C%0A%20%20%20%20%20%20%20%20%22Model%20Structure%22%3A%20mermaid_diagram%2C%0A%20%20%20%20%7D)%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a portal for the data editor to render in -->
+    <div id="portal" data-testid="glide-portal" style="position: fixed; left: 0; top: 0; z-index: 9999"></div>
+    <script data-marimo="true">
+      window.__MARIMO_MOUNT_CONFIG__ = {
+            "filename": "notebook.py",
+            "cwd": "",
+            "mode": "read",
+            "version": "0.20.4",
+            "serverToken": "unused",
+            "config": {"ai": {"custom_providers": {}, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+        };
+    </script>
+  </body>
+</html>
