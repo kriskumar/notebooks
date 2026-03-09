@@ -53,7 +53,7 @@ def run_simulation(
     time_step,
 ):
     # Initial stock values
-    oil_price = 72.0
+    oil_price = baseline_price.value
     disruption_level = 0.0
     alternative_capacity_mbpd = 0.0
     disrupted_mbpd = 0  # Will be computed in loop
@@ -236,6 +236,25 @@ def parameter_controls(mo):
         recovery_time,
         spr_response_fraction,
     )
+
+
+@app.cell
+def simulation_summary(baseline_price, mo, results):
+    peak_price = results["oil_price"].max()
+    peak_day = int(results["oil_price"].idxmax())
+    final_price = results["oil_price"].iloc[-1]
+    peak_target = results["target_price"].max()
+    mo.md(f"""
+### Simulation Output (baseline = **${baseline_price.value:.0f}/bbl**)
+
+| Metric | Value |
+|--------|-------|
+| **Peak oil price** | **${peak_price:.0f}/bbl** (day {peak_day}) |
+| **Final oil price** | ${final_price:.0f}/bbl |
+| **Peak target price** | ${peak_target:.0f}/bbl |
+| **Price multiplier** | {peak_price / baseline_price.value:.1f}× baseline |
+""")
+    return
 
 
 @app.cell
