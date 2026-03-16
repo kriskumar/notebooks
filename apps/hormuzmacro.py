@@ -134,7 +134,7 @@ def run_simulation(
         gdp_impact_index = max(0.5, ((1 - (((100 - western_credit_index) / 100) * gdp_credit_sensitivity_param.value)) - (max(0, ((oil_price / 90) - 1)) * oil_gdp_sensitivity.value)))
         gas_price_index = ((1 + (gas_oil_passthrough.value * ((oil_price / 90) - 1))) + max(0, ((1 - (global_oil_supply / world_demand_base.value)) * hormuz_gas_share.value)))
         fertilizer_supply_factor = (1 + max(0, ((1 - (global_oil_supply / world_demand_base.value)) * hormuz_fertilizer_impact.value)))
-        naphtha_target = max(0.5, ((oil_price / 90) * naphtha_crack_ratio.value))
+        naphtha_target = max(0.5, (oil_price / 90))
         delayed_fertilizer_signal = 0
         agri_supply_disruption = max(0, ((1 - (global_oil_supply / world_demand_base.value)) * agri_direct_impact.value))
         food_inflation_contribution = ((agri_price_index - 1) * food_weight_in_cpi.value)
@@ -246,241 +246,12 @@ def header(mo):
 
 
 @app.cell
-def model_diagram(mo):
-    mo.vstack(
-        [
-            mo.md("## Model Structure"),
-            mo.Html("""
-                <style>
-                    .mermaid-container {
-                        width: 100%;
-                        height: 1200px;
-                        overflow: auto;
-                    }
-                    .mermaid-container svg {
-                        min-width: 1400px !important;
-                        min-height: 1200px !important;
-                    }
-                </style>
-            """),
-            mo.Html("<div class='mermaid-container'>"),
-            mo.mermaid(
-                """
-    graph LR
-        classDef stock fill:#4a90d9,stroke:#2c5f8a,color:white,stroke-width:3px
-        classDef flow fill:#e8a838,stroke:#b8842c,color:white,stroke-width:2px
-        classDef constant fill:#7bc67e,stroke:#5a9d5c,color:white
-        classDef computed fill:#c084fc,stroke:#9333ea,color:white
-    
-        global_oil_supply["Global Oil Supply"]:::stock
-        oil_price["Oil Price"]:::stock
-        precautionary_inventory["Precautionary Inventory"]:::stock
-        western_credit_index["Western Credit Index"]:::stock
-        supply_chain_buffer["Supply Chain Buffer"]:::stock
-        political_pressure["Political Pressure"]:::stock
-        fertilizer_price_index["Fertilizer Price Index"]:::stock
-        naphtha_price_index["Naphtha Price Index"]:::stock
-        agri_price_index["Agri Price Index"]:::stock
-        supply_restoration_rate(["Supply Restoration Rate"]):::flow
-        price_change_rate(["Price Change Rate"]):::flow
-        hoarding_rate(["Hoarding Rate"]):::flow
-        destocking_rate(["Destocking Rate"]):::flow
-        jic_ratchet_rate(["Jic Ratchet Rate"]):::flow
-        pressure_buildup_rate(["Pressure Buildup Rate"]):::flow
-        pressure_relief_rate(["Pressure Relief Rate"]):::flow
-        credit_tightening_rate(["Credit Tightening Rate"]):::flow
-        credit_recovery_rate(["Credit Recovery Rate"]):::flow
-        fertilizer_price_change(["Fertilizer Price Change"]):::flow
-        naphtha_price_change(["Naphtha Price Change"]):::flow
-        agri_price_change(["Agri Price Change"]):::flow
-        world_demand_base{{"World Demand Base = 103.0"}}:::constant
-        strait_total_recovery_time{{"Strait Total Recovery Time = 6.0"}}:::constant
-        price_adjustment_speed{{"Price Adjustment Speed = 0.3"}}:::constant
-        anxiety_price_sensitivity{{"Anxiety Price Sensitivity = 1.5"}}:::constant
-        hoarding_propensity{{"Hoarding Propensity = 0.025"}}:::constant
-        destocking_rate_param{{"Destocking Rate Param = 0.15"}}:::constant
-        spr_max_rate{{"Spr Max Rate = 4.4"}}:::constant
-        spr_trigger_price{{"Spr Trigger Price = 100.0"}}:::constant
-        spr_activation_coeff{{"Spr Activation Coeff = 0.04"}}:::constant
-        demand_price_elasticity{{"Demand Price Elasticity = -0.02"}}:::constant
-        credit_transmission_lag{{"Credit Transmission Lag = 6.0"}}:::constant
-        credit_sensitivity_param{{"Credit Sensitivity Param = 0.3"}}:::constant
-        fiscal_sensitivity_param{{"Fiscal Sensitivity Param = 0.2"}}:::constant
-        gdp_credit_sensitivity_param{{"Gdp Credit Sensitivity Param = 0.4"}}:::constant
-        oil_gdp_sensitivity{{"Oil Gdp Sensitivity = 0.15"}}:::constant
-        credit_mean_reversion_rate{{"Credit Mean Reversion Rate = 0.05"}}:::constant
-        jic_ratchet_speed{{"Jic Ratchet Speed = 0.08"}}:::constant
-        jic_max_increment{{"Jic Max Increment = 0.04"}}:::constant
-        jic_demand_factor{{"Jic Demand Factor = 0.03"}}:::constant
-        political_sensitivity_param{{"Political Sensitivity Param = 0.5"}}:::constant
-        relief_decay_rate{{"Relief Decay Rate = 0.1"}}:::constant
-        consumer_exposure_param{{"Consumer Exposure Param = 1.0"}}:::constant
-        mena_supply_share{{"Mena Supply Share = 0.3"}}:::constant
-        oil_inflation_passthrough{{"Oil Inflation Passthrough = 0.3"}}:::constant
-        base_inflation{{"Base Inflation = 0.03"}}:::constant
-        hormuz_disruption_mbd{{"Hormuz Disruption Mbd = 18.5"}}:::constant
-        gas_oil_passthrough{{"Gas Oil Passthrough = 0.7"}}:::constant
-        gas_ammonia_cost_share{{"Gas Ammonia Cost Share = 0.8"}}:::constant
-        hormuz_gas_share{{"Hormuz Gas Share = 0.3"}}:::constant
-        hormuz_fertilizer_impact{{"Hormuz Fertilizer Impact = 0.5"}}:::constant
-        fertilizer_adjustment_speed{{"Fertilizer Adjustment Speed = 0.3"}}:::constant
-        naphtha_crack_ratio{{"Naphtha Crack Ratio = 0.85"}}:::constant
-        naphtha_adjustment_speed{{"Naphtha Adjustment Speed = 0.6"}}:::constant
-        crop_cycle_lag{{"Crop Cycle Lag = 4.0"}}:::constant
-        fertilizer_agri_passthrough{{"Fertilizer Agri Passthrough = 0.35"}}:::constant
-        agri_adjustment_speed{{"Agri Adjustment Speed = 0.15"}}:::constant
-        agri_direct_impact{{"Agri Direct Impact = 0.2"}}:::constant
-        food_weight_in_cpi{{"Food Weight In Cpi = 0.15"}}:::constant
-        security_anxiety[/"Security Anxiety"/]:::computed
-        net_hoarding_demand[/"Net Hoarding Demand"/]:::computed
-        base_demand_adjusted[/"Base Demand Adjusted"/]:::computed
-        effective_supply[/"Effective Supply"/]:::computed
-        effective_demand[/"Effective Demand"/]:::computed
-        supply_demand_gap[/"Supply Demand Gap"/]:::computed
-        spr_release_rate[/"Spr Release Rate"/]:::computed
-        jic_demand[/"Jic Demand"/]:::computed
-        jic_target[/"Jic Target"/]:::computed
-        supply_insecurity_level[/"Supply Insecurity Level"/]:::computed
-        mena_revenue_signal[/"Mena Revenue Signal"/]:::computed
-        de_dollarization_pressure[/"De Dollarization Pressure"/]:::computed
-        inflation_rate[/"Inflation Rate"/]:::computed
-        crowding_out_pressure[/"Crowding Out Pressure"/]:::computed
-        tightening_pressure_combined[/"Tightening Pressure Combined"/]:::computed
-        consumer_pain[/"Consumer Pain"/]:::computed
-        gdp_impact_index[/"Gdp Impact Index"/]:::computed
-        gas_price_index[/"Gas Price Index"/]:::computed
-        ammonia_cost_index[/"Ammonia Cost Index"/]:::computed
-        fertilizer_supply_factor[/"Fertilizer Supply Factor"/]:::computed
-        fertilizer_target[/"Fertilizer Target"/]:::computed
-        naphtha_target[/"Naphtha Target"/]:::computed
-        delayed_fertilizer_signal[/"Delayed Fertilizer Signal"/]:::computed
-        agri_supply_disruption[/"Agri Supply Disruption"/]:::computed
-        agri_target[/"Agri Target"/]:::computed
-        food_inflation_contribution[/"Food Inflation Contribution"/]:::computed
-        commodity_cascade_index[/"Commodity Cascade Index"/]:::computed
-    
-        supply_restoration_rate ==>|"+"| global_oil_supply
-        price_change_rate ==>|"+"| oil_price
-        hoarding_rate ==>|"+"| precautionary_inventory
-        precautionary_inventory ==>|"-"| destocking_rate
-        credit_recovery_rate ==>|"+"| western_credit_index
-        western_credit_index ==>|"-"| credit_tightening_rate
-        jic_ratchet_rate ==>|"+"| supply_chain_buffer
-        pressure_buildup_rate ==>|"+"| political_pressure
-        political_pressure ==>|"-"| pressure_relief_rate
-        fertilizer_price_change ==>|"+"| fertilizer_price_index
-        naphtha_price_change ==>|"+"| naphtha_price_index
-        agri_price_change ==>|"+"| agri_price_index
-    
-        world_demand_base -.-> supply_restoration_rate
-        strait_total_recovery_time -.-> supply_restoration_rate
-        price_adjustment_speed -.-> price_change_rate
-        world_demand_base -.-> price_change_rate
-        supply_demand_gap -.-> price_change_rate
-        security_anxiety -.-> hoarding_rate
-        world_demand_base -.-> hoarding_rate
-        hoarding_propensity -.-> hoarding_rate
-        destocking_rate_param -.-> destocking_rate
-        security_anxiety -.-> destocking_rate
-        jic_ratchet_speed -.-> jic_ratchet_rate
-        jic_target -.-> jic_ratchet_rate
-        consumer_pain -.-> pressure_buildup_rate
-        political_sensitivity_param -.-> pressure_buildup_rate
-        relief_decay_rate -.-> pressure_relief_rate
-        credit_mean_reversion_rate -.-> credit_recovery_rate
-        fertilizer_target -.-> fertilizer_price_change
-        fertilizer_adjustment_speed -.-> fertilizer_price_change
-        naphtha_adjustment_speed -.-> naphtha_price_change
-        naphtha_target -.-> naphtha_price_change
-        agri_target -.-> agri_price_change
-        agri_adjustment_speed -.-> agri_price_change
-        oil_price -.-> security_anxiety
-        anxiety_price_sensitivity -.-> security_anxiety
-        hoarding_rate -.-> net_hoarding_demand
-        destocking_rate -.-> net_hoarding_demand
-        world_demand_base -.-> base_demand_adjusted
-        demand_price_elasticity -.-> base_demand_adjusted
-        oil_price -.-> base_demand_adjusted
-        global_oil_supply -.-> effective_supply
-        spr_release_rate -.-> effective_supply
-        base_demand_adjusted -.-> effective_demand
-        net_hoarding_demand -.-> effective_demand
-        jic_demand -.-> effective_demand
-        effective_demand -.-> supply_demand_gap
-        effective_supply -.-> supply_demand_gap
-        spr_activation_coeff -.-> spr_release_rate
-        oil_price -.-> spr_release_rate
-        spr_trigger_price -.-> spr_release_rate
-        spr_max_rate -.-> spr_release_rate
-        world_demand_base -.-> jic_demand
-        supply_chain_buffer -.-> jic_demand
-        jic_demand_factor -.-> jic_demand
-        jic_max_increment -.-> jic_target
-        supply_insecurity_level -.-> jic_target
-        world_demand_base -.-> supply_insecurity_level
-        supply_demand_gap -.-> supply_insecurity_level
-        oil_price -.-> mena_revenue_signal
-        mena_supply_share -.-> mena_revenue_signal
-        credit_sensitivity_param -.-> de_dollarization_pressure
-        mena_revenue_signal -.-> de_dollarization_pressure
-        oil_inflation_passthrough -.-> inflation_rate
-        oil_price -.-> inflation_rate
-        base_inflation -.-> inflation_rate
-        food_inflation_contribution -.-> inflation_rate
-        base_inflation -.-> crowding_out_pressure
-        fiscal_sensitivity_param -.-> crowding_out_pressure
-        inflation_rate -.-> crowding_out_pressure
-        crowding_out_pressure -.-> tightening_pressure_combined
-        de_dollarization_pressure -.-> tightening_pressure_combined
-        consumer_exposure_param -.-> consumer_pain
-        oil_price -.-> consumer_pain
-        oil_price -.-> gdp_impact_index
-        oil_gdp_sensitivity -.-> gdp_impact_index
-        gdp_credit_sensitivity_param -.-> gdp_impact_index
-        western_credit_index -.-> gdp_impact_index
-        gas_oil_passthrough -.-> gas_price_index
-        hormuz_gas_share -.-> gas_price_index
-        oil_price -.-> gas_price_index
-        world_demand_base -.-> gas_price_index
-        global_oil_supply -.-> gas_price_index
-        gas_ammonia_cost_share -.-> ammonia_cost_index
-        gas_price_index -.-> ammonia_cost_index
-        global_oil_supply -.-> fertilizer_supply_factor
-        world_demand_base -.-> fertilizer_supply_factor
-        hormuz_fertilizer_impact -.-> fertilizer_supply_factor
-        fertilizer_supply_factor -.-> fertilizer_target
-        ammonia_cost_index -.-> fertilizer_target
-        oil_price -.-> naphtha_target
-        naphtha_crack_ratio -.-> naphtha_target
-        agri_direct_impact -.-> agri_supply_disruption
-        global_oil_supply -.-> agri_supply_disruption
-        world_demand_base -.-> agri_supply_disruption
-        delayed_fertilizer_signal -.-> agri_target
-        fertilizer_agri_passthrough -.-> agri_target
-        agri_supply_disruption -.-> agri_target
-        agri_price_index -.-> food_inflation_contribution
-        food_weight_in_cpi -.-> food_inflation_contribution
-        naphtha_price_index -.-> commodity_cascade_index
-        fertilizer_price_index -.-> commodity_cascade_index
-        agri_price_index -.-> commodity_cascade_index
-        """
-            ),
-            mo.Html("</div>"),
-            mo.md(
-                "*Boxes: stocks | Rounded: flows | Hexagons: parameters | Slanted: computed*"
-            ),
-        ]
-    )
-    return
-
-
-@app.cell
 def time_controls(mo):
     final_time = mo.ui.number(
-        value=100, start=1, stop=1000, step=1, label="Final Time"
+        value=18, start=1, stop=180, step=1, label="Final Time"
     )
     time_step = mo.ui.number(
-        value=1, start=0.1, stop=5.0, step=0.1, label="Time Step"
+        value=0.0625, start=0.1, stop=5.0, step=0.1, label="Time Step"
     )
     mo.hstack([final_time, time_step], justify="start", gap=1)
     return final_time, time_step
@@ -525,7 +296,7 @@ def parameter_controls(mo):
         label="Spr Activation Coeff (Mb/d per USD)",
     )
     demand_price_elasticity = mo.ui.slider(
-        value=-0.02, start=0, stop=-0.1, step=-0.0002,
+        value=-0.02, start=-0.1, stop=0, step=0.001,
         label="Demand Price Elasticity (dimensionless)",
     )
     credit_transmission_lag = mo.ui.slider(
@@ -745,41 +516,303 @@ def chart_controls(mo):
 
 
 @app.cell
-def stock_charts(go, mo, results, stock_selector):
-    _labels = {'global_oil_supply': 'Global Oil Supply (Mb/d)', 'oil_price': 'Oil Price (USD/bbl)', 'precautionary_inventory': 'Precautionary Inventory (Mb/d)', 'western_credit_index': 'Western Credit Index (index)', 'supply_chain_buffer': 'Supply Chain Buffer (dimensionless)', 'political_pressure': 'Political Pressure (index)', 'fertilizer_price_index': 'Fertilizer Price Index (index)', 'naphtha_price_index': 'Naphtha Price Index (index)', 'agri_price_index': 'Agri Price Index (index)'}
+def tabbed_content(aux_selector, flow_selector, go, mo, results, stock_selector):
+    # --- Analysis tab ---
+    analysis_content = mo.vstack([
+            mo.md("""
+## Hormuz Strait Closure — Macro + Commodity Cascade
+
+*Based on Carlyle "A Crude Awakening" (March 2026)*
+
+> "Oil feeds gas, gas feeds ammonia, ammonia feeds urea, naphtha feeds crackers, crackers feed polymers."
+
+### Four Oil-Layer Feedback Loops
+**R1 — Hoarding Multiplier**: price → anxiety → 2–3 Mb/d precautionary demand surge  
+**B1 — Infrastructure Recovery Lag**: first-order supply restoration; `strait_total_recovery_time` is the key dial  
+**B2 — Reversed Credit Channel**: DELAY3(6mo) de-dollarization + fiscal crowding-out, amplified by food inflation  
+**R2 — JIT→JIC Ratchet**: permanent structural demand step-up as every importer secures simultaneously  
+**B3 — SPR Release**: capped at 4.4 Mb/d (<25% of disruption)
+
+### Commodity Cascade (with lags)
+- **Gas** → oil passthrough (70%) + direct Hormuz LNG disruption (Qatar = 20% global LNG)
+- **Fertilizer/Urea** → gas is 80% of ammonia cost; Qatar + Iran supply cut; ~1–2 month lag
+- **Naphtha** → direct petroleum distillate; tracks crude with ~0.5–1 month lag; feedstock for plastics
+- **Agricultural Commodities** → fertilizer shortage via **4-month crop-cycle lag** + direct MENA agri disruption
+- **Feedback**: agri prices → food CPI (15%) → inflation → crowding-out → tighter credit (amplifies B2)
+
+### Baseline Results (6-month recovery)
+| Month | Oil | Gas idx | Fertilizer | Naphtha | Agri | Inflation | Credit | GDP |
+|-------|-----|---------|------------|---------|------|-----------|--------|-----|
+| t=0 | $90 | 1.054 | 1.000 | 1.000 | 1.000 | 3.0% | 100 | 1.00 |
+| t=6 | $110 | 1.179 | 1.140 | 1.178 | 1.018 | 10.1% | 97.1 | 0.954 |
+| t=12 | $118 | 1.227 | 1.184 | 1.296 | 1.038 | 13.0% | 84.2 | 0.890 |
+| t=18 | $120 | 1.235 | 1.193 | 1.330 | 1.054 | 13.8% | 67.9 | 0.822 |
+
+The **4-month agri lag** is key: food pain arrives just as markets think the crisis has passed.
+
+### Key Dial: `strait_total_recovery_time`
+- 3 months (quick): oil ~$105, credit holds, agri barely moves
+- 6 months (baseline): oil ~$120, fertilizer +19%, credit −32%
+- 12 months (mined): oil >$147 rising, credit collapses
+
+"""),
+    ])
+
+    # --- Model Structure tab ---
+    mermaid_diagram = mo.vstack([
+        mo.md("## Model Structure"),
+        mo.Html("""
+            <style>
+                .mermaid-container {
+                    width: 100%;
+                    height: 1200px;
+                    overflow: auto;
+                }
+                .mermaid-container svg {
+                    min-width: 1400px !important;
+                    min-height: 1200px !important;
+                }
+            </style>
+        """),
+        mo.Html("<div class='mermaid-container'>"),
+        mo.mermaid(
+            """
+    graph LR
+        classDef stock fill:#4a90d9,stroke:#2c5f8a,color:white,stroke-width:3px
+        classDef flow fill:#e8a838,stroke:#b8842c,color:white,stroke-width:2px
+        classDef constant fill:#7bc67e,stroke:#5a9d5c,color:white
+        classDef computed fill:#c084fc,stroke:#9333ea,color:white
+    
+        global_oil_supply["Global Oil Supply"]:::stock
+        oil_price["Oil Price"]:::stock
+        precautionary_inventory["Precautionary Inventory"]:::stock
+        western_credit_index["Western Credit Index"]:::stock
+        supply_chain_buffer["Supply Chain Buffer"]:::stock
+        political_pressure["Political Pressure"]:::stock
+        fertilizer_price_index["Fertilizer Price Index"]:::stock
+        naphtha_price_index["Naphtha Price Index"]:::stock
+        agri_price_index["Agri Price Index"]:::stock
+        supply_restoration_rate(["Supply Restoration Rate"]):::flow
+        price_change_rate(["Price Change Rate"]):::flow
+        hoarding_rate(["Hoarding Rate"]):::flow
+        destocking_rate(["Destocking Rate"]):::flow
+        jic_ratchet_rate(["Jic Ratchet Rate"]):::flow
+        pressure_buildup_rate(["Pressure Buildup Rate"]):::flow
+        pressure_relief_rate(["Pressure Relief Rate"]):::flow
+        credit_tightening_rate(["Credit Tightening Rate"]):::flow
+        credit_recovery_rate(["Credit Recovery Rate"]):::flow
+        fertilizer_price_change(["Fertilizer Price Change"]):::flow
+        naphtha_price_change(["Naphtha Price Change"]):::flow
+        agri_price_change(["Agri Price Change"]):::flow
+        world_demand_base{{"World Demand Base = 103.0"}}:::constant
+        strait_total_recovery_time{{"Strait Total Recovery Time = 6.0"}}:::constant
+        price_adjustment_speed{{"Price Adjustment Speed = 0.3"}}:::constant
+        anxiety_price_sensitivity{{"Anxiety Price Sensitivity = 1.5"}}:::constant
+        hoarding_propensity{{"Hoarding Propensity = 0.025"}}:::constant
+        destocking_rate_param{{"Destocking Rate Param = 0.15"}}:::constant
+        spr_max_rate{{"Spr Max Rate = 4.4"}}:::constant
+        spr_trigger_price{{"Spr Trigger Price = 100.0"}}:::constant
+        spr_activation_coeff{{"Spr Activation Coeff = 0.04"}}:::constant
+        demand_price_elasticity{{"Demand Price Elasticity = -0.02"}}:::constant
+        credit_transmission_lag{{"Credit Transmission Lag = 6.0"}}:::constant
+        credit_sensitivity_param{{"Credit Sensitivity Param = 0.3"}}:::constant
+        fiscal_sensitivity_param{{"Fiscal Sensitivity Param = 0.2"}}:::constant
+        gdp_credit_sensitivity_param{{"Gdp Credit Sensitivity Param = 0.4"}}:::constant
+        oil_gdp_sensitivity{{"Oil Gdp Sensitivity = 0.15"}}:::constant
+        credit_mean_reversion_rate{{"Credit Mean Reversion Rate = 0.05"}}:::constant
+        jic_ratchet_speed{{"Jic Ratchet Speed = 0.08"}}:::constant
+        jic_max_increment{{"Jic Max Increment = 0.04"}}:::constant
+        jic_demand_factor{{"Jic Demand Factor = 0.03"}}:::constant
+        political_sensitivity_param{{"Political Sensitivity Param = 0.5"}}:::constant
+        relief_decay_rate{{"Relief Decay Rate = 0.1"}}:::constant
+        consumer_exposure_param{{"Consumer Exposure Param = 1.0"}}:::constant
+        mena_supply_share{{"Mena Supply Share = 0.3"}}:::constant
+        oil_inflation_passthrough{{"Oil Inflation Passthrough = 0.3"}}:::constant
+        base_inflation{{"Base Inflation = 0.03"}}:::constant
+        hormuz_disruption_mbd{{"Hormuz Disruption Mbd = 18.5"}}:::constant
+        gas_oil_passthrough{{"Gas Oil Passthrough = 0.7"}}:::constant
+        gas_ammonia_cost_share{{"Gas Ammonia Cost Share = 0.8"}}:::constant
+        hormuz_gas_share{{"Hormuz Gas Share = 0.3"}}:::constant
+        hormuz_fertilizer_impact{{"Hormuz Fertilizer Impact = 0.5"}}:::constant
+        fertilizer_adjustment_speed{{"Fertilizer Adjustment Speed = 0.3"}}:::constant
+        naphtha_crack_ratio{{"Naphtha Crack Ratio = 0.85"}}:::constant
+        naphtha_adjustment_speed{{"Naphtha Adjustment Speed = 0.6"}}:::constant
+        crop_cycle_lag{{"Crop Cycle Lag = 4.0"}}:::constant
+        fertilizer_agri_passthrough{{"Fertilizer Agri Passthrough = 0.35"}}:::constant
+        agri_adjustment_speed{{"Agri Adjustment Speed = 0.15"}}:::constant
+        agri_direct_impact{{"Agri Direct Impact = 0.2"}}:::constant
+        food_weight_in_cpi{{"Food Weight In Cpi = 0.15"}}:::constant
+        security_anxiety[/"Security Anxiety"/]:::computed
+        net_hoarding_demand[/"Net Hoarding Demand"/]:::computed
+        base_demand_adjusted[/"Base Demand Adjusted"/]:::computed
+        effective_supply[/"Effective Supply"/]:::computed
+        effective_demand[/"Effective Demand"/]:::computed
+        supply_demand_gap[/"Supply Demand Gap"/]:::computed
+        spr_release_rate[/"Spr Release Rate"/]:::computed
+        jic_demand[/"Jic Demand"/]:::computed
+        jic_target[/"Jic Target"/]:::computed
+        supply_insecurity_level[/"Supply Insecurity Level"/]:::computed
+        mena_revenue_signal[/"Mena Revenue Signal"/]:::computed
+        de_dollarization_pressure[/"De Dollarization Pressure"/]:::computed
+        inflation_rate[/"Inflation Rate"/]:::computed
+        crowding_out_pressure[/"Crowding Out Pressure"/]:::computed
+        tightening_pressure_combined[/"Tightening Pressure Combined"/]:::computed
+        consumer_pain[/"Consumer Pain"/]:::computed
+        gdp_impact_index[/"Gdp Impact Index"/]:::computed
+        gas_price_index[/"Gas Price Index"/]:::computed
+        ammonia_cost_index[/"Ammonia Cost Index"/]:::computed
+        fertilizer_supply_factor[/"Fertilizer Supply Factor"/]:::computed
+        fertilizer_target[/"Fertilizer Target"/]:::computed
+        naphtha_target[/"Naphtha Target"/]:::computed
+        delayed_fertilizer_signal[/"Delayed Fertilizer Signal"/]:::computed
+        agri_supply_disruption[/"Agri Supply Disruption"/]:::computed
+        agri_target[/"Agri Target"/]:::computed
+        food_inflation_contribution[/"Food Inflation Contribution"/]:::computed
+        commodity_cascade_index[/"Commodity Cascade Index"/]:::computed
+    
+        supply_restoration_rate ==>|"+"| global_oil_supply
+        price_change_rate ==>|"+"| oil_price
+        hoarding_rate ==>|"+"| precautionary_inventory
+        precautionary_inventory ==>|"-"| destocking_rate
+        credit_recovery_rate ==>|"+"| western_credit_index
+        western_credit_index ==>|"-"| credit_tightening_rate
+        jic_ratchet_rate ==>|"+"| supply_chain_buffer
+        pressure_buildup_rate ==>|"+"| political_pressure
+        political_pressure ==>|"-"| pressure_relief_rate
+        fertilizer_price_change ==>|"+"| fertilizer_price_index
+        naphtha_price_change ==>|"+"| naphtha_price_index
+        agri_price_change ==>|"+"| agri_price_index
+    
+        strait_total_recovery_time -.-> supply_restoration_rate
+        world_demand_base -.-> supply_restoration_rate
+        price_adjustment_speed -.-> price_change_rate
+        supply_demand_gap -.-> price_change_rate
+        world_demand_base -.-> price_change_rate
+        hoarding_propensity -.-> hoarding_rate
+        security_anxiety -.-> hoarding_rate
+        world_demand_base -.-> hoarding_rate
+        security_anxiety -.-> destocking_rate
+        destocking_rate_param -.-> destocking_rate
+        jic_target -.-> jic_ratchet_rate
+        jic_ratchet_speed -.-> jic_ratchet_rate
+        consumer_pain -.-> pressure_buildup_rate
+        political_sensitivity_param -.-> pressure_buildup_rate
+        relief_decay_rate -.-> pressure_relief_rate
+        credit_mean_reversion_rate -.-> credit_recovery_rate
+        fertilizer_target -.-> fertilizer_price_change
+        fertilizer_adjustment_speed -.-> fertilizer_price_change
+        naphtha_adjustment_speed -.-> naphtha_price_change
+        naphtha_target -.-> naphtha_price_change
+        agri_adjustment_speed -.-> agri_price_change
+        agri_target -.-> agri_price_change
+        oil_price -.-> security_anxiety
+        anxiety_price_sensitivity -.-> security_anxiety
+        destocking_rate -.-> net_hoarding_demand
+        hoarding_rate -.-> net_hoarding_demand
+        demand_price_elasticity -.-> base_demand_adjusted
+        oil_price -.-> base_demand_adjusted
+        world_demand_base -.-> base_demand_adjusted
+        global_oil_supply -.-> effective_supply
+        spr_release_rate -.-> effective_supply
+        base_demand_adjusted -.-> effective_demand
+        net_hoarding_demand -.-> effective_demand
+        jic_demand -.-> effective_demand
+        effective_supply -.-> supply_demand_gap
+        effective_demand -.-> supply_demand_gap
+        spr_trigger_price -.-> spr_release_rate
+        oil_price -.-> spr_release_rate
+        spr_activation_coeff -.-> spr_release_rate
+        spr_max_rate -.-> spr_release_rate
+        supply_chain_buffer -.-> jic_demand
+        jic_demand_factor -.-> jic_demand
+        world_demand_base -.-> jic_demand
+        supply_insecurity_level -.-> jic_target
+        jic_max_increment -.-> jic_target
+        supply_demand_gap -.-> supply_insecurity_level
+        world_demand_base -.-> supply_insecurity_level
+        oil_price -.-> mena_revenue_signal
+        mena_supply_share -.-> mena_revenue_signal
+        mena_revenue_signal -.-> de_dollarization_pressure
+        credit_sensitivity_param -.-> de_dollarization_pressure
+        oil_price -.-> inflation_rate
+        food_inflation_contribution -.-> inflation_rate
+        base_inflation -.-> inflation_rate
+        oil_inflation_passthrough -.-> inflation_rate
+        fiscal_sensitivity_param -.-> crowding_out_pressure
+        base_inflation -.-> crowding_out_pressure
+        inflation_rate -.-> crowding_out_pressure
+        de_dollarization_pressure -.-> tightening_pressure_combined
+        crowding_out_pressure -.-> tightening_pressure_combined
+        oil_price -.-> consumer_pain
+        consumer_exposure_param -.-> consumer_pain
+        western_credit_index -.-> gdp_impact_index
+        oil_gdp_sensitivity -.-> gdp_impact_index
+        oil_price -.-> gdp_impact_index
+        gdp_credit_sensitivity_param -.-> gdp_impact_index
+        hormuz_gas_share -.-> gas_price_index
+        oil_price -.-> gas_price_index
+        gas_oil_passthrough -.-> gas_price_index
+        global_oil_supply -.-> gas_price_index
+        world_demand_base -.-> gas_price_index
+        gas_ammonia_cost_share -.-> ammonia_cost_index
+        gas_price_index -.-> ammonia_cost_index
+        global_oil_supply -.-> fertilizer_supply_factor
+        hormuz_fertilizer_impact -.-> fertilizer_supply_factor
+        world_demand_base -.-> fertilizer_supply_factor
+        ammonia_cost_index -.-> fertilizer_target
+        fertilizer_supply_factor -.-> fertilizer_target
+        oil_price -.-> naphtha_target
+        global_oil_supply -.-> agri_supply_disruption
+        agri_direct_impact -.-> agri_supply_disruption
+        world_demand_base -.-> agri_supply_disruption
+        fertilizer_agri_passthrough -.-> agri_target
+        delayed_fertilizer_signal -.-> agri_target
+        agri_supply_disruption -.-> agri_target
+        food_weight_in_cpi -.-> food_inflation_contribution
+        agri_price_index -.-> food_inflation_contribution
+        fertilizer_price_index -.-> commodity_cascade_index
+        naphtha_price_index -.-> commodity_cascade_index
+        agri_price_index -.-> commodity_cascade_index
+        """
+        ),
+        mo.Html("</div>"),
+        mo.md("*Boxes: stocks | Rounded: flows | Hexagons: parameters | Slanted: computed*"),
+    ])
+
+    # --- Simulation tab ---
+    _stock_labels = {'global_oil_supply': 'Global Oil Supply (Mb/d)', 'oil_price': 'Oil Price (USD/bbl)', 'precautionary_inventory': 'Precautionary Inventory (Mb/d)', 'western_credit_index': 'Western Credit Index (index)', 'supply_chain_buffer': 'Supply Chain Buffer (dimensionless)', 'political_pressure': 'Political Pressure (index)', 'fertilizer_price_index': 'Fertilizer Price Index (index)', 'naphtha_price_index': 'Naphtha Price Index (index)', 'agri_price_index': 'Agri Price Index (index)'}
     fig_stocks = go.Figure()
     for _key in stock_selector.value:
-        fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_labels.get(_key, _key)))
+        fig_stocks.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_stock_labels.get(_key, _key)))
     fig_stocks.update_layout(title="Stock Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
-    mo.vstack([stock_selector, mo.ui.plotly(fig_stocks)])
-    return
 
-
-@app.cell
-def flow_charts(go, mo, results, flow_selector):
-    _labels = {'supply_restoration_rate': 'Supply Restoration Rate (Mb/d/month)', 'price_change_rate': 'Price Change Rate (USD/bbl/month)', 'hoarding_rate': 'Hoarding Rate (Mb/d)', 'destocking_rate': 'Destocking Rate (Mb/d)', 'jic_ratchet_rate': 'Jic Ratchet Rate (dimensionless/month)', 'pressure_buildup_rate': 'Pressure Buildup Rate (index/month)', 'pressure_relief_rate': 'Pressure Relief Rate (index/month)', 'credit_tightening_rate': 'Credit Tightening Rate (index/month)', 'credit_recovery_rate': 'Credit Recovery Rate (index/month)', 'fertilizer_price_change': 'Fertilizer Price Change (index/month)', 'naphtha_price_change': 'Naphtha Price Change (index/month)', 'agri_price_change': 'Agri Price Change (index/month)'}
+    _flow_labels = {'supply_restoration_rate': 'Supply Restoration Rate (Mb/d/month)', 'price_change_rate': 'Price Change Rate (USD/bbl/month)', 'hoarding_rate': 'Hoarding Rate (Mb/d)', 'destocking_rate': 'Destocking Rate (Mb/d)', 'jic_ratchet_rate': 'Jic Ratchet Rate (dimensionless/month)', 'pressure_buildup_rate': 'Pressure Buildup Rate (index/month)', 'pressure_relief_rate': 'Pressure Relief Rate (index/month)', 'credit_tightening_rate': 'Credit Tightening Rate (index/month)', 'credit_recovery_rate': 'Credit Recovery Rate (index/month)', 'fertilizer_price_change': 'Fertilizer Price Change (index/month)', 'naphtha_price_change': 'Naphtha Price Change (index/month)', 'agri_price_change': 'Agri Price Change (index/month)'}
     fig_flows = go.Figure()
     for _key in flow_selector.value:
-        fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_labels.get(_key, _key)))
+        fig_flows.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_flow_labels.get(_key, _key)))
     fig_flows.update_layout(title="Flow Variables Over Time", xaxis_title="Time", yaxis_title="Rate", template="plotly_white")
-    mo.vstack([flow_selector, mo.ui.plotly(fig_flows)])
-    return
 
-
-@app.cell
-def auxiliary_charts(go, mo, results, aux_selector):
-    _labels = {'security_anxiety': 'Security Anxiety (dimensionless)', 'net_hoarding_demand': 'Net Hoarding Demand (Mb/d)', 'base_demand_adjusted': 'Base Demand Adjusted (Mb/d)', 'effective_supply': 'Effective Supply (Mb/d)', 'effective_demand': 'Effective Demand (Mb/d)', 'supply_demand_gap': 'Supply Demand Gap (Mb/d)', 'spr_release_rate': 'Spr Release Rate (Mb/d)', 'jic_demand': 'Jic Demand (Mb/d)', 'jic_target': 'Jic Target (dimensionless)', 'supply_insecurity_level': 'Supply Insecurity Level (dimensionless)', 'mena_revenue_signal': 'Mena Revenue Signal (USD/bbl * fraction)', 'de_dollarization_pressure': 'De Dollarization Pressure (index/month)', 'inflation_rate': 'Inflation Rate (fraction)', 'crowding_out_pressure': 'Crowding Out Pressure (index/month)', 'tightening_pressure_combined': 'Tightening Pressure Combined (index/month)', 'consumer_pain': 'Consumer Pain (dimensionless)', 'gdp_impact_index': 'Gdp Impact Index (dimensionless)', 'gas_price_index': 'Gas Price Index (index)', 'ammonia_cost_index': 'Ammonia Cost Index (index)', 'fertilizer_supply_factor': 'Fertilizer Supply Factor (dimensionless)', 'fertilizer_target': 'Fertilizer Target (index)', 'naphtha_target': 'Naphtha Target (index)', 'delayed_fertilizer_signal': 'Delayed Fertilizer Signal (index)', 'agri_supply_disruption': 'Agri Supply Disruption (dimensionless)', 'agri_target': 'Agri Target (index)', 'food_inflation_contribution': 'Food Inflation Contribution (fraction)', 'commodity_cascade_index': 'Commodity Cascade Index (index)'}
+    _aux_labels = {'security_anxiety': 'Security Anxiety (dimensionless)', 'net_hoarding_demand': 'Net Hoarding Demand (Mb/d)', 'base_demand_adjusted': 'Base Demand Adjusted (Mb/d)', 'effective_supply': 'Effective Supply (Mb/d)', 'effective_demand': 'Effective Demand (Mb/d)', 'supply_demand_gap': 'Supply Demand Gap (Mb/d)', 'spr_release_rate': 'Spr Release Rate (Mb/d)', 'jic_demand': 'Jic Demand (Mb/d)', 'jic_target': 'Jic Target (dimensionless)', 'supply_insecurity_level': 'Supply Insecurity Level (dimensionless)', 'mena_revenue_signal': 'Mena Revenue Signal (USD/bbl * fraction)', 'de_dollarization_pressure': 'De Dollarization Pressure (index/month)', 'inflation_rate': 'Inflation Rate (fraction)', 'crowding_out_pressure': 'Crowding Out Pressure (index/month)', 'tightening_pressure_combined': 'Tightening Pressure Combined (index/month)', 'consumer_pain': 'Consumer Pain (dimensionless)', 'gdp_impact_index': 'Gdp Impact Index (dimensionless)', 'gas_price_index': 'Gas Price Index (index)', 'ammonia_cost_index': 'Ammonia Cost Index (index)', 'fertilizer_supply_factor': 'Fertilizer Supply Factor (dimensionless)', 'fertilizer_target': 'Fertilizer Target (index)', 'naphtha_target': 'Naphtha Target (index)', 'delayed_fertilizer_signal': 'Delayed Fertilizer Signal (index)', 'agri_supply_disruption': 'Agri Supply Disruption (dimensionless)', 'agri_target': 'Agri Target (index)', 'food_inflation_contribution': 'Food Inflation Contribution (fraction)', 'commodity_cascade_index': 'Commodity Cascade Index (index)'}
     fig_aux = go.Figure()
     for _key in aux_selector.value:
-        fig_aux.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_labels.get(_key, _key)))
+        fig_aux.add_trace(go.Scatter(x=results.index, y=results[_key], mode="lines", name=_aux_labels.get(_key, _key)))
     fig_aux.update_layout(title="Computed Auxiliary Variables Over Time", xaxis_title="Time", yaxis_title="Value", template="plotly_white")
-    mo.vstack([aux_selector, mo.ui.plotly(fig_aux)])
-    return
 
+    simulation_content = mo.vstack([
+        stock_selector,
+        mo.ui.plotly(fig_stocks),
+        flow_selector,
+        mo.ui.plotly(fig_flows),
+        aux_selector,
+        mo.ui.plotly(fig_aux),
+        mo.ui.table(results.reset_index().rename(columns={"time": "Time"})),
+    ])
 
-@app.cell
-def data_table(mo, results):
-    mo.ui.table(results.reset_index().rename(columns={"time": "Time"}))
+    mo.ui.tabs({
+        "Simulation": simulation_content,
+        "Analysis": analysis_content,
+        "Model Structure": mermaid_diagram,
+    })
     return
 
 
