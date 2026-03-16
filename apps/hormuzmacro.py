@@ -239,7 +239,7 @@ def parameter_controls(mo):
         label="Spr Activation Coeff (Mb/d per USD)",
     )
     demand_price_elasticity = mo.ui.slider(
-        value=-0.02, start=0, stop=-0.1, step=-0.0002,
+        value=-0.02, start=-0.1, stop=0, step=0.001,
         label="Demand Price Elasticity (dimensionless)",
     )
     credit_transmission_lag = mo.ui.slider(
