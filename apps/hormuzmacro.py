@@ -251,7 +251,7 @@ def time_controls(mo):
         value=18, start=1, stop=180, step=1, label="Final Time"
     )
     time_step = mo.ui.number(
-        value=0.0625, start=0.1, stop=5.0, step=0.1, label="Time Step"
+        value=0.0625, start=0.03125, stop=5.0, step=0.03125, label="Time Step"
     )
     mo.hstack([final_time, time_step], justify="start", gap=1)
     return final_time, time_step
