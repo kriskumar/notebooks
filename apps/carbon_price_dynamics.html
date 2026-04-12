@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="./favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" href="./assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" href="./assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="./assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="./assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>carbon price dynamics</title>
+    <script type="module" crossorigin src="./assets/index-y6osgSWB.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/preload-helper-D2MJg03u.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-LvLJmgfZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-Bj1aDYRI.js">
+    <link rel="modulepreload" crossorigin href="./assets/compiler-runtime-B3qBwwSJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/jsx-runtime-Blw4afVn.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEventListener-DGjKht0c.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-JieDVWC_.js">
+    <link rel="modulepreload" crossorigin href="./assets/precisionRound-CU2C3Vxx.js">
+    <link rel="modulepreload" crossorigin href="./assets/defaultLocale-BLne0bXb.js">
+    <link rel="modulepreload" crossorigin href="./assets/vega-loader.browser-DXARUlxo.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-BZwMGX81.js">
+    <link rel="modulepreload" crossorigin href="./assets/clsx-XrBBnd7s.js">
+    <link rel="modulepreload" crossorigin href="./assets/cn-DYvqRARy.js">
+    <link rel="modulepreload" crossorigin href="./assets/badge-CwbVR_sO.js">
+    <link rel="modulepreload" crossorigin href="./assets/button-COIw2x9i.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-dom-CSu739Rf.js">
+    <link rel="modulepreload" crossorigin href="./assets/fullscreen-k58KVlT-.js">
+    <link rel="modulepreload" crossorigin href="./assets/menu-items-Dtw5N98_.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-sZgjGm4S.js">
+    <link rel="modulepreload" crossorigin href="./assets/createLucideIcon-w-Qo9n0R.js">
+    <link rel="modulepreload" crossorigin href="./assets/check-B-sKate2.js">
+    <link rel="modulepreload" crossorigin href="./assets/x-Bv2rCglF.js">
+    <link rel="modulepreload" crossorigin href="./assets/select-BwwUWhww.js">
+    <link rel="modulepreload" crossorigin href="./assets/tooltip-DmqhBBs6.js">
+    <link rel="modulepreload" crossorigin href="./assets/use-toast-BDYuj3zG.js">
+    <link rel="modulepreload" crossorigin href="./assets/useEvent-D91BmmQi.js">
+    <link rel="modulepreload" crossorigin href="./assets/invariant-CkiqGLcK.js">
+    <link rel="modulepreload" crossorigin href="./assets/isObject-DvLSfCY5.js">
+    <link rel="modulepreload" crossorigin href="./assets/isArrayLikeObject-ODovYgPQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/merge-BOaDhCTH.js">
+    <link rel="modulepreload" crossorigin href="./assets/zod-H_cgTO0M.js">
+    <link rel="modulepreload" crossorigin href="./assets/utils-8btzWeZg.js">
+    <link rel="modulepreload" crossorigin href="./assets/Deferred-DxQeE5uh.js">
+    <link rel="modulepreload" crossorigin href="./assets/uuid-DXdzqzcr.js">
+    <link rel="modulepreload" crossorigin href="./assets/DeferredRequestRegistry-BLWK1eKa.js">
+    <link rel="modulepreload" crossorigin href="./assets/constants-tOPFFcLZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/session-DdnWW30b.js">
+    <link rel="modulepreload" crossorigin href="./assets/config-DoZCLcOb.js">
+    <link rel="modulepreload" crossorigin href="./assets/requests-9-v2bhoi.js">
+    <link rel="modulepreload" crossorigin href="./assets/useLifecycle-N3bfh_O1.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNonce-CbdaHKzX.js">
+    <link rel="modulepreload" crossorigin href="./assets/useTheme-DCDmxPD0.js">
+    <link rel="modulepreload" crossorigin href="./assets/arrays-DAC2orgH.js">
+    <link rel="modulepreload" crossorigin href="./assets/strings-pfr2N700.js">
+    <link rel="modulepreload" crossorigin href="./assets/once-hq2TLzOp.js">
+    <link rel="modulepreload" crossorigin href="./assets/capabilities-BmGdj50E.js">
+    <link rel="modulepreload" crossorigin href="./assets/createReducer-CYlwteGD.js">
+    <link rel="modulepreload" crossorigin href="./assets/paths-BzSgteR-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-VwkX7yeV.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BNTOYRCs.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-DZJfxwLb.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CxquLoAZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-Dnlw22ji.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-4lB-oR9j.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BvlMLwcr.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-CgYlATe-.js">
+    <link rel="modulepreload" crossorigin href="./assets/dist-BPkOpnKv.js">
+    <link rel="modulepreload" crossorigin href="./assets/stex-jWatZkll.js">
+    <link rel="modulepreload" crossorigin href="./assets/toDate-BGIVWsZ9.js">
+    <link rel="modulepreload" crossorigin href="./assets/purify.es-BFDc-_i_.js">
+    <link rel="modulepreload" crossorigin href="./assets/cjs-D5tzp-Y6.js">
+    <link rel="modulepreload" crossorigin href="./assets/isSymbol-BT6B8Bon.js">
+    <link rel="modulepreload" crossorigin href="./assets/toNumber-BvwE1TMv.js">
+    <link rel="modulepreload" crossorigin href="./assets/now-DNX1lT2d.js">
+    <link rel="modulepreload" crossorigin href="./assets/debounce-BbSyBDA8.js">
+    <link rel="modulepreload" crossorigin href="./assets/database-zap-BxfYZ6ML.js">
+    <link rel="modulepreload" crossorigin href="./assets/main-BNL5rxQw.js">
+    <link rel="modulepreload" crossorigin href="./assets/cells-BqYYXi6G.js">
+    <link rel="modulepreload" crossorigin href="./assets/ErrorBoundary-CxTq44MI.js">
+    <link rel="modulepreload" crossorigin href="./assets/kbd-BUtlbGdu.js">
+    <link rel="modulepreload" crossorigin href="./assets/useInstallPackage-CeM6oPsT.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-dialog-C2mTH3GM.js">
+    <link rel="modulepreload" crossorigin href="./assets/dialog-H-hXtEOq.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDebounce-LVL1r3-M.js">
+    <link rel="modulepreload" crossorigin href="./assets/numbers--nDjbAPa.js">
+    <link rel="modulepreload" crossorigin href="./assets/SSRProvider-D3zWcDme.js">
+    <link rel="modulepreload" crossorigin href="./assets/context-DGqo1TbK.js">
+    <link rel="modulepreload" crossorigin href="./assets/useNumberFormatter-wQU1z0W_.js">
+    <link rel="modulepreload" crossorigin href="./assets/usePress-BXMIcLWP.js">
+    <link rel="modulepreload" crossorigin href="./assets/input-DNCT6U6R.js">
+    <link rel="modulepreload" crossorigin href="./assets/ImperativeModal-hsPVDTG-.js">
+    <link rel="modulepreload" crossorigin href="./assets/cell-link-CRkrHl-y.js">
+    <link rel="modulepreload" crossorigin href="./assets/multi-map-MSuUqmbC.js">
+    <link rel="modulepreload" crossorigin href="./assets/alert-DF3HbVtk.js">
+    <link rel="modulepreload" crossorigin href="./assets/chevron-right-CgvDWFE3.js">
+    <link rel="modulepreload" crossorigin href="./assets/dropdown-menu-DrHAuMTb.js">
+    <link rel="modulepreload" crossorigin href="./assets/links-DOybeRem.js">
+    <link rel="modulepreload" crossorigin href="./assets/useRunCells-DFYAOTWd.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-Bizk-4hH.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-DFMsQ6MJ.js">
+    <link rel="modulepreload" crossorigin href="./assets/copy-icon-Ci08KCdY.js">
+    <link rel="modulepreload" crossorigin href="./assets/RenderHTML-CM3WMmA8.js">
+    <link rel="modulepreload" crossorigin href="./assets/datasource-COFRe84u.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-DPomuurt.js">
+    <link rel="modulepreload" crossorigin href="./assets/sparkles-B79Qf6ma.js">
+    <link rel="modulepreload" crossorigin href="./assets/MarimoErrorOutput-Bmp8DLLo.js">
+    <link rel="modulepreload" crossorigin href="./assets/spinner-C5wIpWgQ.js">
+    <link rel="modulepreload" crossorigin href="./assets/html-to-image-DGqJ93hW.js">
+    <link rel="modulepreload" crossorigin href="./assets/focus-DzMo6UAI.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAsyncData-aCoWDe-l.js">
+    <link rel="modulepreload" crossorigin href="./assets/LazyAnyLanguageCodeMirror-CsrwfW0n.js">
+    <link rel="modulepreload" crossorigin href="./assets/micromark-factory-space-DzSMahmM.js">
+    <link rel="modulepreload" crossorigin href="./assets/chunk-5FQGJX7Z-Cyc7d5AB.js">
+    <link rel="modulepreload" crossorigin href="./assets/markdown-renderer-DNANigO8.js">
+    <link rel="modulepreload" crossorigin href="./assets/command-DnzBp4l4.js">
+    <link rel="modulepreload" crossorigin href="./assets/popover-AtoFZ7i4.js">
+    <link rel="modulepreload" crossorigin href="./assets/errors-CZb6hI2x.js">
+    <link rel="modulepreload" crossorigin href="./assets/download-5XbM3TL_.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-B03CpBmt.js">
+    <link rel="modulepreload" crossorigin href="./assets/useIframeCapabilities-C8jvQ1Lj.js">
+    <link rel="modulepreload" crossorigin href="./assets/error-banner-frvr6JXK.js">
+    <link rel="modulepreload" crossorigin href="./assets/formats-BQHP_yQk.js">
+    <link rel="modulepreload" crossorigin href="./assets/en-US-JRtp5zfw.js">
+    <link rel="modulepreload" crossorigin href="./assets/isValid-U-UFA9KI.js">
+    <link rel="modulepreload" crossorigin href="./assets/dates-stqTIkXD.js">
+    <link rel="modulepreload" crossorigin href="./assets/maps-B4xARV9R.js">
+    <link rel="modulepreload" crossorigin href="./assets/extends-Co37_JfG.js">
+    <link rel="modulepreload" crossorigin href="./assets/emotion-is-prop-valid.esm-DYxi7n2b.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDateFormatter-BEz9SEXo.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-icons.esm-BUYTQ32a.js">
+    <link rel="modulepreload" crossorigin href="./assets/toFinite-2vTWYoIX.js">
+    <link rel="modulepreload" crossorigin href="./assets/range-D-0CV4c0.js">
+    <link rel="modulepreload" crossorigin href="./assets/table-qC3alE1r.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-DidENKDy.js">
+    <link rel="modulepreload" crossorigin href="./assets/message-circle-DiHwtSG8.js">
+    <link rel="modulepreload" crossorigin href="./assets/react-resizable-panels.browser.esm-BUNcfKXO.js">
+    <link rel="modulepreload" crossorigin href="./assets/JsonOutput-CavtrueA.js">
+    <link rel="modulepreload" crossorigin href="./assets/chart-no-axes-column-CsXoiEZx.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-function-BecUoMho.js">
+    <link rel="modulepreload" crossorigin href="./assets/spec-DqqZbNbU.js">
+    <link rel="modulepreload" crossorigin href="./assets/ellipsis-vertical-DEH0lwkn.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-cw-CiOe0azG.js">
+    <link rel="modulepreload" crossorigin href="./assets/components-DKHyHZBv.js">
+    <link rel="modulepreload" crossorigin href="./assets/column-preview-AfcgbFG_.js">
+    <link rel="modulepreload" crossorigin href="./assets/icons-DlzgV4KY.js">
+    <link rel="modulepreload" crossorigin href="./assets/floating-outline-XObNWtN8.js">
+    <link rel="modulepreload" crossorigin href="./assets/useAddCell-B6yUY_RG.js">
+    <link rel="modulepreload" crossorigin href="./assets/objectWithoutPropertiesLoose-smPWkHxB.js">
+    <link rel="modulepreload" crossorigin href="./assets/esm-BqofWdD5.js">
+    <link rel="modulepreload" crossorigin href="./assets/eye-off-DgRJ-xBZ.js">
+    <link rel="modulepreload" crossorigin href="./assets/plus-BYq_Btg-.js">
+    <link rel="modulepreload" crossorigin href="./assets/readonly-python-code-CI_b818F.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-headphone-5_PGMxRL.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-l37OnSN4.js">
+    <link rel="modulepreload" crossorigin href="./assets/image-BgkzrnsX.js">
+    <link rel="modulepreload" crossorigin href="./assets/file-icons-Bj5YoM7H.js">
+    <link rel="modulepreload" crossorigin href="./assets/switch-YkPg_CVc.js">
+    <link rel="modulepreload" crossorigin href="./assets/events-Qeh-bHlj.js">
+    <link rel="modulepreload" crossorigin href="./assets/globals-Bu6OEURn.js">
+    <link rel="modulepreload" crossorigin href="./assets/share-0LPgOyiW.js">
+    <link rel="modulepreload" crossorigin href="./assets/blob-CTort_or.js">
+    <link rel="modulepreload" crossorigin href="./assets/memoize-BwAF2XN5.js">
+    <link rel="modulepreload" crossorigin href="./assets/get-D7jeR2wg.js">
+    <link rel="modulepreload" crossorigin href="./assets/_baseSet-49dbm-yb.js">
+    <link rel="modulepreload" crossorigin href="./assets/state-D1n-olwf.js">
+    <link rel="modulepreload" crossorigin href="./assets/label-C89F4v17.js">
+    <link rel="modulepreload" crossorigin href="./assets/textarea-CS2o3y4W.js">
+    <link rel="modulepreload" crossorigin href="./assets/refresh-ccw-CfYqAbmq.js">
+    <link rel="modulepreload" crossorigin href="./assets/trash-2-DunI72kV.js">
+    <link rel="modulepreload" crossorigin href="./assets/form-BJ6VFU8l.js">
+    <link rel="modulepreload" crossorigin href="./assets/renderShortcut-DrDh2657.js">
+    <link rel="modulepreload" crossorigin href="./assets/field-DaQqUJ5I.js">
+    <link rel="modulepreload" crossorigin href="./assets/RSPContexts-DzigvqmT.js">
+    <link rel="modulepreload" crossorigin href="./assets/useBoolean-Dk1Mb_so.js">
+    <link rel="modulepreload" crossorigin href="./assets/useDeepCompareMemoize-D0WTlCXt.js">
+    <link rel="modulepreload" crossorigin href="./assets/types-BteCqkNg.js">
+    <link rel="modulepreload" crossorigin href="./assets/fileToBase64-D7Ur9Qxq.js">
+    <link rel="modulepreload" crossorigin href="./assets/prop-types-BFRDxSKF.js">
+    <link rel="modulepreload" crossorigin href="./assets/es-ISEb5HNL.js">
+    <link rel="modulepreload" crossorigin href="./assets/hasIn-DafhTYio.js">
+    <link rel="modulepreload" crossorigin href="./assets/_basePickBy-C0EPK3Lm.js">
+    <link rel="modulepreload" crossorigin href="./assets/pick-neNJUP_8.js">
+    <link rel="modulepreload" crossorigin href="./assets/code-xml-DxxzgVgU.js">
+    <link rel="modulepreload" crossorigin href="./assets/square-COtNnHUC.js">
+    <link rel="modulepreload" crossorigin href="./assets/triangle-alert-DJ8dAd4j.js">
+    <link rel="modulepreload" crossorigin href="./assets/bundle.esm-BIoPrMH_.js">
+    <link rel="stylesheet" crossorigin href="./assets/cells-jmgGt1lS.css">
+    <link rel="stylesheet" crossorigin href="./assets/markdown-renderer-DdDKmWlR.css">
+    <link rel="stylesheet" crossorigin href="./assets/JsonOutput-B7vuddcd.css">
+    <link rel="stylesheet" crossorigin href="./assets/index-CKRn_SiB.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <script>
+        if (window.location.protocol === 'file:') {
+            alert('Warning: This file must be served by an HTTP server to function correctly.');
+        }
+    </script>
+    
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    <marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%0A%23%20%20%20%20%20%22marimo%22%2C%0A%23%20%20%20%20%20%22plotly%3E%3D5.18.0%22%2C%0A%23%20%20%20%20%20%22pandas%3E%3D2.0.0%22%2C%0A%23%20%20%20%20%20%22numpy%3E%3D1.24.0%22%2C%0A%23%20%5D%0A%23%20%2F%2F%2F%0A%22%22%22%0ACarbon%20Price%20Dynamics%20%E2%80%94%20Interactive%20Explorer%0A%0ASystem%20dynamics%20model%20with%20inline%20Euler%20integration.%0A3%20stocks%2C%206%20flows%2C%2014%20parameters%2C%206%20computed%20variables.%0A%0ANo%20PySD%20required%20%E2%80%94%20runs%20in%20WASM%2FPyodide.%0A%22%22%22%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.23.1%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20imports()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20plotly.graph_objects%20as%20go%0A%20%20%20%20import%20pandas%20as%20pd%0A%20%20%20%20import%20numpy%20as%20np%0A%0A%20%20%20%20return%20go%2C%20mo%2C%20pd%0A%0A%0A%40app.cell%0Adef%20run_simulation(%0A%20%20%20%20base_emissions%2C%0A%20%20%20%20capacity_lifetime%2C%0A%20%20%20%20cbam_rate%2C%0A%20%20%20%20competitiveness_threshold%2C%0A%20%20%20%20contraction_sensitivity%2C%0A%20%20%20%20cost_sensitivity%2C%0A%20%20%20%20emission_target%2C%0A%20%20%20%20final_time%2C%0A%20%20%20%20initial_output%2C%0A%20%20%20%20investment_sensitivity%2C%0A%20%20%20%20leakage_sensitivity%2C%0A%20%20%20%20leakage_threshold%2C%0A%20%20%20%20pd%2C%0A%20%20%20%20price_sensitivity%2C%0A%20%20%20%20recovery_rate%2C%0A%20%20%20%20time_step%2C%0A%20%20%20%20total_energy_demand%2C%0A)%3A%0A%20%20%20%20%23%20Initial%20stock%20values%0A%20%20%20%20renewable_capacity%20%3D%2050.0%0A%20%20%20%20industrial_output%20%3D%20100.0%0A%20%20%20%20carbon_price%20%3D%2030.0%0A%20%20%20%20renewable_fraction%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20carbon_emissions%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20emission_gap%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20production_cost_index%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20cbam_effectiveness%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%20%20%20%20net_leakage_pressure%20%3D%200%20%20%23%20Will%20be%20computed%20in%20loop%0A%0A%20%20%20%20rows%20%3D%20%5B%5D%0A%20%20%20%20t%20%3D%200.0%0A%20%20%20%20dt%20%3D%20time_step.value%0A%20%20%20%20t_end%20%3D%20final_time.value%0A%0A%20%20%20%20while%20t%20%3C%3D%20t_end%20%2B%20dt%20%2F%202%3A%0A%20%20%20%20%20%20%20%20%23%20Flows%20and%20computed%20variables%20(dependency%20order)%0A%20%20%20%20%20%20%20%20capacity_addition%20%3D%20max(0%2C%20(carbon_price%20*%20investment_sensitivity.value))%0A%20%20%20%20%20%20%20%20capacity_retirement%20%3D%20(renewable_capacity%20%2F%20capacity_lifetime.value)%0A%20%20%20%20%20%20%20%20output_recovery%20%3D%20(max(0%2C%20(initial_output.value%20-%20industrial_output))%20*%20recovery_rate.value)%0A%20%20%20%20%20%20%20%20renewable_fraction%20%3D%20(renewable_capacity%20%2F%20total_energy_demand.value)%0A%20%20%20%20%20%20%20%20production_cost_index%20%3D%20(1%20%2B%20(carbon_price%20*%20cost_sensitivity.value))%0A%20%20%20%20%20%20%20%20cbam_effectiveness%20%3D%20min(1%2C%20(cbam_rate.value%20%2F%20max(carbon_price%2C%201e-6)))%0A%20%20%20%20%20%20%20%20carbon_emissions%20%3D%20(base_emissions.value%20*%20(industrial_output%20%2F%20initial_output.value)%20*%20(1%20-%20renewable_fraction))%0A%20%20%20%20%20%20%20%20output_contraction%20%3D%20(industrial_output%20*%20max(0%2C%20(production_cost_index%20-%20competitiveness_threshold.value))%20*%20contraction_sensitivity.value)%0A%20%20%20%20%20%20%20%20net_leakage_pressure%20%3D%20(max(0%2C%20(carbon_price%20-%20leakage_threshold.value))%20*%20(1%20-%20cbam_effectiveness))%0A%20%20%20%20%20%20%20%20emission_gap%20%3D%20(carbon_emissions%20-%20emission_target.value)%0A%20%20%20%20%20%20%20%20carbon_leakage_flow%20%3D%20(industrial_output%20*%20net_leakage_pressure%20*%20leakage_sensitivity.value)%0A%20%20%20%20%20%20%20%20price_net_change%20%3D%20max((emission_gap%20*%20price_sensitivity.value)%2C%20(1%20-%20carbon_price))%0A%0A%20%20%20%20%20%20%20%20rows.append(%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22time%22%3A%20t%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22renewable_capacity%22%3A%20renewable_capacity%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22industrial_output%22%3A%20industrial_output%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22carbon_price%22%3A%20carbon_price%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22capacity_addition%22%3A%20capacity_addition%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22capacity_retirement%22%3A%20capacity_retirement%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22output_recovery%22%3A%20output_recovery%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22output_contraction%22%3A%20output_contraction%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22carbon_leakage_flow%22%3A%20carbon_leakage_flow%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22price_net_change%22%3A%20price_net_change%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22renewable_fraction%22%3A%20renewable_fraction%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22carbon_emissions%22%3A%20carbon_emissions%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22emission_gap%22%3A%20emission_gap%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22production_cost_index%22%3A%20production_cost_index%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22cbam_effectiveness%22%3A%20cbam_effectiveness%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22net_leakage_pressure%22%3A%20net_leakage_pressure%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20)%0A%0A%20%20%20%20%20%20%20%20%23%20Euler%20integration%0A%20%20%20%20%20%20%20%20renewable_capacity%20%2B%3D%20dt%20*%20(capacity_addition%20-%20capacity_retirement)%0A%20%20%20%20%20%20%20%20renewable_capacity%20%3D%20max(renewable_capacity%2C%200)%0A%20%20%20%20%20%20%20%20industrial_output%20%2B%3D%20dt%20*%20(output_recovery%20-%20output_contraction%20-%20carbon_leakage_flow)%0A%20%20%20%20%20%20%20%20industrial_output%20%3D%20max(industrial_output%2C%200)%0A%20%20%20%20%20%20%20%20carbon_price%20%2B%3D%20dt%20*%20price_net_change%0A%20%20%20%20%20%20%20%20carbon_price%20%3D%20max(carbon_price%2C%201)%0A%20%20%20%20%20%20%20%20t%20%2B%3D%20dt%0A%0A%20%20%20%20results%20%3D%20pd.DataFrame(rows).set_index(%22time%22)%0A%20%20%20%20return%20(results%2C)%0A%0A%0A%40app.cell%0Adef%20header(mo)%3A%0A%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%20Carbon%20Price%20Dynamics%20%E2%80%94%20Interactive%20Explorer%0A%0A%20%20%20%20**Stocks%3A**%203%20%7C%20**Flows%3A**%206%20%7C%20**Parameters%3A**%2014%20%7C%20**Computed%3A**%206%0A%0A%20%20%20%20Adjust%20the%20sliders%20below%20to%20change%20parameters%20and%20see%20how%20the%20model%20responds%20in%20real%20time.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20time_controls(mo)%3A%0A%20%20%20%20final_time%20%3D%20mo.ui.number(%0A%20%20%20%20%20%20%20%20value%3D100%2C%20start%3D1%2C%20stop%3D1000%2C%20step%3D1%2C%20label%3D%22Final%20Time%22%0A%20%20%20%20)%0A%20%20%20%20time_step%20%3D%20mo.ui.number(%0A%20%20%20%20%20%20%20%20value%3D1%2C%20start%3D0.1%2C%20stop%3D5.0%2C%20step%3D0.1%2C%20label%3D%22Time%20Step%22%0A%20%20%20%20)%0A%20%20%20%20mo.hstack(%5Bfinal_time%2C%20time_step%5D%2C%20justify%3D%22start%22%2C%20gap%3D1)%0A%20%20%20%20return%20final_time%2C%20time_step%0A%0A%0A%40app.cell%0Adef%20parameter_controls(mo)%3A%0A%20%20%20%20investment_sensitivity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.5%2C%20start%3D0.0%2C%20stop%3D3.0%2C%20step%3D0.03%2C%0A%20%20%20%20%20%20%20%20label%3D%22Investment%20Sensitivity%20(GW%2F(USD%2Ftonne*year))%22%2C%0A%20%20%20%20)%0A%20%20%20%20cost_sensitivity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.005%2C%20start%3D0.0%2C%20stop%3D0.02%2C%20step%3D0.0002%2C%0A%20%20%20%20%20%20%20%20label%3D%22Cost%20Sensitivity%20(1%2F(USD%2Ftonne))%22%2C%0A%20%20%20%20)%0A%20%20%20%20competitiveness_threshold%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D1.2%2C%20start%3D1.0%2C%20stop%3D2.0%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Competitiveness%20Threshold%20(index)%22%2C%0A%20%20%20%20)%0A%20%20%20%20contraction_sensitivity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.02%2C%20start%3D0.0%2C%20stop%3D0.1%2C%20step%3D0.001%2C%0A%20%20%20%20%20%20%20%20label%3D%22Contraction%20Sensitivity%20(1%2Fyear)%22%2C%0A%20%20%20%20)%0A%20%20%20%20leakage_threshold%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D60.0%2C%20start%3D20.0%2C%20stop%3D150.0%2C%20step%3D1.3%2C%0A%20%20%20%20%20%20%20%20label%3D%22Leakage%20Threshold%20(USD%2Ftonne)%22%2C%0A%20%20%20%20)%0A%20%20%20%20leakage_sensitivity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.003%2C%20start%3D0.0%2C%20stop%3D0.01%2C%20step%3D0.0001%2C%0A%20%20%20%20%20%20%20%20label%3D%22Leakage%20Sensitivity%20(1%2F(USD%2Ftonne*year))%22%2C%0A%20%20%20%20)%0A%20%20%20%20cbam_rate%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D40.0%2C%20start%3D0.0%2C%20stop%3D120.0%2C%20step%3D1.2%2C%0A%20%20%20%20%20%20%20%20label%3D%22Cbam%20Rate%20(USD%2Ftonne)%22%2C%0A%20%20%20%20)%0A%20%20%20%20price_sensitivity%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.5%2C%20start%3D0.1%2C%20stop%3D2.0%2C%20step%3D0.019%2C%0A%20%20%20%20%20%20%20%20label%3D%22Price%20Sensitivity%20((USD%2Ftonne)%2F(Mt%20CO2%2Fyear))%22%2C%0A%20%20%20%20)%0A%20%20%20%20capacity_lifetime%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D25.0%2C%20start%3D10.0%2C%20stop%3D40.0%2C%20step%3D0.3%2C%0A%20%20%20%20%20%20%20%20label%3D%22Capacity%20Lifetime%20(year)%22%2C%0A%20%20%20%20)%0A%20%20%20%20recovery_rate%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D0.05%2C%20start%3D0.01%2C%20stop%3D0.3%2C%20step%3D0.0029%2C%0A%20%20%20%20%20%20%20%20label%3D%22Recovery%20Rate%20(1%2Fyear)%22%2C%0A%20%20%20%20)%0A%20%20%20%20total_energy_demand%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D500.0%2C%20start%3D100.0%2C%20stop%3D1000.0%2C%20step%3D9.0%2C%0A%20%20%20%20%20%20%20%20label%3D%22Total%20Energy%20Demand%20(GW)%22%2C%0A%20%20%20%20)%0A%20%20%20%20base_emissions%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D80.0%2C%20start%3D20.0%2C%20stop%3D200.0%2C%20step%3D1.8%2C%0A%20%20%20%20%20%20%20%20label%3D%22Base%20Emissions%20(Mt%20CO2%2Fyear)%22%2C%0A%20%20%20%20)%0A%20%20%20%20initial_output%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D100.0%2C%20start%3D50.0%2C%20stop%3D200.0%2C%20step%3D1.5%2C%0A%20%20%20%20%20%20%20%20label%3D%22Initial%20Output%20(index)%22%2C%0A%20%20%20%20)%0A%20%20%20%20emission_target%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%20value%3D50.0%2C%20start%3D10.0%2C%20stop%3D80.0%2C%20step%3D0.7%2C%0A%20%20%20%20%20%20%20%20label%3D%22Emission%20Target%20(Mt%20CO2%2Fyear)%22%2C%0A%20%20%20%20)%0A%20%20%20%20mo.vstack(%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20investment_sensitivity%2C%0A%20%20%20%20%20%20%20%20cost_sensitivity%2C%0A%20%20%20%20%20%20%20%20competitiveness_threshold%2C%0A%20%20%20%20%20%20%20%20contraction_sensitivity%2C%0A%20%20%20%20%20%20%20%20leakage_threshold%2C%0A%20%20%20%20%20%20%20%20leakage_sensitivity%2C%0A%20%20%20%20%20%20%20%20cbam_rate%2C%0A%20%20%20%20%20%20%20%20price_sensitivity%2C%0A%20%20%20%20%20%20%20%20capacity_lifetime%2C%0A%20%20%20%20%20%20%20%20recovery_rate%2C%0A%20%20%20%20%20%20%20%20total_energy_demand%2C%0A%20%20%20%20%20%20%20%20base_emissions%2C%0A%20%20%20%20%20%20%20%20initial_output%2C%0A%20%20%20%20%20%20%20%20emission_target%2C%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20)%0A%20%20%20%20return%20(%0A%20%20%20%20%20%20%20%20base_emissions%2C%0A%20%20%20%20%20%20%20%20capacity_lifetime%2C%0A%20%20%20%20%20%20%20%20cbam_rate%2C%0A%20%20%20%20%20%20%20%20competitiveness_threshold%2C%0A%20%20%20%20%20%20%20%20contraction_sensitivity%2C%0A%20%20%20%20%20%20%20%20cost_sensitivity%2C%0A%20%20%20%20%20%20%20%20emission_target%2C%0A%20%20%20%20%20%20%20%20initial_output%2C%0A%20%20%20%20%20%20%20%20investment_sensitivity%2C%0A%20%20%20%20%20%20%20%20leakage_sensitivity%2C%0A%20%20%20%20%20%20%20%20leakage_threshold%2C%0A%20%20%20%20%20%20%20%20price_sensitivity%2C%0A%20%20%20%20%20%20%20%20recovery_rate%2C%0A%20%20%20%20%20%20%20%20total_energy_demand%2C%0A%20%20%20%20)%0A%0A%0A%40app.cell%0Adef%20chart_controls(mo)%3A%0A%20%20%20%20stock_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22Renewable%20Capacity%20(GW)%22%3A%20%22renewable_capacity%22%2C%20%22Industrial%20Output%20(index)%22%3A%20%22industrial_output%22%2C%20%22Carbon%20Price%20(USD%2Ftonne)%22%3A%20%22carbon_price%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Renewable%20Capacity%20(GW)%22%2C%20%22Industrial%20Output%20(index)%22%2C%20%22Carbon%20Price%20(USD%2Ftonne)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Stock%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20flow_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22Capacity%20Addition%20(GW%2Fyear)%22%3A%20%22capacity_addition%22%2C%20%22Capacity%20Retirement%20(GW%2Fyear)%22%3A%20%22capacity_retirement%22%2C%20%22Output%20Recovery%20(index%2Fyear)%22%3A%20%22output_recovery%22%2C%20%22Output%20Contraction%20(index%2Fyear)%22%3A%20%22output_contraction%22%2C%20%22Carbon%20Leakage%20Flow%20(index%2Fyear)%22%3A%20%22carbon_leakage_flow%22%2C%20%22Price%20Net%20Change%20(USD%2Ftonne%2Fyear)%22%3A%20%22price_net_change%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Capacity%20Addition%20(GW%2Fyear)%22%2C%20%22Capacity%20Retirement%20(GW%2Fyear)%22%2C%20%22Output%20Recovery%20(index%2Fyear)%22%2C%20%22Output%20Contraction%20(index%2Fyear)%22%2C%20%22Carbon%20Leakage%20Flow%20(index%2Fyear)%22%2C%20%22Price%20Net%20Change%20(USD%2Ftonne%2Fyear)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Flow%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20aux_selector%20%3D%20mo.ui.multiselect(%0A%20%20%20%20%20%20%20%20options%3D%7B%22Renewable%20Fraction%20(fraction)%22%3A%20%22renewable_fraction%22%2C%20%22Carbon%20Emissions%20(Mt%20CO2%2Fyear)%22%3A%20%22carbon_emissions%22%2C%20%22Emission%20Gap%20(Mt%20CO2%2Fyear)%22%3A%20%22emission_gap%22%2C%20%22Production%20Cost%20Index%20(index)%22%3A%20%22production_cost_index%22%2C%20%22Cbam%20Effectiveness%20(fraction)%22%3A%20%22cbam_effectiveness%22%2C%20%22Net%20Leakage%20Pressure%20(USD%2Ftonne)%22%3A%20%22net_leakage_pressure%22%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%5B%22Renewable%20Fraction%20(fraction)%22%2C%20%22Carbon%20Emissions%20(Mt%20CO2%2Fyear)%22%2C%20%22Emission%20Gap%20(Mt%20CO2%2Fyear)%22%2C%20%22Production%20Cost%20Index%20(index)%22%2C%20%22Cbam%20Effectiveness%20(fraction)%22%2C%20%22Net%20Leakage%20Pressure%20(USD%2Ftonne)%22%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Auxiliary%20variables%22%2C%0A%20%20%20%20)%0A%20%20%20%20return%20aux_selector%2C%20flow_selector%2C%20stock_selector%0A%0A%0A%40app.cell%0Adef%20tabbed_content(%0A%20%20%20%20aux_selector%2C%0A%20%20%20%20flow_selector%2C%0A%20%20%20%20go%2C%0A%20%20%20%20mo%2C%0A%20%20%20%20results%2C%0A%20%20%20%20stock_selector%2C%0A)%3A%0A%20%20%20%20%23%20---%20Analysis%20tab%20---%0A%20%20%20%20analysis_content%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%20Carbon%20Price%20Dynamics%3A%20Two-Loop%20System%20Dynamics%20Model%0A%0A%20%20%20%20%23%23%20Model%20Overview%0A%0A%20%20%20%20This%20model%20captures%20how%20carbon%20pricing%20interacts%20with%20two%20fundamental%20economic%20responses%20over%20a%2015-year%20horizon%2C%20producing%20very%20different%20outcomes%20depending%20on%20which%20loop%20dominates.%0A%0A%20%20%20%20%23%23%20Feedback%20Loops%0A%0A%20%20%20%20%23%23%23%20B1%20%E2%80%94%20Green%20Transition%20(Balancing)%0A%20%20%20%20**Carbon%20Price%20%E2%86%92%20Renewable%20Investment%20%E2%86%92%20Renewable%20Capacity%20%E2%86%92%20Renewable%20Fraction%20%E2%86%92%20Carbon%20Emissions%20%E2%86%93%20%E2%86%92%20Emission%20Gap%20%E2%86%93%20%E2%86%92%20Carbon%20Price%20%E2%86%93**%0A%0A%20%20%20%20High%20carbon%20price%20makes%20renewable%20energy%20investment%20attractive.%20As%20capacity%20builds%2C%20it%20displaces%20fossil%20fuels%2C%20reducing%20emissions%20below%20the%20policy%20target%2C%20which%20causes%20the%20market%20to%20lower%20the%20price.%20A%20self-correcting%20loop%20that%20works%20best%20when%20%60investment_sensitivity%60%20is%20high.%0A%0A%20%20%20%20%23%23%23%20B2a%20%E2%80%94%20Industrial%20Cost%20Contraction%20(Balancing)%0A%20%20%20%20**Carbon%20Price%20%E2%86%92%20Production%20Cost%20Index%20%E2%86%92%20exceeds%20Competitiveness%20Threshold%20%E2%86%92%20Output%20Contraction%20%E2%86%92%20Industrial%20Output%20%E2%86%93%20%E2%86%92%20Carbon%20Emissions%20%E2%86%93%20%E2%86%92%20Carbon%20Price%20%E2%86%93**%0A%0A%20%20%20%20When%20carbon%20costs%20push%20the%20production%20cost%20index%20above%201.2%20(a%2020%25%20premium)%2C%20domestic%20industry%20contracts.%20Less%20production%20means%20fewer%20emissions%2C%20eventually%20pulling%20the%20price%20down.%20The%20economy%20pays%20a%20real%20cost%20to%20achieve%20the%20emission%20reduction.%0A%0A%20%20%20%20%23%23%23%20B2b%20%E2%80%94%20Carbon%20Leakage%20(Balancing%2C%20with%20CBAM%20interaction)%0A%20%20%20%20**Carbon%20Price%20%E2%86%92%20(above%20%2460%20threshold)%20%E2%86%92%20Net%20Leakage%20Pressure%20%E2%86%92%20Carbon%20Leakage%20Flow%20%E2%86%92%20Industrial%20Output%20%E2%86%93%20%E2%86%92%20Emissions%20%E2%86%93%20%E2%86%92%20Carbon%20Price%20%E2%86%93**%0A%0A%20%20%20%20Above%20%2460%2Ftonne%2C%20production%20starts%20relocating%20to%20unregulated%20jurisdictions.%20**CBAM%20neutralizes%20this**%20by%20equalizing%20the%20carbon%20cost%20on%20imports%3A%20%60cbam_effectiveness%20%3D%20MIN(1%2C%20cbam_rate%20%2F%20carbon_price)%60.%20Without%20CBAM%2C%20leakage%20is%20the%20dominant%20driver%20of%20industrial%20collapse%20%E2%80%94%205%C3%97%20larger%20than%20cost%20contraction%20alone%20at%20peak.%0A%0A%20%20%20%20%23%23%20Scenario%20Presets%0A%0A%20%20%20%20%7C%20Parameter%20%7C%20Baseline%20%7C%20S1%3A%20Solar%20Glut%20%7C%20S2%3A%20Industrial%20Collapse%20%7C%0A%20%20%20%20%7C---%7C---%7C---%7C---%7C%0A%20%20%20%20%7C%20%60investment_sensitivity%60%20%7C%200.5%20%7C%20**1.5**%20%7C%200.2%20%7C%0A%20%20%20%20%7C%20%60cost_sensitivity%60%20%7C%200.005%20%7C%200.002%20%7C%20**0.01**%20%7C%0A%20%20%20%20%7C%20%60cbam_rate%60%20%7C%2040%20%7C%2040%20%7C%20**0**%20%7C%0A%0A%20%20%20%20%23%23%20Simulation%20Results%20Summary%0A%0A%20%20%20%20%23%23%23%20Baseline%20(investment_sensitivity%3D0.5%2C%20cost_sensitivity%3D0.005%2C%20cbam_rate%3D%2440)%0A%20%20%20%20-%20Carbon%20price%20peaks%20at%20**%2468**%20(year%206)%2C%20then%20falls%20to%20**%246.5**%20by%20year%2015%0A%20%20%20%20-%20Renewables%20grow%2050%20%E2%86%92%20296%20GW%20(59%25%20share)%3B%20small%20industrial%20dip%20to%2096%0A%20%20%20%20-%20Emissions%20fall%2072%20%E2%86%92%2032%20Mt.%20CBAM%20fully%20neutralises%20leakage%20throughout.%0A%0A%20%20%20%20%23%23%23%20S1%3A%20Solar%20Glut%20(investment_sensitivity%3D1.5%2C%20cost_sensitivity%3D0.002%2C%20cbam_rate%3D%2440)%0A%20%20%20%20-%20Renewables%20explode%2050%20%E2%86%92%20**361%20GW**%20by%20year%207%20(72%25%20share)%0A%20%20%20%20-%20Carbon%20price%20peaks%20at%20only%20**%2446**%20then%20**crashes%20to%20%241**%20%E2%80%94%20the%20investment%20signal%20collapses%0A%20%20%20%20-%20Industrial%20output%20untouched%20(100%20throughout).%20Emissions%20reach%2022%20Mt%20by%20year%207.%0A%20%20%20%20-%20**Risk**%3A%20Once%20price%20floors%20at%20%241%2C%20new%20additions%20stop%20and%20retirements%20erode%20capacity.%20Emissions%20slowly%20creep%20back%20up%20(22%20%E2%86%92%2035%20Mt%20by%20year%2015).%0A%0A%20%20%20%20%23%23%23%20S2%3A%20Industrial%20Collapse%20(investment_sensitivity%3D0.2%2C%20cost_sensitivity%3D0.01%2C%20cbam_rate%3D%240)%0A%20%20%20%20-%20Carbon%20price%20climbs%20to%20**%2482**%20peak%20(year%207%E2%80%938)%20%E2%80%94%20slow%20renewables%20cannot%20pull%20it%20down%0A%20%20%20%20-%20Industry%20contracts%20immediately%3A%20PCI%20%3D%201.30%20at%20%2430%20(already%20above%201.20%20threshold%20at%20t%3D0)%0A%20%20%20%20-%20**Leakage**%20(B2b%2C%20no%20CBAM)%20peaks%20at%20**5.4%20index%20units%2Fyear**%20%E2%80%94%205%C3%97%20larger%20than%20cost%20contraction%0A%20%20%20%20-%20Industrial%20output%20bottoms%20at%20**67.6**%20(year%2012)%3A%20a%20**32%25%20collapse**%0A%20%20%20%20-%20Slow%20recovery%20as%20price%20falls%3B%20emissions%20reach%2037%20Mt%20%E2%80%94%20barely%20better%20than%20solar%20glut%20scenario%0A%20%20%20%20-%20**Policy%20lesson**%3A%20Without%20CBAM%2C%20most%20industrial%20damage%20comes%20from%20leakage%2C%20not%20the%20carbon%20price%20itself%0A%0A%20%20%20%20%23%23%20Key%20Policy%20Insights%0A%20%20%20%201.%20**CBAM%20is%20the%20difference%20between%20manageable%20and%20catastrophic**%3A%20In%20S2%2C%20removing%20CBAM%20caused%20leakage%20to%20dominate%20over%20cost%20contraction%205%3A1%20at%20peak%0A%20%20%20%202.%20**Solar%20glut%20creates%20its%20own%20trap**%3A%20Fast%20buildout%20crashes%20the%20price%20signal%2C%20removing%20the%20incentive%20for%20further%20investment%20%E2%80%94%20emissions%20slowly%20recover%20as%20capacity%20ages%0A%20%20%20%203.%20**Both%20loops%20achieve%20similar%20emission%20outcomes**%20(~35%E2%80%9337%20Mt%20at%20year%2015)%20through%20radically%20different%20paths%3A%20clean%20growth%20vs.%20industrial%20destruction%0A%20%20%20%204.%20**The%20%60leakage_threshold%60%20(%2460)%20is%20a%20critical%20tipping%20point**%3A%20Once%20crossed%20without%20CBAM%2C%20leakage%20accelerates%20rapidly%20and%20recovery%20is%20slow%20(5%25%2Fyear)%0A%0A%20%20%20%20%22%22%22)%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20%23%20---%20Model%20Structure%20tab%20---%0A%20%20%20%20mermaid_diagram%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20mo.md(%22%23%23%20Model%20Structure%22)%2C%0A%20%20%20%20%20%20%20%20mo.Html(%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%3Cstyle%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.mermaid-container%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20width%3A%20100%25%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20height%3A%201200px%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20overflow%3A%20auto%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20.mermaid-container%20svg%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20min-width%3A%201400px%20!important%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20min-height%3A%201200px%20!important%3B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%3C%2Fstyle%3E%0A%20%20%20%20%20%20%20%20%22%22%22)%2C%0A%20%20%20%20%20%20%20%20mo.Html(%22%3Cdiv%20class%3D'mermaid-container'%3E%22)%2C%0A%20%20%20%20%20%20%20%20mo.mermaid(%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20graph%20LR%0A%20%20%20%20%20%20%20%20classDef%20stock%20fill%3A%234a90d9%2Cstroke%3A%232c5f8a%2Ccolor%3Awhite%2Cstroke-width%3A3px%0A%20%20%20%20%20%20%20%20classDef%20flow%20fill%3A%23e8a838%2Cstroke%3A%23b8842c%2Ccolor%3Awhite%2Cstroke-width%3A2px%0A%20%20%20%20%20%20%20%20classDef%20constant%20fill%3A%237bc67e%2Cstroke%3A%235a9d5c%2Ccolor%3Awhite%0A%20%20%20%20%20%20%20%20classDef%20computed%20fill%3A%23c084fc%2Cstroke%3A%239333ea%2Ccolor%3Awhite%0A%0A%20%20%20%20%20%20%20%20renewable_capacity%5B%22Renewable%20Capacity%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20industrial_output%5B%22Industrial%20Output%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20carbon_price%5B%22Carbon%20Price%22%5D%3A%3A%3Astock%0A%20%20%20%20%20%20%20%20capacity_addition(%5B%22Capacity%20Addition%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20capacity_retirement(%5B%22Capacity%20Retirement%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20output_recovery(%5B%22Output%20Recovery%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20output_contraction(%5B%22Output%20Contraction%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20carbon_leakage_flow(%5B%22Carbon%20Leakage%20Flow%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20price_net_change(%5B%22Price%20Net%20Change%22%5D)%3A%3A%3Aflow%0A%20%20%20%20%20%20%20%20investment_sensitivity%7B%7B%22Investment%20Sensitivity%20%3D%200.5%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20cost_sensitivity%7B%7B%22Cost%20Sensitivity%20%3D%200.005%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20competitiveness_threshold%7B%7B%22Competitiveness%20Threshold%20%3D%201.2%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20contraction_sensitivity%7B%7B%22Contraction%20Sensitivity%20%3D%200.02%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20leakage_threshold%7B%7B%22Leakage%20Threshold%20%3D%2060.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20leakage_sensitivity%7B%7B%22Leakage%20Sensitivity%20%3D%200.003%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20cbam_rate%7B%7B%22Cbam%20Rate%20%3D%2040.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20price_sensitivity%7B%7B%22Price%20Sensitivity%20%3D%200.5%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20capacity_lifetime%7B%7B%22Capacity%20Lifetime%20%3D%2025.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20recovery_rate%7B%7B%22Recovery%20Rate%20%3D%200.05%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20total_energy_demand%7B%7B%22Total%20Energy%20Demand%20%3D%20500.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20base_emissions%7B%7B%22Base%20Emissions%20%3D%2080.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20initial_output%7B%7B%22Initial%20Output%20%3D%20100.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20emission_target%7B%7B%22Emission%20Target%20%3D%2050.0%22%7D%7D%3A%3A%3Aconstant%0A%20%20%20%20%20%20%20%20renewable_fraction%5B%2F%22Renewable%20Fraction%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20carbon_emissions%5B%2F%22Carbon%20Emissions%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20emission_gap%5B%2F%22Emission%20Gap%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20production_cost_index%5B%2F%22Production%20Cost%20Index%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20cbam_effectiveness%5B%2F%22Cbam%20Effectiveness%22%2F%5D%3A%3A%3Acomputed%0A%20%20%20%20%20%20%20%20net_leakage_pressure%5B%2F%22Net%20Leakage%20Pressure%22%2F%5D%3A%3A%3Acomputed%0A%0A%20%20%20%20%20%20%20%20capacity_addition%20%3D%3D%3E%7C%22%2B%22%7C%20renewable_capacity%0A%20%20%20%20%20%20%20%20renewable_capacity%20%3D%3D%3E%7C%22-%22%7C%20capacity_retirement%0A%20%20%20%20%20%20%20%20output_recovery%20%3D%3D%3E%7C%22%2B%22%7C%20industrial_output%0A%20%20%20%20%20%20%20%20industrial_output%20%3D%3D%3E%7C%22-%22%7C%20output_contraction%0A%20%20%20%20%20%20%20%20industrial_output%20%3D%3D%3E%7C%22-%22%7C%20carbon_leakage_flow%0A%20%20%20%20%20%20%20%20price_net_change%20%3D%3D%3E%7C%22%2B%22%7C%20carbon_price%0A%0A%20%20%20%20%20%20%20%20investment_sensitivity%20-.-%3E%20capacity_addition%0A%20%20%20%20%20%20%20%20carbon_price%20-.-%3E%20capacity_addition%0A%20%20%20%20%20%20%20%20capacity_lifetime%20-.-%3E%20capacity_retirement%0A%20%20%20%20%20%20%20%20recovery_rate%20-.-%3E%20output_recovery%0A%20%20%20%20%20%20%20%20initial_output%20-.-%3E%20output_recovery%0A%20%20%20%20%20%20%20%20contraction_sensitivity%20-.-%3E%20output_contraction%0A%20%20%20%20%20%20%20%20competitiveness_threshold%20-.-%3E%20output_contraction%0A%20%20%20%20%20%20%20%20production_cost_index%20-.-%3E%20output_contraction%0A%20%20%20%20%20%20%20%20leakage_sensitivity%20-.-%3E%20carbon_leakage_flow%0A%20%20%20%20%20%20%20%20net_leakage_pressure%20-.-%3E%20carbon_leakage_flow%0A%20%20%20%20%20%20%20%20price_sensitivity%20-.-%3E%20price_net_change%0A%20%20%20%20%20%20%20%20emission_gap%20-.-%3E%20price_net_change%0A%20%20%20%20%20%20%20%20total_energy_demand%20-.-%3E%20renewable_fraction%0A%20%20%20%20%20%20%20%20renewable_capacity%20-.-%3E%20renewable_fraction%0A%20%20%20%20%20%20%20%20industrial_output%20-.-%3E%20carbon_emissions%0A%20%20%20%20%20%20%20%20base_emissions%20-.-%3E%20carbon_emissions%0A%20%20%20%20%20%20%20%20renewable_fraction%20-.-%3E%20carbon_emissions%0A%20%20%20%20%20%20%20%20initial_output%20-.-%3E%20carbon_emissions%0A%20%20%20%20%20%20%20%20emission_target%20-.-%3E%20emission_gap%0A%20%20%20%20%20%20%20%20carbon_emissions%20-.-%3E%20emission_gap%0A%20%20%20%20%20%20%20%20cost_sensitivity%20-.-%3E%20production_cost_index%0A%20%20%20%20%20%20%20%20carbon_price%20-.-%3E%20production_cost_index%0A%20%20%20%20%20%20%20%20carbon_price%20-.-%3E%20cbam_effectiveness%0A%20%20%20%20%20%20%20%20cbam_rate%20-.-%3E%20cbam_effectiveness%0A%20%20%20%20%20%20%20%20leakage_threshold%20-.-%3E%20net_leakage_pressure%0A%20%20%20%20%20%20%20%20carbon_price%20-.-%3E%20net_leakage_pressure%0A%20%20%20%20%20%20%20%20cbam_effectiveness%20-.-%3E%20net_leakage_pressure%0A%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20%20%20%20%20)%2C%0A%20%20%20%20%20%20%20%20mo.Html(%22%3C%2Fdiv%3E%22)%2C%0A%20%20%20%20%20%20%20%20mo.md(%22*Boxes%3A%20stocks%20%7C%20Rounded%3A%20flows%20%7C%20Hexagons%3A%20parameters%20%7C%20Slanted%3A%20computed*%22)%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20%23%20---%20Simulation%20tab%20---%0A%20%20%20%20_stock_labels%20%3D%20%7B'renewable_capacity'%3A%20'Renewable%20Capacity%20(GW)'%2C%20'industrial_output'%3A%20'Industrial%20Output%20(index)'%2C%20'carbon_price'%3A%20'Carbon%20Price%20(USD%2Ftonne)'%7D%0A%20%20%20%20fig_stocks%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20stock_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_stocks.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_stock_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_stocks.update_layout(title%3D%22Stock%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Value%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20_flow_labels%20%3D%20%7B'capacity_addition'%3A%20'Capacity%20Addition%20(GW%2Fyear)'%2C%20'capacity_retirement'%3A%20'Capacity%20Retirement%20(GW%2Fyear)'%2C%20'output_recovery'%3A%20'Output%20Recovery%20(index%2Fyear)'%2C%20'output_contraction'%3A%20'Output%20Contraction%20(index%2Fyear)'%2C%20'carbon_leakage_flow'%3A%20'Carbon%20Leakage%20Flow%20(index%2Fyear)'%2C%20'price_net_change'%3A%20'Price%20Net%20Change%20(USD%2Ftonne%2Fyear)'%7D%0A%20%20%20%20fig_flows%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20flow_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_flows.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_flow_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_flows.update_layout(title%3D%22Flow%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Rate%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20_aux_labels%20%3D%20%7B'renewable_fraction'%3A%20'Renewable%20Fraction%20(fraction)'%2C%20'carbon_emissions'%3A%20'Carbon%20Emissions%20(Mt%20CO2%2Fyear)'%2C%20'emission_gap'%3A%20'Emission%20Gap%20(Mt%20CO2%2Fyear)'%2C%20'production_cost_index'%3A%20'Production%20Cost%20Index%20(index)'%2C%20'cbam_effectiveness'%3A%20'Cbam%20Effectiveness%20(fraction)'%2C%20'net_leakage_pressure'%3A%20'Net%20Leakage%20Pressure%20(USD%2Ftonne)'%7D%0A%20%20%20%20fig_aux%20%3D%20go.Figure()%0A%20%20%20%20for%20_key%20in%20aux_selector.value%3A%0A%20%20%20%20%20%20%20%20fig_aux.add_trace(go.Scatter(x%3Dresults.index%2C%20y%3Dresults%5B_key%5D%2C%20mode%3D%22lines%22%2C%20name%3D_aux_labels.get(_key%2C%20_key)))%0A%20%20%20%20fig_aux.update_layout(title%3D%22Computed%20Auxiliary%20Variables%20Over%20Time%22%2C%20xaxis_title%3D%22Time%22%2C%20yaxis_title%3D%22Value%22%2C%20template%3D%22plotly_white%22)%0A%0A%20%20%20%20simulation_content%20%3D%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20stock_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_stocks)%2C%0A%20%20%20%20%20%20%20%20flow_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_flows)%2C%0A%20%20%20%20%20%20%20%20aux_selector%2C%0A%20%20%20%20%20%20%20%20mo.ui.plotly(fig_aux)%2C%0A%20%20%20%20%20%20%20%20mo.ui.table(results.reset_index().rename(columns%3D%7B%22time%22%3A%20%22Time%22%7D))%2C%0A%20%20%20%20%5D)%0A%0A%20%20%20%20mo.ui.tabs(%7B%0A%20%20%20%20%20%20%20%20%22Simulation%22%3A%20simulation_content%2C%0A%20%20%20%20%20%20%20%20%22Analysis%22%3A%20analysis_content%2C%0A%20%20%20%20%20%20%20%20%22Model%20Structure%22%3A%20mermaid_diagram%2C%0A%20%20%20%20%7D)%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <!-- This is a portal for the data editor to render in -->
+    <div id="portal" data-testid="glide-portal" style="position: fixed; left: 0; top: 0; z-index: 9999"></div>
+    <script data-marimo="true">
+      window.__MARIMO_MOUNT_CONFIG__ = {
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.23.1",
+            "serverToken": "unused",
+            "config": {"ai": {"custom_providers": {}, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null,
+        };
+    </script>
+  </body>
+</html>
