@@ -108,7 +108,15 @@ def run_simulation(
     fertilizer_supply_factor = 0  # Will be computed in loop
     fertilizer_target = 0  # Will be computed in loop
     naphtha_target = 0  # Will be computed in loop
-    delayed_fertilizer_signal = 0  # Will be computed in loop
+    # DELAY3 state vars for fertilizer -> agri lag (initialized to 1.0 = baseline)
+    fert_delay1 = 1.0
+    fert_delay2 = 1.0
+    fert_delay3 = 1.0
+    # DELAY3 state vars for credit tightening lag (initialized to 0)
+    credit_delay1 = 0.0
+    credit_delay2 = 0.0
+    credit_delay3 = 0.0
+    delayed_fertilizer_signal = 1.0
     agri_supply_disruption = 0  # Will be computed in loop
     agri_target = 0  # Will be computed in loop
     food_inflation_contribution = 0  # Will be computed in loop
@@ -123,7 +131,7 @@ def run_simulation(
         # Flows and computed variables (dependency order)
         supply_restoration_rate = max(0, ((world_demand_base.value - global_oil_supply) / strait_total_recovery_time.value))
         pressure_relief_rate = (political_pressure * relief_decay_rate.value)
-        credit_tightening_rate = 0
+        credit_tightening_rate = credit_delay3
         credit_recovery_rate = (max(0, (100 - western_credit_index)) * credit_mean_reversion_rate.value)
         security_anxiety = min(1, max(0, (((oil_price - 90) / 90) * anxiety_price_sensitivity.value)))
         base_demand_adjusted = (world_demand_base.value * max(0.85, (1 + (demand_price_elasticity.value * ((oil_price / 90) - 1)))))
@@ -135,7 +143,7 @@ def run_simulation(
         gas_price_index = ((1 + (gas_oil_passthrough.value * ((oil_price / 90) - 1))) + max(0, ((1 - (global_oil_supply / world_demand_base.value)) * hormuz_gas_share.value)))
         fertilizer_supply_factor = (1 + max(0, ((1 - (global_oil_supply / world_demand_base.value)) * hormuz_fertilizer_impact.value)))
         naphtha_target = max(0.5, (oil_price / 90))
-        delayed_fertilizer_signal = 0
+        delayed_fertilizer_signal = fert_delay3
         agri_supply_disruption = max(0, ((1 - (global_oil_supply / world_demand_base.value)) * agri_direct_impact.value))
         food_inflation_contribution = ((agri_price_index - 1) * food_weight_in_cpi.value)
         commodity_cascade_index = (((fertilizer_price_index + naphtha_price_index) + agri_price_index) / 3)
@@ -225,6 +233,15 @@ def run_simulation(
         fertilizer_price_index += dt * fertilizer_price_change
         naphtha_price_index += dt * naphtha_price_change
         agri_price_index += dt * agri_price_change
+        # Integrate DELAY3 pipelines
+        _fert_d = 3.0 / crop_cycle_lag.value
+        fert_delay1 += dt * (fertilizer_price_index - fert_delay1) * _fert_d
+        fert_delay2 += dt * (fert_delay1 - fert_delay2) * _fert_d
+        fert_delay3 += dt * (fert_delay2 - fert_delay3) * _fert_d
+        _credit_d = 3.0 / credit_transmission_lag.value
+        credit_delay1 += dt * (tightening_pressure_combined - credit_delay1) * _credit_d
+        credit_delay2 += dt * (credit_delay1 - credit_delay2) * _credit_d
+        credit_delay3 += dt * (credit_delay2 - credit_delay3) * _credit_d
         t += dt
 
     results = pd.DataFrame(rows).set_index("time")
