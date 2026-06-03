@@ -266,7 +266,7 @@ def __(mo):
 
 @app.cell
 def __(BdMPredictioneerModel, steps_sl, mechanism_sl, move_speed_sl):
-    model = BdMPredictioneerModel(mechanism=mechanism_sl.value, move_speed=move_speed_sl.value, actors=[{'name': 'Larijani', 'power': 0.9, 'salience': 0.8, 'position': 40.0}, {'name': 'IRGC', 'power': 0.7, 'salience': 0.6, 'position': 85.0}, {'name': 'Trump', 'power': 1.0, 'salience': 0.7, 'position': 58.0}, {'name': 'Israel', 'power': 0.6, 'salience': 0.9, 'position': 95.0}], shocks=[{'actor': 'IRGC', 'step': 5, 'field': 'salience', 'value': 0.1}], seed=42)
+    model = BdMPredictioneerModel(mechanism=mechanism_sl.value, move_speed=move_speed_sl.value, actors=[{'name': 'US maximalist (Rubio/Hegseth)', 'power': 0.9, 'salience': 1.0, 'position': 100.0}, {'name': 'US Populist (Vance/2026 base)', 'power': 0.85, 'salience': 0.85, 'position': 25.0}, {'name': 'Iran interim council', 'power': 0.4, 'salience': 1.0, 'position': 45.0}, {'name': 'Gulf States', 'power': 0.75, 'salience': 1.0, 'position': 80.0}], shocks=[{'actor': 'US maximalist (Rubio/Hegseth)', 'step': 1, 'field': 'salience', 'value': 0.1}], seed=42)
     out = model.run_simulation(steps=steps_sl.value)
     return model, out
 
@@ -308,8 +308,13 @@ def __(mo, out):
 
 @app.cell
 def __(mo):
-    return mo.md("""# Iran Conflict — BdM Predictioneer
-Expected-utility bargaining over peace(0)-war(100). Equilibrium = effective-weight-weighted median. IRGC Bonyad-collapse salience shock at step 5.""")
+    return mo.md("""# Iran Conflict — BdM Predictioneer (Willow Run Capital roster)
+
+Expected-utility bargaining over a peace(0)–war(100) continuum. Equilibrium = effective-weight-weighted median.
+
+- Round-0 weighted mean: **67.1** (article band 60–68).
+- BdM expected-utility equilibrium: **80** — pivot is Gulf States; the two hawks outweigh the doves, so the median-voter mechanism predicts escalation.
+- Bundled shock: US maximalist (Rubio/Hegseth) salience collapses at step 1 → equilibrium flips to **45** (Iran interim council pivot). Timing is decisive: the same shock at step 5 barely moves it.""")
 
 
 
