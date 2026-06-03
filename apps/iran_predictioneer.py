@@ -256,65 +256,68 @@ def __():
 
 @app.cell
 def __(mo):
-    mechanism_sl = mo.ui.text(value="expected_utility", label="mechanism", disabled=True)
     move_speed_sl = mo.ui.slider(0.0, 1.0, value=0.5, step=0.01, label="move_speed")
     steps_sl = mo.ui.slider(10, 180, value=60, step=10, label="steps")
-    mo.vstack([mechanism_sl, move_speed_sl, steps_sl])
-    return (mechanism_sl, move_speed_sl, steps_sl,)
+    mo.vstack([move_speed_sl, steps_sl])
+    return (move_speed_sl, steps_sl,)
 
 
 
 @app.cell
-def __(BdMPredictioneerModel, steps_sl, mechanism_sl, move_speed_sl):
-    model = BdMPredictioneerModel(mechanism=mechanism_sl.value, move_speed=move_speed_sl.value, actors=[{'name': 'US maximalist (Rubio/Hegseth)', 'power': 0.9, 'salience': 1.0, 'position': 100.0}, {'name': 'US Populist (Vance/2026 base)', 'power': 0.85, 'salience': 0.85, 'position': 25.0}, {'name': 'Iran interim council', 'power': 0.4, 'salience': 1.0, 'position': 45.0}, {'name': 'Gulf States', 'power': 0.75, 'salience': 1.0, 'position': 80.0}], shocks=[{'actor': 'US maximalist (Rubio/Hegseth)', 'step': 1, 'field': 'salience', 'value': 0.1}], seed=42)
-    out = model.run_simulation(steps=steps_sl.value)
-    return model, out
+def __(BdMPredictioneerModel, steps_sl, move_speed_sl):
+    _variants = ['best_response', 'expected_utility']
+    results = {}
+    for _v in _variants:
+        _m = BdMPredictioneerModel(mechanism=_v, move_speed=move_speed_sl.value, actors=[{'name': 'US maximalist (Rubio/Hegseth)', 'power': 0.9, 'salience': 1.0, 'position': 100.0}, {'name': 'US Populist (Vance/2026 base)', 'power': 0.85, 'salience': 0.85, 'position': 25.0}, {'name': 'Iran interim council', 'power': 0.4, 'salience': 1.0, 'position': 45.0}, {'name': 'Gulf States', 'power': 0.75, 'salience': 1.0, 'position': 80.0}], shocks=[], seed=42)
+        results[_v] = _m.run_simulation(steps=steps_sl.value)
+    return results,
 
 
 
 @app.cell
-def __(go, mo, out):
-    ts = out.get("time_series", {})
-    figs = []
-    for metric_name, series in ts.items():
-        fig = go.Figure()
-        if isinstance(series, dict):
-            for label, sub in series.items():
-                fig.add_scatter(y=sub, mode="lines", name=str(label))
-        elif series and isinstance(series[0], (list, tuple)):
-            ncols = len(series[0])
-            for j in range(ncols):
-                fig.add_scatter(y=[row[j] for row in series], mode="lines",
-                                name=f"{metric_name}[{j}]")
+def __(go, results):
+    metric = 'weighted_position' or next(iter(next(iter(results.values()))["time_series"]))
+    fig = go.Figure()
+    for _v, _out in results.items():
+        _series = _out.get("time_series", {}).get(metric, [])
+        if isinstance(_series, dict):
+            for _lbl, _sub in _series.items():
+                fig.add_scatter(y=_sub, mode="lines", name=f"{_v}: {_lbl}")
         else:
-            fig.add_scatter(y=series, mode="lines", name=metric_name)
-        fig.update_layout(title=metric_name, xaxis_title="step",
-                          margin=dict(l=40, r=20, t=40, b=40), height=320)
-        figs.append(fig)
-    mo.vstack(figs) if figs else mo.md("_no time_series in result_")
+            fig.add_scatter(y=_series, mode="lines", name=str(_v))
+    fig.update_layout(title=f"{metric} by mechanism", xaxis_title="step",
+                      margin=dict(l=40, r=20, t=40, b=40), height=360)
+    fig
     return
 
 
 
 @app.cell
-def __(mo, out):
-    summary = out.get("summary", {})
-    _rows = "\n".join(f"| {k} | {v} |" for k, v in summary.items())
-    mo.md(f"### Summary\n\n| metric | value |\n|---|---|\n{_rows}") if summary \
-        else mo.md("_no summary in result_")
+def __(mo, results):
+    _rows = []
+    for _v, _out in results.items():
+        _s = _out.get("summary", {})
+        _eq = _s.get("equilibrium_position")
+        if _eq is None:
+            _eq = next((x for x in _s.values() if isinstance(x, (int, float))), "")
+        _rows.append(f"| {_v} | {_eq} |")
+    _hdr = "### Comparison by mechanism\n\n| mechanism | equilibrium |\n|---|---|\n"
+    mo.md(_hdr + "\n".join(_rows))
     return
 
 
 
 @app.cell
 def __(mo):
-    return mo.md("""# Iran Conflict — BdM Predictioneer (Willow Run Capital roster)
+    return mo.md("""# Iran Conflict — BdM Predictioneer (both mechanisms)
 
-Expected-utility bargaining over a peace(0)–war(100) continuum. Equilibrium = effective-weight-weighted median.
+Willow Run Capital roster. Position 0 = peace .. 100 = total war. The chart overlays **weighted_position** for the two update mechanisms; the table reports each one'''s equilibrium.
 
-- Round-0 weighted mean: **67.1** (article band 60–68).
-- BdM expected-utility equilibrium: **80** — pivot is Gulf States; the two hawks outweigh the doves, so the median-voter mechanism predicts escalation.
-- Bundled shock: US maximalist (Rubio/Hegseth) salience collapses at step 1 → equilibrium flips to **45** (Iran interim council pivot). Timing is decisive: the same shock at step 5 barely moves it.""")
+- **Round-0 weighted mean = 67.1** (the article'''s first-pass figure; inside its 60–68 band). This is only the *starting* average.
+- **best_response → 81.8**: actors shift toward the weighted mean, but resistance scales with salience, so the salience-1.0 hawk (US maximalist, position 100) never moves and anchors everyone upward.
+- **expected_utility (BdM median-voter) → 80**: pivot is Gulf States; the two hawks (US max 0.90, Gulf 0.75) outweigh the doves.
+
+Both dynamic mechanisms predict **escalation (~80)**, for different reasons — so the article'''s 65.8 *average* masks the actual equilibrium. Separately, an early US-maximalist salience collapse (the article'''s '''US domestic shock''' breaker) flips the expected_utility equilibrium to ~45; fired late it does not (the hawkish coalition has already locked in).""")
 
 
 
