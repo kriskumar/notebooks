@@ -258,17 +258,15 @@ def __():
 def __(mo):
     mechanism_sl = mo.ui.text(value="expected_utility", label="mechanism", disabled=True)
     move_speed_sl = mo.ui.slider(0.0, 1.0, value=0.5, step=0.01, label="move_speed")
-    actors_sl = mo.ui.text(value="[{'name': 'Larijani', 'power': 0.9, 'salience': 0.8, 'position': 40.0}, {'name': 'IRGC', 'power': 0.7, 'salience': 0.6, 'position': 85.0}, {'name': 'Trump', 'power': 1.0, 'salience': 0.7, 'position': 58.0}, {'name': 'Israel', 'power': 0.6, 'salience': 0.9, 'position': 95.0}]", label="actors", disabled=True)
-    shocks_sl = mo.ui.text(value="[{'actor': 'IRGC', 'step': 5, 'field': 'salience', 'value': 0.1}]", label="shocks", disabled=True)
     steps_sl = mo.ui.slider(10, 180, value=60, step=10, label="steps")
-    mo.vstack([mechanism_sl, move_speed_sl, actors_sl, shocks_sl, steps_sl])
-    return (mechanism_sl, move_speed_sl, actors_sl, shocks_sl, steps_sl,)
+    mo.vstack([mechanism_sl, move_speed_sl, steps_sl])
+    return (mechanism_sl, move_speed_sl, steps_sl,)
 
 
 
 @app.cell
-def __(BdMPredictioneerModel, steps_sl, mechanism_sl, move_speed_sl, actors_sl, shocks_sl):
-    model = BdMPredictioneerModel(mechanism=mechanism_sl.value, move_speed=move_speed_sl.value, actors=actors_sl.value, shocks=shocks_sl.value, seed=42)
+def __(BdMPredictioneerModel, steps_sl, mechanism_sl, move_speed_sl):
+    model = BdMPredictioneerModel(mechanism=mechanism_sl.value, move_speed=move_speed_sl.value, actors=[{'name': 'Larijani', 'power': 0.9, 'salience': 0.8, 'position': 40.0}, {'name': 'IRGC', 'power': 0.7, 'salience': 0.6, 'position': 85.0}, {'name': 'Trump', 'power': 1.0, 'salience': 0.7, 'position': 58.0}, {'name': 'Israel', 'power': 0.6, 'salience': 0.9, 'position': 95.0}], shocks=[{'actor': 'IRGC', 'step': 5, 'field': 'salience', 'value': 0.1}], seed=42)
     out = model.run_simulation(steps=steps_sl.value)
     return model, out
 
@@ -280,7 +278,10 @@ def __(go, mo, out):
     figs = []
     for metric_name, series in ts.items():
         fig = go.Figure()
-        if series and isinstance(series[0], (list, tuple)):
+        if isinstance(series, dict):
+            for label, sub in series.items():
+                fig.add_scatter(y=sub, mode="lines", name=str(label))
+        elif series and isinstance(series[0], (list, tuple)):
             ncols = len(series[0])
             for j in range(ncols):
                 fig.add_scatter(y=[row[j] for row in series], mode="lines",
@@ -308,7 +309,7 @@ def __(mo, out):
 @app.cell
 def __(mo):
     return mo.md("""# Iran Conflict — BdM Predictioneer
-Expected-utility bargaining over a peace(0)–war(100) continuum. Equilibrium = effective-weight-weighted median. IRGC salience collapse (Bonyad funding) fires at step 5.""")
+Expected-utility bargaining over peace(0)-war(100). Equilibrium = effective-weight-weighted median. IRGC Bonyad-collapse salience shock at step 5.""")
 
 
 
