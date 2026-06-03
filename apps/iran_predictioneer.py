@@ -257,18 +257,19 @@ def __():
 @app.cell
 def __(mo):
     move_speed_sl = mo.ui.slider(0.0, 1.0, value=0.5, step=0.01, label="move_speed")
+    actors_sl = mo.ui.data_editor(data=[{'name': 'US maximalist (Rubio/Hegseth)', 'power': 0.9, 'salience': 1.0, 'position': 100.0}, {'name': 'US Populist (Vance/2026 base)', 'power': 0.85, 'salience': 0.85, 'position': 25.0}, {'name': 'Iran interim council', 'power': 0.4, 'salience': 1.0, 'position': 45.0}, {'name': 'Gulf States', 'power': 0.75, 'salience': 1.0, 'position': 80.0}], label='actors')
     steps_sl = mo.ui.slider(10, 180, value=60, step=10, label="steps")
-    mo.vstack([move_speed_sl, steps_sl])
-    return (move_speed_sl, steps_sl,)
+    mo.vstack([move_speed_sl, actors_sl, steps_sl])
+    return (move_speed_sl, actors_sl, steps_sl,)
 
 
 
 @app.cell
-def __(BdMPredictioneerModel, steps_sl, move_speed_sl):
+def __(BdMPredictioneerModel, steps_sl, move_speed_sl, actors_sl):
     _variants = ['best_response', 'expected_utility']
     results = {}
     for _v in _variants:
-        _m = BdMPredictioneerModel(mechanism=_v, move_speed=move_speed_sl.value, actors=[{'name': 'US maximalist (Rubio/Hegseth)', 'power': 0.9, 'salience': 1.0, 'position': 100.0}, {'name': 'US Populist (Vance/2026 base)', 'power': 0.85, 'salience': 0.85, 'position': 25.0}, {'name': 'Iran interim council', 'power': 0.4, 'salience': 1.0, 'position': 45.0}, {'name': 'Gulf States', 'power': 0.75, 'salience': 1.0, 'position': 80.0}], shocks=[], seed=42)
+        _m = BdMPredictioneerModel(mechanism=_v, move_speed=move_speed_sl.value, actors=actors_sl.value, shocks=[], seed=42)
         results[_v] = _m.run_simulation(steps=steps_sl.value)
     return results,
 
@@ -311,13 +312,13 @@ def __(mo, results):
 def __(mo):
     return mo.md("""# Iran Conflict — BdM Predictioneer (both mechanisms)
 
-Willow Run Capital roster. Position 0 = peace .. 100 = total war. The chart overlays **weighted_position** for the two update mechanisms; the table reports each one'''s equilibrium.
+Willow Run Capital roster. **Edit the actor scores directly in the table below** (power & salience 0–1, position 0 = peace .. 100 = war) — both mechanisms recompute. The chart overlays **weighted_position**; the table reports each mechanism'''s equilibrium.
 
-- **Round-0 weighted mean = 67.1** (the article'''s first-pass figure; inside its 60–68 band). This is only the *starting* average.
-- **best_response → 81.8**: actors shift toward the weighted mean, but resistance scales with salience, so the salience-1.0 hawk (US maximalist, position 100) never moves and anchors everyone upward.
-- **expected_utility (BdM median-voter) → 80**: pivot is Gulf States; the two hawks (US max 0.90, Gulf 0.75) outweigh the doves.
+- Round-0 weighted mean = 67.1 (article'''s first-pass; only the *starting* average).
+- best_response → ~82 (salience-1.0 hawk anchors everyone upward).
+- expected_utility (BdM median-voter) → 80 (pivot = Gulf States).
 
-Both dynamic mechanisms predict **escalation (~80)**, for different reasons — so the article'''s 65.8 *average* masks the actual equilibrium. Separately, an early US-maximalist salience collapse (the article'''s '''US domestic shock''' breaker) flips the expected_utility equilibrium to ~45; fired late it does not (the hawkish coalition has already locked in).""")
+Both dynamic mechanisms escalate to ~80, so the 65.8 average masks the equilibrium. An early US-maximalist salience collapse flips expected_utility to ~45; fired late it cannot.""")
 
 
 
